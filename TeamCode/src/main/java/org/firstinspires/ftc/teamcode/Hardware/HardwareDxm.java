@@ -27,7 +27,7 @@ with machanum wheels all 4 wheels need to be motorized
     HardwareMap hwMap = null;
     private ElapsedTime period = new ElapsedTime();
 
-    public HardwareDxm(HardwareMap ahwMap)
+    public void init(HardwareMap ahwMap)
     {
     hwMap = ahwMap;
 
@@ -50,10 +50,5 @@ with machanum wheels all 4 wheels need to be motorized
         fRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         bLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         bRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-    }
-
-    public void init()
-    {
-
     }
 }
