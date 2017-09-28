@@ -52,23 +52,22 @@ public class Mechanum_Drive extends OpMode {
     public void loop() {
         double leftY= gamepad1.left_stick_y;
         double leftX= gamepad1.left_stick_x;
-        //double rightY= gamepad1.right_stick_y;
-        //double rightX= gamepad1.right_stick_x;
+        double rightX= Math.abs(gamepad1.right_stick_x);
 
-        double[] wheelPower = wheelPower(leftX, leftY);
+        double[] wheelPower = wheelPower(leftX, leftY, rightX);
         robot.fLeft.setPower(wheelPower[0]);
         robot.fRight.setPower(wheelPower[1]);
         robot.bLeft.setPower(wheelPower[2]);
         robot.bRight.setPower(wheelPower[3]);
     }
-    public double[] wheelPower(double x, double y){
+    public double[] wheelPower(double x, double y, double r){
 
         double speed = speed (x,y);
         double angle = angle (x,y);
-        double pFL = speed * (Math.sin((angle) + ((Math.PI)/4)));
-        double pFR = speed * (Math.cos((angle) + ((Math.PI)/4)));
-        double pBL = speed * (Math.cos((angle) + ((Math.PI)/4)));
-        double pBR = speed * (Math.sin((angle) + ((Math.PI)/4)));
+        double pFL = (speed * (Math.sin((angle) + ((Math.PI)/4)))) + r;
+        double pFR = (speed * (Math.cos((angle) + ((Math.PI)/4)))) - r;
+        double pBL = (speed * (Math.cos((angle) + ((Math.PI)/4)))) + r;
+        double pBR = (speed * (Math.sin((angle) + ((Math.PI)/4)))) - r;
         double[] wP = {pFL, pFR, pBL, pBR};
 
         return wP;
@@ -84,4 +83,5 @@ public class Mechanum_Drive extends OpMode {
        else
            return Math.atan2(y,x);
     }
+
 }
