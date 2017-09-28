@@ -60,6 +60,7 @@ public class Mechanum_Drive extends OpMode {
         robot.bLeft.setPower(wheelPower[2]);
         robot.bRight.setPower(wheelPower[3]);
     }
+
     public double[] wheelPower(double x, double y, double r){
 
         double speed = speed (x,y);
