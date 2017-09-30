@@ -52,13 +52,21 @@ public class Mechanum_Drive extends OpMode {
     public void loop() {
         double leftY= gamepad1.left_stick_y;
         double leftX= gamepad1.left_stick_x;
-        double rightX= Math.abs(gamepad1.right_stick_x);
+        double rightX= gamepad1.right_stick_x;
 
         double[] wheelPower = wheelPower(leftX, leftY, rightX);
         robot.fLeft.setPower(wheelPower[0]);
         robot.fRight.setPower(wheelPower[1]);
         robot.bLeft.setPower(wheelPower[2]);
         robot.bRight.setPower(wheelPower[3]);
+        telemetry.addData("left joystick y-value: ",leftY);
+        telemetry.addData("left joystick x-value: ",leftX);
+        telemetry.addData("right joystick x-value: ",rightX);
+        telemetry.addData("front left motor: ",wheelPower[0]);
+        telemetry.addData("front right motor: ",wheelPower[1]);
+        telemetry.addData("back left motor: ",wheelPower[2]);
+        telemetry.addData("back right motor: ",wheelPower[3]);
+        telemetry.update();
     }
 
     public double[] wheelPower(double x, double y, double r){
@@ -70,6 +78,8 @@ public class Mechanum_Drive extends OpMode {
         double pBL = (speed * (Math.cos((angle) + ((Math.PI)/4)))) + r;
         double pBR = (speed * (Math.sin((angle) + ((Math.PI)/4)))) - r;
         double[] wP = {pFL, pFR, pBL, pBR};
+        telemetry.addData("speed: ",speed);
+        telemetry.addData("angle: ",angle);
 
         return wP;
     }
