@@ -50,7 +50,7 @@ public class Mechanum_Drive extends OpMode {
 
     @Override
     public void loop() {
-        double leftY= gamepad1.left_stick_y;
+        double leftY= (-1 * gamepad1.left_stick_y);
         double leftX= gamepad1.left_stick_x;
         double rightX= gamepad1.right_stick_x;
 
@@ -89,10 +89,10 @@ public class Mechanum_Drive extends OpMode {
     }
 
     public double angle (double x, double y){
-       if ((y == 0)&&(x ==0))
+       if (((y == -0)||(y == 0))&&((x == -0)||(x ==0)))
         return 0;
        else
-           return Math.atan2(y,x);
+           return Math.atan2(x,y);
     }
 
 }

@@ -39,33 +39,33 @@ with machanum wheels all 4 wheels need to be motorized
         fRight = hwMap.dcMotor.get("fRight");
         bLeft = hwMap.dcMotor.get("bLeft");
         bRight = hwMap.dcMotor.get("bRight");
-        lateralClaw = hwMap.dcMotor.get("lateralClaw");
-        verticalClaw = hwMap.dcMotor.get("verticalClaw");
+        //lateralClaw = hwMap.dcMotor.get("lateralClaw");
+        //verticalClaw = hwMap.dcMotor.get("verticalClaw");
 
-        claw = hwMap.servo.get("claw");
+        //claw = hwMap.servo.get("claw");
 
         fLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         fRight.setDirection(DcMotorSimple.Direction.FORWARD);
         bLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         bRight.setDirection(DcMotorSimple.Direction.FORWARD);
-        lateralClaw.setDirection(DcMotorSimple.Direction.FORWARD);
-        verticalClaw.setDirection(DcMotorSimple.Direction.FORWARD);
+        //lateralClaw.setDirection(DcMotorSimple.Direction.FORWARD);
+        //verticalClaw.setDirection(DcMotorSimple.Direction.FORWARD);
 
         fLeft.setPower(0);
         fRight.setPower(0);
         bLeft.setPower(0);
         bRight.setPower(0);
-        lateralClaw.setPower(0);
-        verticalClaw.setPower(0);
+       // lateralClaw.setPower(0);
+        //verticalClaw.setPower(0);
 
-        claw.setPosition(0);
+       // claw.setPosition(0);
 
         fLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         fRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         bLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         bRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        lateralClaw.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        verticalClaw.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+       // lateralClaw.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+       // verticalClaw.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
     }
 }
