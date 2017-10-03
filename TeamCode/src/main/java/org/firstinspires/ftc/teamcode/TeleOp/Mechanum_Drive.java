@@ -50,9 +50,12 @@ public class Mechanum_Drive extends OpMode {
 
     @Override
     public void loop() {
-        double leftY= (-1 * gamepad1.left_stick_y);
-        double leftX= gamepad1.left_stick_x;
-        double rightX= gamepad1.right_stick_x;
+
+        double leftY= Math.abs(gamepad1.left_stick_y) > 0.3? -gamepad1.left_stick_y: 0 ;
+
+        double leftX= Math.abs(gamepad1.left_stick_x) > 0.3? gamepad1.left_stick_x: 0 ;
+
+        double rightX= Math.abs(gamepad1.right_stick_x) > 0.3? gamepad1.right_stick_x: 0;
 
         double[] wheelPower = wheelPower(leftX, leftY, rightX);
         robot.fLeft.setPower(wheelPower[0]);
@@ -89,7 +92,7 @@ public class Mechanum_Drive extends OpMode {
     }
 
     public double angle (double x, double y){
-       if (((y == -0)||(y == 0))&&((x == -0)||(x ==0)))
+       if ((y == 0)&&(x ==0))
         return 0;
        else
            return Math.atan2(x,y);
