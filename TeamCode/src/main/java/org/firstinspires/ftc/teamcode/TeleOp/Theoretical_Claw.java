@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.Hardware.HardwareDxm;
@@ -22,6 +23,8 @@ public class Theoretical_Claw extends OpMode {
     double triggerR2 = gamepad2.right_trigger;
     double triggerL2 = gamepad2.left_trigger;
 
+    final static double SERVO_SHIFT = 0.075;
+
 
     public void init() {
         robot.init(hardwareMap);
@@ -32,6 +35,18 @@ public class Theoretical_Claw extends OpMode {
         robot.verticalClaw.setPower(leftY2);
         robot.lateralClaw.setPower(rightY2);
 
+       if (triggerR2 > 0.5)
+       {
+           double position = robot.claw.getPosition();
+           double newPosition = Range.clip( position + SERVO_SHIFT, Servo.MIN_POSITION, Servo.MAX_POSITION);
+           robot.claw.setPosition(newPosition);
+       }
+       else if (triggerL2 > .5)
+       {
+           double position = robot.claw.getPosition();
+           double newPosition = Range.clip( position - SERVO_SHIFT, Servo.MIN_POSITION, Servo.MAX_POSITION);
+           robot.claw.setPosition(newPosition);
+       }
 
 
     }
