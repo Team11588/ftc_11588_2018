@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Autonomous;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Environment;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -30,7 +31,7 @@ public class BitmapTest extends LinearOpMode {
         if (sd == null){
             telemetry.addLine("Open External Storage Failed");
         }
-        File image = new File(sd+filePath, imageName);
+        File image = new File(sd+"/"+filePath, imageName);
         if (image == null) {
             telemetry.addLine("Open Image File Failed");
         }
@@ -49,6 +50,13 @@ public class BitmapTest extends LinearOpMode {
         }
         int color = bitmap.getPixel(0,0);
         telemetry.addData("Color", "%d", color);
+
+        int red = Color.red(color);
+        int green = Color.green(color);
+        int blue = Color.blue(color);
+        telemetry.addData("RGB =", "R = %d G = %d B = %d", red, green, blue);
+
+        telemetry.update();
 
         waitForStart();
         runtime.reset();
