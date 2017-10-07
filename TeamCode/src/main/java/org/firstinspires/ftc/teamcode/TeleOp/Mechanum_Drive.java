@@ -38,7 +38,7 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.teamcode.Hardware.HardwareDxm;
 
 
-@TeleOp(name="Mechanum Drive")
+@TeleOp(name="Mechanum Drive" , group = "TeleOp")
 public class Mechanum_Drive extends OpMode {
 
     HardwareDxm robot           = new HardwareDxm();
