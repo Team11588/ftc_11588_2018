@@ -48,15 +48,50 @@ public class BitmapTest extends LinearOpMode {
             telemetry.addLine("Could not read bitmap");
 
         }
-        int color = bitmap.getPixel(0,0);
-        telemetry.addData("Color", "%d", color);
+        int LeftRed = 0;
+        int RightRed = 0;
+        int LeftBlue = 0;
+        int RightBlue = 0;
+        for(int x=0; x<200; x++){ // replace 200 with x pixel size value
+            for(int y=0;y<200;y++){
+                int color = bitmap.getPixel(x,y);
+                telemetry.addData("Color", "%d", color);
+                int red = Color.red(color);
+                int green = Color.green(color);
+                int blue = Color.blue(color);
 
-        int red = Color.red(color);
-        int green = Color.green(color);
-        int blue = Color.blue(color);
-        telemetry.addData("RGB =", "R = %d G = %d B = %d", red, green, blue);
+                double[] HBV = RGBtoHSV(red, green, blue);
+                double hue = HBV[0];
 
-        telemetry.update();
+                if(((300<hue)||(hue<60))&&(x<100))
+                    LeftRed = LeftRed + 1;
+                else
+                    RightRed = RightRed +1;
+
+                if(((180<hue)&&(hue<=300))&&(x<100))
+                    LeftBlue = LeftBlue + 1;
+                else
+                    RightBlue = RightBlue +1;
+
+
+                telemetry.addData("RGB =", "R = %d G = %d B = %d", red, green, blue);
+                telemetry.addData("Hue = ", hue);
+
+                telemetry.update();
+            }
+            if ((LeftRed == RightRed)||(LeftBlue==RightBlue)){
+                telemetry.addLine("the balls are too allusive");
+            }
+            else if((LeftRed<RightRed) && (LeftBlue>RightBlue)){
+                telemetry.addLine("BLUE is on the LEFT side and RED is on the RIGHT side");
+            }
+            else if((LeftRed>RightRed) && (LeftBlue<RightBlue)){
+                telemetry.addLine("RED is on the LEFT side and BLUE is on the RIGHT side");
+            }
+            else
+                telemetry.addLine("ERROR 404: logic not found");
+            telemetry.update();
+        }
 
         waitForStart();
         runtime.reset();
@@ -69,5 +104,47 @@ public class BitmapTest extends LinearOpMode {
 
 
 }
+
+    public static double[] RGBtoHSV(double r, double g, double b){
+
+        double h, s, v;
+
+        double min, max, delta;
+
+        min = Math.min(Math.min(r, g), b);
+        max = Math.max(Math.max(r, g), b);
+
+        // V
+        v = max;
+
+        delta = max - min;
+
+
+        /*
+        // S
+        if( max != 0 )
+            s = delta / max;
+        else {
+            s = 0;
+            h = -1;
+            return new double[]{h,s,v};
+        }*/
+
+        // H
+        if( r == max )
+            h = ( g - b ) / delta; // between yellow & magenta - reds
+        else if( g == max )
+            h = 2 + ( b - r ) / delta; // between cyan & yellow - greens
+        else
+            h = 4 + ( r - g ) / delta; // between magenta & cyan - blues
+
+        h *= 60;    // degrees
+
+        if( h < 0 )
+            h += 360;
+
+        return new double[]{h,/*s,*/v};
+    }
+
 
 }
