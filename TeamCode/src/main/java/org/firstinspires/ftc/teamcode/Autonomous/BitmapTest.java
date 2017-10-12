@@ -2,7 +2,9 @@ package org.firstinspires.ftc.teamcode.Autonomous;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Environment;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -25,6 +27,7 @@ public class BitmapTest extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     @Override
     public void runOpMode() throws InterruptedException {
+        waitForStart();
         telemetry.addLine("Hi");
 
         File sd = Environment.getExternalStorageDirectory();
@@ -42,6 +45,7 @@ public class BitmapTest extends LinearOpMode {
         telemetry.addData("Image Name", "%s",image.getAbsolutePath());
 
 
+
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
     Bitmap bitmap = BitmapFactory.decodeFile(image.getAbsolutePath(),bmOptions);
         if (bitmap == null) {
@@ -52,10 +56,14 @@ public class BitmapTest extends LinearOpMode {
         int RightRed = 0;
         int LeftBlue = 0;
         int RightBlue = 0;
-        for(int x=0; x<200; x++){ // replace 200 with x pixel size value
-            for(int y=0;y<200;y++){
+        int count = 0;
+
+        telemetry.addData("Start For loop", "");
+        for(int x=476; x<476+10; x++){ // replace 200 with x pixel size value
+            for(int y=397;y<397+10;y++){
                 int color = bitmap.getPixel(x,y);
-                telemetry.addData("Color", "%d", color);
+                //telemetry.addData("Color", "%d", color);
+                count++;
                 int red = Color.red(color);
                 int green = Color.green(color);
                 int blue = Color.blue(color);
@@ -63,23 +71,20 @@ public class BitmapTest extends LinearOpMode {
                 double[] HBV = RGBtoHSV(red, green, blue);
                 double hue = HBV[0];
 
-                if(((300<hue)||(hue<60))&&(x<100))
+                if(((300<hue)||(hue<60)))
                     LeftRed = LeftRed + 1;
-                else
-                    RightRed = RightRed +1;
 
-                if(((180<hue)&&(hue<=300))&&(x<100))
+                if(((180<hue)&&(hue<=300)))
                     LeftBlue = LeftBlue + 1;
-                else
-                    RightBlue = RightBlue +1;
 
 
-                telemetry.addData("RGB =", "R = %d G = %d B = %d", red, green, blue);
+                /*telemetry.addData("RGB =", "R = %d G = %d B = %d", red, green, blue);
                 telemetry.addData("Hue = ", hue);
-
-                telemetry.update();
+                telemetry.addData("Red count", "%d", LeftRed);
+                telemetry.addData("Blue count", "%d", LeftBlue);
+*/
             }
-            if ((LeftRed == RightRed)||(LeftBlue==RightBlue)){
+            /*if ((LeftRed == RightRed)||(LeftBlue==RightBlue)){
                 telemetry.addLine("the balls are too allusive");
             }
             else if((LeftRed<RightRed) && (LeftBlue>RightBlue)){
@@ -89,17 +94,21 @@ public class BitmapTest extends LinearOpMode {
                 telemetry.addLine("RED is on the LEFT side and BLUE is on the RIGHT side");
             }
             else
-                telemetry.addLine("ERROR 404: logic not found");
-            telemetry.update();
+                telemetry.addLine("ERROR 404: logic not found");*/
         }
+        Canvas c = new Canvas(bitmap);
+        Paint p = new Paint();
+        p.setColor(Color.BLACK);
+        c.drawRect(476, 397, 486, 407, p);
+        
+        telemetry.addData("Red count", "%d", LeftRed);
+        telemetry.addData("Blue count", "%d", LeftBlue);
+        telemetry.addData("Count", "%d", count);
+        telemetry.update();
 
-        waitForStart();
-        runtime.reset();
+
+        //runtime.reset();
         while (opModeIsActive())  {
-            telemetry.addData("Status", "Run Time: " + runtime.toString());
-
-
-
         }
 
 
