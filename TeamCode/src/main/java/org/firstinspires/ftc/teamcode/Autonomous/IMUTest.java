@@ -32,7 +32,7 @@ public class IMUTest extends OpMode {
     Orientation angles;
     Acceleration gravity;
 
-    final double TURN_POWER = .75;
+    final double TURN_POWER = .5;
 
 
 
