@@ -1,11 +1,14 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Environment;
+import android.util.AttributeSet;
+import android.view.View;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -13,8 +16,13 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.internal.android.dx.cf.iface.Attribute;
+import org.firstinspires.ftc.teamcode.R;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 /**
  * Created by butterss21317 on 9/26/2017.
@@ -96,24 +104,28 @@ public class BitmapTest extends LinearOpMode {
             else
                 telemetry.addLine("ERROR 404: logic not found");*/
         }
-        Canvas c = new Canvas(bitmap);
+
+        Bitmap mutableBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+        Canvas c = new Canvas(mutableBitmap);
         Paint p = new Paint();
         p.setColor(Color.BLACK);
         c.drawRect(476, 397, 486, 407, p);
-        
+
         telemetry.addData("Red count", "%d", LeftRed);
         telemetry.addData("Blue count", "%d", LeftBlue);
         telemetry.addData("Count", "%d", count);
         telemetry.update();
 
+        saveBitmap("previewImage.png",mutableBitmap);
 
-        //runtime.reset();
-        while (opModeIsActive())  {
+
+
+
+    }
+    {    //runtime.reset();
+        while (opModeIsActive()) {
         }
-
-
 }
-
     public static double[] RGBtoHSV(double r, double g, double b){
 
         double h, s, v;
@@ -155,5 +167,22 @@ public class BitmapTest extends LinearOpMode {
         return new double[]{h,/*s,*/v};
     }
 
+    public static void saveBitmap(String filename, Bitmap bitmap) {
+        String filePath =
+    Environment.getExternalStorageDirectory().getAbsolutePath()+"/Pictures";
 
+        FileOutputStream fileOutputStream = null;
+        try {
+            fileOutputStream = new FileOutputStream(filePath + "/" + filename);
+            bitmap.compress( Bitmap.CompressFormat.PNG, 100, fileOutputStream);
+            fileOutputStream.flush();
+            fileOutputStream.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
 }
