@@ -77,13 +77,14 @@ public class IMUTest extends OpMode {
     @Override
     public void loop() {
 
-        double heading = Double.parseDouble(formatAngle(AngleUnit.DEGREES ,angles.firstAngle));
 
         if (angles != null) {
 
-            if (heading < 90) {
-                robot.leftMotor.setPower(-TURN_POWER);
-                robot.rightMotor.setPower(TURN_POWER);
+            double heading = Double.parseDouble(formatAngle(angles.angleUnit , angles.firstAngle));
+
+            if ( heading < 90) {
+                robot.leftMotor.setPower(TURN_POWER);
+                robot.rightMotor.setPower(-TURN_POWER);
             } else {
                 robot.leftMotor.setPower(0);
                 robot.rightMotor.setPower(0);
