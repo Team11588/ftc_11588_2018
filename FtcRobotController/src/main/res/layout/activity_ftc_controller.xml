@@ -175,9 +175,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       android:textStyle="bold"
       android:visibility="invisible"
       android:text="" />
-<org.firstinspires.ftc.teamcode.Autonomous
+<!--<org.firstinspires.ftc.teamcode.Autonomous
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"/>
+  --> 
   </RelativeLayout>
 
   <WebView
