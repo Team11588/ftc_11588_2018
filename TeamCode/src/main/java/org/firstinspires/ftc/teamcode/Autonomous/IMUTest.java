@@ -26,14 +26,13 @@ import org.firstinspires.ftc.teamcode.Hardware.TheoriticalTank;
 public class IMUTest extends OpMode {
 
     TheoriticalTank robot = new TheoriticalTank();
-    HardwareMap hwMap           =  null;
+    HardwareMap hwMap = null;
 
     BNO055IMU imu;
     Orientation angles;
     Acceleration gravity;
 
-    final double TURN_POWER = .5;
-
+    final double TURN_POWER = .25;
 
 
     @Override
@@ -57,11 +56,11 @@ public class IMUTest extends OpMode {
         // algorithm here just reports accelerations to the logcat log; it doesn't actually
         // provide positional information.
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
         parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
-        parameters.loggingEnabled      = true;
-        parameters.loggingTag          = "IMU";
+        parameters.loggingEnabled = true;
+        parameters.loggingTag = "IMU";
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
 
         // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
@@ -78,12 +77,11 @@ public class IMUTest extends OpMode {
     @Override
     public void loop() {
 
-        telemetry.addData("I made it","");
-        telemetry.update();
+        double heading = Double.parseDouble(formatAngle(AngleUnit.DEGREES ,angles.firstAngle));
 
         if (angles != null) {
 
-            if (angles.firstAngle < 90) {
+            if (heading < 90) {
                 robot.leftMotor.setPower(-TURN_POWER);
                 robot.rightMotor.setPower(TURN_POWER);
             } else {
@@ -107,19 +105,21 @@ public class IMUTest extends OpMode {
         });
 
         telemetry.addData("heading", new Func<String>() {
-                    @Override
-                    public String value() {
-                        return formatAngle(angles.angleUnit, angles.firstAngle);
-                    }
-                });
+            @Override
+            public String value() {
+                return formatAngle(angles.angleUnit, angles.firstAngle);
+            }
+        });
     }
 
-    String formatAngle (AngleUnit angleUnit,double angle){
+    String formatAngle(AngleUnit angleUnit, double angle) {
         return formatDegrees(AngleUnit.DEGREES.fromUnit(angleUnit, angle));
     }
-    String formatDegrees(double degrees){
+
+    String formatDegrees(double degrees) {
         return String.format(Locale.getDefault(), "%.1f", AngleUnit.DEGREES.normalize(degrees));
     }
+
 
 
 }
