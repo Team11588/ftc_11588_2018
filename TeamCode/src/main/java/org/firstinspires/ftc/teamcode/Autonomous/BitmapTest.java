@@ -31,7 +31,7 @@ import java.io.IOException;
 @Autonomous(name="BitmapTest", group="Concept")
 public class BitmapTest extends LinearOpMode {
     String filePath = "Pictures";
-    String imageName = "TestImage.png";
+    String imageName = "TestImage.JPG";
     private ElapsedTime runtime = new ElapsedTime();
     @Override
     public void runOpMode() throws InterruptedException {
@@ -56,6 +56,7 @@ public class BitmapTest extends LinearOpMode {
 
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
     Bitmap bitmap = BitmapFactory.decodeFile(image.getAbsolutePath(),bmOptions);
+
         if (bitmap == null) {
             telemetry.addLine("Could not read bitmap");
 
@@ -65,10 +66,11 @@ public class BitmapTest extends LinearOpMode {
         int LeftBlue = 0;
         int RightBlue = 0;
         int count = 0;
+        
 
         telemetry.addData("Start For loop", "");
-        for(int x=476; x<476+10; x++){ // replace 200 with x pixel size value
-            for(int y=397;y<397+10;y++){
+        for(int /*x=476; x<476+10; x++*/){ // replace 200 with x pixel size value
+            for(int /*y=397;y<397+10;y++*/){
                 int color = bitmap.getPixel(x,y);
                 //telemetry.addData("Color", "%d", color);
                 count++;
