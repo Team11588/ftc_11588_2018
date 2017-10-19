@@ -29,6 +29,8 @@
 
 package org.firstinspires.ftc.teamcode.Autonomous;
 
+import android.text.ParcelableSpan;
+
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -43,6 +45,12 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.teamcode.Hardware.TheoriticalTank;
 
 import java.util.Locale;
 
@@ -56,8 +64,15 @@ import java.util.Locale;
  */
 @Autonomous(name = "Sensor: BNO055 IMU", group = "Sensor")
 //@Disabled                            // Comment this out to add to the opmode list
-public class SensorBNO055IMU extends LinearOpMode
-    {
+public class SensorBNO055IMU extends OpMode {
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    TheoriticalTank robot = new TheoriticalTank();
+    HardwareMap hwMap = null;
+
+    long targetTime;
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
     //----------------------------------------------------------------------------------------------
     // State
     //----------------------------------------------------------------------------------------------
@@ -69,21 +84,22 @@ public class SensorBNO055IMU extends LinearOpMode
     Orientation angles;
     Acceleration gravity;
 
-    //----------------------------------------------------------------------------------------------
-    // Main logic
-    //----------------------------------------------------------------------------------------------
+    @Override
+    public void init() {
 
-    @Override public void runOpMode() {
+        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        robot.init(hardwareMap);
+        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
         // Set up the parameters with which we will use our IMU. Note that integration
         // algorithm here just reports accelerations to the logcat log; it doesn't actually
         // provide positional information.
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
         parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
-        parameters.loggingEnabled      = true;
-        parameters.loggingTag          = "IMU";
+        parameters.loggingEnabled = true;
+        parameters.loggingTag = "IMU";
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
 
         // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
@@ -95,17 +111,33 @@ public class SensorBNO055IMU extends LinearOpMode
         // Set up our telemetry dashboard
         composeTelemetry();
 
-        // Wait until we're told to go
-        waitForStart();
+    }
+    //----------------------------------------------------------------------------------------------
+    // Main logic
+    //----------------------------------------------------------------------------------------------
 
-        // Start the logging of measured acceleration
+    @Override
+    public void start() {
         imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
 
-        // Loop and update the dashboard
-        while (opModeIsActive()) {
-            telemetry.update();
-        }
+        //targetTime = new ElapsedTime();
     }
+    // Start the logging of measured acceleration
+
+
+    // Loop and update the dashboard
+       @Override
+       public void loop() {
+
+           //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+           //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+           telemetry.update();
+
+
+
+       }
 
     //----------------------------------------------------------------------------------------------
     // Telemetry Configuration
@@ -168,7 +200,7 @@ public class SensorBNO055IMU extends LinearOpMode
                                     + gravity.zAccel*gravity.zAccel));
                     }
                 });
-    }
+       }
 
     //----------------------------------------------------------------------------------------------
     // Formatting
@@ -181,4 +213,6 @@ public class SensorBNO055IMU extends LinearOpMode
     String formatDegrees(double degrees){
         return String.format(Locale.getDefault(), "%.1f", AngleUnit.DEGREES.normalize(degrees));
     }
-}
+
+
+    }

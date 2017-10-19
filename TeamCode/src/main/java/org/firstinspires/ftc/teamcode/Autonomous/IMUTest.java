@@ -71,7 +71,7 @@ public class IMUTest extends OpMode {
 
         // Set up our telemetry dashboard
 
-
+        telemetry.update();
     }
 
     @Override
@@ -80,15 +80,14 @@ public class IMUTest extends OpMode {
 
         if (angles != null) {
 
-            double heading = Double.parseDouble(formatAngle(angles.angleUnit , angles.firstAngle));
+            while ( angles.firstAngle < 90) {
 
-            if ( heading < 90) {
                 robot.leftMotor.setPower(TURN_POWER);
                 robot.rightMotor.setPower(-TURN_POWER);
-            } else {
-                robot.leftMotor.setPower(0);
-                robot.rightMotor.setPower(0);
+
             }
+
+
         }
 
 
@@ -104,6 +103,8 @@ public class IMUTest extends OpMode {
                 gravity = imu.getGravity();
             }
         });
+
+        telemetry.update();
 
         telemetry.addData("heading", new Func<String>() {
             @Override
@@ -121,17 +122,4 @@ public class IMUTest extends OpMode {
         return String.format(Locale.getDefault(), "%.1f", AngleUnit.DEGREES.normalize(degrees));
     }
 
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
