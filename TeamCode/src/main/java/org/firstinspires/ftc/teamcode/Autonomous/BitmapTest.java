@@ -71,8 +71,8 @@ public class BitmapTest extends LinearOpMode {
         double yPercent = (bitmap.getHeight())/100.0;
 
         telemetry.addData("Start For loop", "");
-        for(int x=1; x<100; x++){ // replace 200 with x pixel size value
-            for(int y=1;y<100;y++){
+        for(int x=20; x<30; x++){ // replace 200 with x pixel size value
+            for(int y=60;y<80;y++){
                 int color = bitmap.getPixel((int) (x*xPercent),(int) (y*yPercent));
                 //telemetry.addData("Color", "%d", color);
                 count++;
@@ -113,7 +113,7 @@ public class BitmapTest extends LinearOpMode {
         Canvas c = new Canvas(mutableBitmap);
         Paint p = new Paint();
         p.setColor(Color.BLACK);
-        c.drawRect(476, 397, 486, 407, p);
+        c.drawRect((int) (20*xPercent),(int) (60*yPercent), (int) (30*xPercent),(int) (80*yPercent), p);
 
         telemetry.addData("Red count", "%d", LeftRed);
         telemetry.addData("Blue count", "%d", LeftBlue);
