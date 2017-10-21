@@ -120,7 +120,7 @@ public class SensorBNO055IMU extends OpMode {
     public void start() {
         imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
 
-        //targetTime = new ElapsedTime();
+
     }
     // Start the logging of measured acceleration
 
