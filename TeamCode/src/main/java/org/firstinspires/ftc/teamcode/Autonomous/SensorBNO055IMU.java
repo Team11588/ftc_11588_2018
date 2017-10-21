@@ -130,7 +130,8 @@ public class SensorBNO055IMU extends OpMode {
        public void loop() {
 
            //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+            robot.leftMotor.setPower(.5);
+            robot.rightMotor.setPower(.5);
            //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
            telemetry.update();
