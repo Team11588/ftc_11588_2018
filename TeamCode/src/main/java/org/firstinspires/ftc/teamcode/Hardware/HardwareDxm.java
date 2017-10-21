@@ -24,6 +24,7 @@ with machanum wheels all 4 wheels need to be motorized
     public DcMotor bLeft = null;
     public DcMotor bRight = null;
 
+    public Servo claw = null;
 
     HardwareMap hwMap = null;
     private ElapsedTime period = new ElapsedTime();
@@ -37,6 +38,8 @@ with machanum wheels all 4 wheels need to be motorized
         bLeft = hwMap.dcMotor.get("bLeft");
         bRight = hwMap.dcMotor.get("bRight");
 
+        claw = hwMap.servo.get("claw");
+        claw.setPosition(0);
 
         fLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         fRight.setDirection(DcMotorSimple.Direction.FORWARD);

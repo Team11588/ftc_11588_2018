@@ -39,7 +39,7 @@ import org.firstinspires.ftc.teamcode.Hardware.HardwareDxm;
 
 
 @TeleOp(name="Mechanum Drive" , group = "TeleOp")
-public class Mechanum_Drive extends OpMode {
+public class Mechanum_Only extends OpMode {
 
     HardwareDxm robot           = new HardwareDxm();
 
@@ -91,10 +91,10 @@ public class Mechanum_Drive extends OpMode {
     }
 
     public double angle (double x, double y){
-       if ((y == 0)&&(x ==0))
-        return 0;
-       else
-           return Math.atan2(x,y);
+        if ((y == 0)&&(x ==0))
+            return 0;
+        else
+            return Math.atan2(x,y);
     }
 
 }
