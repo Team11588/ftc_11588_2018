@@ -39,7 +39,7 @@ with machanum wheels all 4 wheels need to be motorized
         bRight = hwMap.dcMotor.get("bRight");
 
         claw = hwMap.servo.get("claw");
-        claw.setPosition(0);
+        claw.setPosition(100);
 
         fLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         fRight.setDirection(DcMotorSimple.Direction.FORWARD);

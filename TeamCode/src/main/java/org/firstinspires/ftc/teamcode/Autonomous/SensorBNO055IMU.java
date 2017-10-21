@@ -50,7 +50,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.Hardware.TheoriticalTank;
+import org.firstinspires.ftc.teamcode.Hardware.HardwareDxm;
 
 import java.util.Locale;
 
@@ -67,15 +67,25 @@ import java.util.Locale;
 public class SensorBNO055IMU extends OpMode {
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    TheoriticalTank robot = new TheoriticalTank();
+    HardwareDxm robot = new HardwareDxm();
     HardwareMap hwMap = null;
 
-    long targetTime;
+
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     //----------------------------------------------------------------------------------------------
     // State
     //----------------------------------------------------------------------------------------------
+
+    final double INIT_SPEED = .5;
+    final double X_OFFSET = .45;
+
+    double speed;
+    double xf;
+    double xi;
+    double M;
+    double heading;
+
 
     // The IMU sensor object
     BNO055IMU imu;
@@ -129,9 +139,49 @@ public class SensorBNO055IMU extends OpMode {
        @Override
        public void loop() {
 
+           xf = 90-X_OFFSET;
+           xi = 45-X_OFFSET;
+
+           heading = angles.firstAngle - X_OFFSET;
+            M = (0-INIT_SPEED)/(xf-xi);
+           speed = INIT_SPEED+M*heading;
            //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            robot.leftMotor.setPower(.5);
-            robot.rightMotor.setPower(.5);
+            if (angles != null) {
+
+                if (angles.firstAngle < 35) {
+                    robot.fLeft.setPower(-.5);
+                    robot.bLeft.setPower(-.5);
+                    robot.fRight.setPower(.5);
+                    robot.bRight.setPower(.5);
+                }
+              /*  else if (angles.firstAngle > 45 && angles.firstAngle <90) {
+                    robot.fLeft.setPower(speed);
+                    robot.bLeft.setPower(speed);
+                    robot.fRight.setPower(-speed);
+                    robot.bRight.setPower(-speed);
+               }
+              */
+              else if (angles.firstAngle < 50){
+                  robot.fLeft.setPower(-.35);
+                  robot.bLeft.setPower(-.35);
+                  robot.fRight.setPower(.35);
+                  robot.bRight.setPower(.35);
+              }
+
+              else if (angles.firstAngle < 75){
+                    robot.fLeft.setPower(-.2);
+                    robot.bLeft.setPower(-.2);
+                    robot.fRight.setPower(.2);
+                    robot.bRight.setPower(.2);
+                }
+                else{
+                    robot.fLeft.setPower(0);
+                    robot.bLeft.setPower(0);
+                    robot.fRight.setPower(0);
+                    robot.bRight.setPower(0);
+                }
+
+            }
            //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
            telemetry.update();
