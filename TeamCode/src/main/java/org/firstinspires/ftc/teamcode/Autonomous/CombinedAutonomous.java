@@ -63,7 +63,7 @@ public class CombinedAutonomous extends LinearOpMode{
 
         waitForStart();
 
-        
+
     }
 
 

@@ -23,12 +23,13 @@ with machanum wheels all 4 wheels need to be motorized
     public DcMotor fRight = null;
     public DcMotor bLeft = null;
     public DcMotor bRight = null;
+    public DcMotor lift = null;
 
     public Servo claw = null;
     public Servo jewelKnockDevice = null;
 
     HardwareMap hwMap = null;
-    private ElapsedTime period = new ElapsedTime();
+
 
     public void init(HardwareMap ahwMap)
     {

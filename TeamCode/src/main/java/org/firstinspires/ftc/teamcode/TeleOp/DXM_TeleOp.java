@@ -52,13 +52,13 @@ public class DXM_TeleOp extends OpMode {
 
     @Override
     public void loop() {
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         double leftY= Math.abs(gamepad1.left_stick_y) > 0.3? -gamepad1.left_stick_y: 0 ;
-
         double leftX= Math.abs(gamepad1.left_stick_x) > 0.3? gamepad1.left_stick_x: 0 ;
-
         double rightX= Math.abs(gamepad1.right_stick_x) > 0.3? gamepad1.right_stick_x: 0;
+        double triggerR2 = gamepad2.right_trigger;
+        double triggerL2 = gamepad2.left_trigger;
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         double[] wheelPower = wheelPower(leftX, leftY, rightX);
         robot.fLeft.setPower(wheelPower[0]);
         robot.fRight.setPower(wheelPower[1]);
@@ -74,9 +74,6 @@ public class DXM_TeleOp extends OpMode {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 //**************************************************************************************************
-        double triggerR2 = gamepad2.right_trigger;
-        double triggerL2 = gamepad2.left_trigger;
-
         if (triggerL2 > 0.5)
         {
             double position = robot.claw.getPosition();
