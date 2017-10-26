@@ -31,7 +31,7 @@ import java.io.IOException;
 @Autonomous(name="BitmapTest", group="Concept")
 public class BitmapTest extends LinearOpMode {
     String filePath = "Pictures";
-    String imageName = "TestImage.JPG";
+    String imageName = "TestImage.JPEG";
     private ElapsedTime runtime = new ElapsedTime();
     @Override
     public void runOpMode() throws InterruptedException {

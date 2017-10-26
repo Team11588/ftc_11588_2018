@@ -79,12 +79,14 @@ public class DXM_TeleOp extends OpMode {
             double position = robot.claw.getPosition();
             double newPosition = Range.clip( position + SERVO_SHIFT, Servo.MIN_POSITION, Servo.MAX_POSITION);
             robot.claw.setPosition(newPosition);
+            telemetry.addData("position" , position);
         }
         else if (triggerR2 > .5)
         {
             double position = robot.claw.getPosition();
             double newPosition = Range.clip( position - SERVO_SHIFT, Servo.MIN_POSITION, Servo.MAX_POSITION);
             robot.claw.setPosition(newPosition);
+            telemetry.addData("position" , position);
         }
 //**************************************************************************************************
         telemetry.update();

@@ -27,22 +27,24 @@ public class Theoretical_Claw extends OpMode {
 
     public void loop() {
 
-        double triggerR2 = gamepad2.right_trigger;
-        double triggerL2 = gamepad2.left_trigger;
+        double triggerR2 = gamepad1.right_trigger;
+        double triggerL2 = gamepad1.left_trigger;
 
         if (triggerL2 > 0.5)
        {
            double position = robot.claw.getPosition();
            double newPosition = Range.clip( position + SERVO_SHIFT, Servo.MIN_POSITION, Servo.MAX_POSITION);
            robot.claw.setPosition(newPosition);
+           telemetry.addData("position" , position);
        }
        else if (triggerR2 > .5)
        {
            double position = robot.claw.getPosition();
            double newPosition = Range.clip( position - SERVO_SHIFT, Servo.MIN_POSITION, Servo.MAX_POSITION);
            robot.claw.setPosition(newPosition);
+           telemetry.addData("position" , position);
        }
-
+telemetry.update();
 
     }
     }
