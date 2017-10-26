@@ -40,7 +40,7 @@ import java.util.Locale;
  */
 
 
-/*PSA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+/*PSA These distinguish the different processes
 ------------------------IMU SENSOR-------------------------------------
 ************************VUFORIA****************************************
 &&&&&&&&&&&&&&&&&&&&&&&&Picture Taking&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
@@ -70,7 +70,6 @@ public class CombinedAutonomous extends LinearOpMode{
         //----------------------------------------------------------------------------------------------
        BNO055IMU imu;
 
-        // State used for updating telemetry
         Orientation angles;
         Acceleration gravity;
 
@@ -110,6 +109,8 @@ public class CombinedAutonomous extends LinearOpMode{
 
         waitForStart();
 
+// The init process has finished by here
+
         relicTrackables.activate();
 
 
@@ -119,6 +120,8 @@ public class CombinedAutonomous extends LinearOpMode{
         Center - 2
         Left - 3
          */
+
+// This can be used to identify the pictograph and this loop will run until it is found and it'll store the mark
 
         do {
 
