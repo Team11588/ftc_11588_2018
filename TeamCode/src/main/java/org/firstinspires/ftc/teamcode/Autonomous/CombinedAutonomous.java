@@ -71,12 +71,15 @@ public class CombinedAutonomous extends LinearOpModeCamera{
     //**************************************************************************************************
 
     //??????????????????????????????????????????????????????????????????????????????????????????????????
+
     String filePath = "Pictures";
     String imageName = "TestImage.JPG";
     private ElapsedTime runtime = new ElapsedTime();
+
     //??????????????????????????????????????????????????????????????????????????????????????????????????
+
     @Override
-    public void runOpMode() {
+    public void runOpMode() throws InterruptedException {
 
         robot.init(hardwareMap);
 
@@ -98,12 +101,15 @@ public class CombinedAutonomous extends LinearOpModeCamera{
         imu.initialize(parameters);
 
         //----------------------------------------------------------------------------------------------
+
         //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
         startCamera();
         telemetry.addData(String.valueOf(width), height);
         telemetry.update();
 
         //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
         //**********************************************************************************************
 
 
@@ -125,10 +131,31 @@ public class CombinedAutonomous extends LinearOpModeCamera{
         VuforiaTrackable relicTemplate = relicTrackables.get(0);
         relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
 
-        waitForStart();
+       //**********************************************************************************************
 
+        waitForStart();
 // The init process has finished by here
 
+        //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+                if (isCameraAvailable()) {
+
+            Bitmap rgbImage = convertYuvImageToRgb(yuvImage, width, height, 0);
+            stopCamera();
+            File sd = Environment.getExternalStorageDirectory();
+            File image = new File(sd + "/" + filePath, imageName);
+            try {
+                OutputStream outStream = new FileOutputStream(image);
+                //rgbImage.compress(Bitmap.CompressFormat.JPEG, 0, outStream);
+                yuvImage.compressToJpeg(new Rect(0, 0, width, height), 0, outStream);
+                outStream.flush();
+                outStream.close();
+            } catch (Exception e) {
+                telemetry.addData("NEED TO FIX", e.getMessage());
+            }
+        }
+        //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+        //**********************************************************************************************
         relicTrackables.activate();
 
 
@@ -162,37 +189,23 @@ public class CombinedAutonomous extends LinearOpModeCamera{
                 telemetry.update();
             }
         }while(mark == 0);
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-        if (isCameraAvailable()) {
+        //**********************************************************************************************
 
-            Bitmap rgbImage = convertYuvImageToRgb(yuvImage, width, height, 0);
-            stopCamera();
-            File sd = Environment.getExternalStorageDirectory();
-            File image = new File(sd + "/" + filePath, imageName);
-            try {
-                OutputStream outStream = new FileOutputStream(image);
-                //rgbImage.compress(Bitmap.CompressFormat.JPEG, 0, outStream);
-                yuvImage.compressToJpeg(new Rect(0, 0, width, height), 0, outStream);
-                outStream.flush();
-                outStream.close();
-            } catch (Exception e) {
-                telemetry.addData("NEED TO FIX", e.getMessage());
-            }
-        }
-        //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-        telemetry.addLine("Hi");
+        //??????????????????????????????????????????????????????????????????????????????????????????????
 
         File sd = Environment.getExternalStorageDirectory();
+
         if (sd == null){
             telemetry.addLine("Open External Storage Failed");
         }
+
         File image = new File(sd+"/"+filePath, imageName);
+
         if (image == null) {
             telemetry.addLine("Open Image File Failed");
         }
         else {
             telemetry.addLine("Open Image Successful");
-
         }
         telemetry.addData("Image Name", "%s",image.getAbsolutePath());
 
@@ -232,25 +245,7 @@ public class CombinedAutonomous extends LinearOpModeCamera{
 
                 if(((180<hue)&&(hue<=300)))
                     LeftBlue = LeftBlue + 1;
-
-
-                /*telemetry.addData("RGB =", "R = %d G = %d B = %d", red, green, blue);
-                telemetry.addData("Hue = ", hue);
-                telemetry.addData("Red count", "%d", LeftRed);
-                telemetry.addData("Blue count", "%d", LeftBlue);
-*/
             }
-            /*if ((LeftRed == RightRed)||(LeftBlue==RightBlue)){
-                telemetry.addLine("the balls are too allusive");
-            }
-            else if((LeftRed<RightRed) && (LeftBlue>RightBlue)){
-                telemetry.addLine("BLUE is on the LEFT side and RED is on the RIGHT side");
-            }
-            else if((LeftRed>RightRed) && (LeftBlue<RightBlue)){
-                telemetry.addLine("RED is on the LEFT side and BLUE is on the RIGHT side");
-            }
-            else
-                telemetry.addLine("ERROR 404: logic not found");*/
         }
 
         Bitmap mutableBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
@@ -266,14 +261,16 @@ public class CombinedAutonomous extends LinearOpModeCamera{
 
         saveBitmap("previewImage.png",mutableBitmap);
 
-
-
-
+        if (LeftRed > LeftBlue){
+            robot.jewelKnockDevice.setPosition(0);
+            drive(.5,.5,.5,.5);
+            wait(1000);
+            drive(0,0,0,0);
+        }
+        //??????????????????????????????????????????????????????????????????????????????????????????????????
     }
 
 
-
-        //**********************************************************************************************
         public static double[] RGBtoHSV(double r, double g, double b){
 
             double h, s, v;
@@ -315,24 +312,34 @@ public class CombinedAutonomous extends LinearOpModeCamera{
             return new double[]{h,/*s,*/v};
         }
 
-    public static void saveBitmap(String filename, Bitmap bitmap) {
-        String filePath =
-                Environment.getExternalStorageDirectory().getAbsolutePath()+"/Pictures";
+        public static void saveBitmap(String filename, Bitmap bitmap) {
 
-        FileOutputStream fileOutputStream = null;
-        try {
-            fileOutputStream = new FileOutputStream(filePath + "/" + filename);
-            bitmap.compress( Bitmap.CompressFormat.PNG, 100, fileOutputStream);
-            fileOutputStream.flush();
-            fileOutputStream.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+            String filePath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/Pictures";
+            FileOutputStream fileOutputStream = null;
+
+            try {
+                fileOutputStream = new FileOutputStream(filePath + "/" + filename);
+                bitmap.compress( Bitmap.CompressFormat.PNG, 100, fileOutputStream);
+                fileOutputStream.flush();
+                fileOutputStream.close();
+            }
+
+            catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            catch (IOException e) {
+                e.printStackTrace();
         }
 
 
     }
+
+        public  void drive (double fL,double fR, double bL, double bR){
+            robot.fLeft.setPower(fL);
+            robot.fRight.setPower(fR);
+            robot.bLeft.setPower(bL);
+            robot.bRight.setPower(bR);
+        }
 }
 
 
