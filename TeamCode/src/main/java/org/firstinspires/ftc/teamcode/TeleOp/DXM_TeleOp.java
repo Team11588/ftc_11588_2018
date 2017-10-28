@@ -44,7 +44,7 @@ public class DXM_TeleOp extends OpMode {
 
     HardwareDxm robot           = new HardwareDxm();
 
-    final static double SERVO_SHIFT = 0.05;
+    final static double SERVO_SHIFT = 0.01;
 
     public void init() {
         robot.init(hardwareMap);
@@ -57,6 +57,7 @@ public class DXM_TeleOp extends OpMode {
         double rightX= Math.abs(gamepad1.right_stick_x) > 0.3? gamepad1.right_stick_x: 0;
         double triggerR2 = gamepad2.right_trigger;
         double triggerL2 = gamepad2.left_trigger;
+        boolean bumperL2 = gamepad2.left_bumper;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         double[] wheelPower = wheelPower(leftX, leftY, rightX);
@@ -77,14 +78,21 @@ public class DXM_TeleOp extends OpMode {
         if (triggerL2 > 0.5)
         {
             double position = robot.claw.getPosition();
-            double newPosition = Range.clip( position + SERVO_SHIFT, Servo.MIN_POSITION, Servo.MAX_POSITION);
+            double newPosition = Range.clip( position + SERVO_SHIFT, Servo.MIN_POSITION, 0.25);
+            robot.claw.setPosition(newPosition);
+            telemetry.addData("position" , position);
+        }
+        else if (bumperL2)
+        {
+            double position = robot.claw.getPosition();
+            double newPosition = Range.clip( position + SERVO_SHIFT, Servo.MIN_POSITION, 0.35);
             robot.claw.setPosition(newPosition);
             telemetry.addData("position" , position);
         }
         else if (triggerR2 > .5)
         {
             double position = robot.claw.getPosition();
-            double newPosition = Range.clip( position - SERVO_SHIFT, Servo.MIN_POSITION, Servo.MAX_POSITION);
+            double newPosition = Range.clip( position - SERVO_SHIFT, Servo.MIN_POSITION, 0.25);
             robot.claw.setPosition(newPosition);
             telemetry.addData("position" , position);
         }
