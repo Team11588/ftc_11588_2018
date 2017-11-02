@@ -283,15 +283,9 @@ public class CombinedAutonomous extends LinearOpModeCamera{
         }
         while(mark == 0);
 
-        telemetry.addData("Before" ,"" );
-        telemetry.update();
-
-        relicTrackables.deactivate();
-
-        telemetry.addData("After" ,"" );
-        telemetry.update();
         //**********************************************************************************************
 
+        while(opModeIsActive());    
     }
 
 
