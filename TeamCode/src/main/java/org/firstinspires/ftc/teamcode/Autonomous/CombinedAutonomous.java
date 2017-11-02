@@ -76,13 +76,15 @@ public class CombinedAutonomous extends LinearOpModeCamera{
     //??????????????????????????????????????????????????????????????????????????????????????????????????
 
     String filePath = "Pictures";
-    String imageName = "TestImage.JPG";
+    String imageName = "TestImage.JPEG";
     private ElapsedTime runtime = new ElapsedTime();
 
     //??????????????????????????????????????????????????????????????????????????????????????????????????
 
     @Override
     public void runOpMode() throws InterruptedException {
+
+
 
         robot.init(hardwareMap);
 
@@ -107,90 +109,46 @@ public class CombinedAutonomous extends LinearOpModeCamera{
 
         //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
-        startCamera();
-        telemetry.addData(String.valueOf(width), height);
-        telemetry.update();
+
 
         //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+        telemetry.addData("ready" , "");
+        telemetry.update();
 
-        //**********************************************************************************************
-
-        OpenGLMatrix lastLocation = null;
-
-
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        VuforiaLocalizer.Parameters parametersv = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
-
-
-        parametersv.vuforiaLicenseKey = "AW/DxXD/////AAAAGYJtW/yP3kG0pVGawWtQZngsJNFQ8kp1Md8CaP2NP72Q0on4mGKPLt/lsSnMnUkCFNymrXXOjs0eHMDTvijWRIixEe/sJ4KHEVf1fhf0kqUB29+dZEvh4qeI7tlTU6pIy/MLW0a/t9cpqMksBRFqXIrhtR/vw7ZnErMTZrJNNXqmbecBnRhDfLncklzgH2wAkGmQDn0JSP7scEczgrggcmerXy3v6flLDh1/Tt2QZ8l/bTcEJtthE82i8/8p0NuDDhUyatFK1sZSSebykRz5A4PDUkw+jMTV28iUytrr1QLiQBwaTX7ikl71a1XkBHacnxrqyY07x9QfabtJf/PYNFiU17m/l9DB6Io7DPnnIaFP";
-
-
-        parametersv.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
-        this.vuforia = ClassFactory.createVuforiaLocalizer(parametersv);
-
-
-        VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
-        VuforiaTrackable relicTemplate = relicTrackables.get(0);
-        relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
-
-       //**********************************************************************************************
 
         waitForStart();
 // The init process has finished by here
 
-        //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-                if (isCameraAvailable()) {
 
+
+        //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+        telemetry.addData(String.valueOf(width), height);
+        telemetry.update();
+
+
+        if (isCameraAvailable()) {
+            startCamera();
+            while(yuvImage == null);
             Bitmap rgbImage = convertYuvImageToRgb(yuvImage, width, height, 0);
             stopCamera();
             File sd = Environment.getExternalStorageDirectory();
             File image = new File(sd + "/" + filePath, imageName);
             try {
                 OutputStream outStream = new FileOutputStream(image);
-                //rgbImage.compress(Bitmap.CompressFormat.JPEG, 0, outStream);
-                yuvImage.compressToJpeg(new Rect(0, 0, width, height), 0, outStream);
+                rgbImage.compress(Bitmap.CompressFormat.JPEG, 0, outStream);
+                yuvImage.compressToJpeg(new Rect(0, 0, width, height), 100, outStream);
                 outStream.flush();
                 outStream.close();
             } catch (Exception e) {
                 telemetry.addData("NEED TO FIX", e.getMessage());
             }
         }
+
         //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
-        //**********************************************************************************************
-        relicTrackables.activate();
 
 
-        int mark = 0;
-        /*
-        Right - 1
-        Center - 2
-        Left - 3
-         */
-
-// This can be used to identify the pictograph and this loop will run until it is found and it'll store the mark
-
-        do {
-
-            RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
-            if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
-
-                if (vuMark == RelicRecoveryVuMark.RIGHT) {
-                    mark = 1;
-                    telemetry.addData("RIGHT","");
-                }
-                else if (vuMark == RelicRecoveryVuMark.CENTER) {
-                    telemetry.addData("CENTER", "");
-                    mark = 2;
-                }
-                else if (vuMark == RelicRecoveryVuMark.LEFT) {
-                    telemetry.addData("Left", "");
-                    mark = 3;
-                }
-
-                telemetry.update();
-            }
-        }while(mark == 0);
         //**********************************************************************************************
 
         //??????????????????????????????????????????????????????????????????????????????????????????????
@@ -266,10 +224,74 @@ public class CombinedAutonomous extends LinearOpModeCamera{
         if (LeftRed > LeftBlue){
             robot.jewelKnockDevice.setPosition(0);
             drive(.5,.5,.5,.5);
-            wait(1000);
             drive(0,0,0,0);
         }
         //??????????????????????????????????????????????????????????????????????????????????????????????????
+
+        //**********************************************************************************************
+
+
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        VuforiaLocalizer.Parameters parametersv = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
+
+
+        parametersv.vuforiaLicenseKey = "AW/DxXD/////AAAAGYJtW/yP3kG0pVGawWtQZngsJNFQ8kp1Md8CaP2NP72Q0on4mGKPLt/lsSnMnUkCFNymrXXOjs0eHMDTvijWRIixEe/sJ4KHEVf1fhf0kqUB29+dZEvh4qeI7tlTU6pIy/MLW0a/t9cpqMksBRFqXIrhtR/vw7ZnErMTZrJNNXqmbecBnRhDfLncklzgH2wAkGmQDn0JSP7scEczgrggcmerXy3v6flLDh1/Tt2QZ8l/bTcEJtthE82i8/8p0NuDDhUyatFK1sZSSebykRz5A4PDUkw+jMTV28iUytrr1QLiQBwaTX7ikl71a1XkBHacnxrqyY07x9QfabtJf/PYNFiU17m/l9DB6Io7DPnnIaFP";
+
+
+        parametersv.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
+        this.vuforia = ClassFactory.createVuforiaLocalizer(parametersv);
+
+
+        VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
+        VuforiaTrackable relicTemplate = relicTrackables.get(0);
+        relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
+
+        //**********************************************************************************************
+
+        relicTrackables.activate();
+
+
+        int mark = 0;
+        /*
+        Right - 1
+        Center - 2
+        Left - 3
+         */
+
+// This can be used to identify the pictograph and this loop will run until it is found and it'll store the mark
+
+        do {
+
+            RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+            if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
+
+                if (vuMark == RelicRecoveryVuMark.RIGHT) {
+                    mark = 1;
+                    telemetry.addData("RIGHT","");
+                }
+                else if (vuMark == RelicRecoveryVuMark.CENTER) {
+                    telemetry.addData("CENTER", "");
+                    mark = 2;
+                }
+                else if (vuMark == RelicRecoveryVuMark.LEFT) {
+                    telemetry.addData("Left", "");
+                    mark = 3;
+                }
+
+                telemetry.update();
+            }
+        }
+        while(mark == 0);
+
+        telemetry.addData("Before" ,"" );
+        telemetry.update();
+
+        relicTrackables.deactivate();
+
+        telemetry.addData("After" ,"" );
+        telemetry.update();
+        //**********************************************************************************************
+
     }
 
 

@@ -33,7 +33,7 @@ public class JewelAuto extends LinearOpModeCamera {
             File image = new File(sd+"/"+filePath, imageName);
             try {
                 OutputStream outStream = new FileOutputStream(image);
-                //rgbImage.compress(Bitmap.CompressFormat.JPEG, 0, outStream);
+                rgbImage.compress(Bitmap.CompressFormat.JPEG, 0, outStream);
                 yuvImage.compressToJpeg(new Rect(0, 0, width, height), 0, outStream);
                 outStream.flush();
                 outStream.close();
