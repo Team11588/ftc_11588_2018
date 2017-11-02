@@ -109,6 +109,7 @@ import org.firstinspires.ftc.robotcore.internal.ui.ThemedActivity;
 import org.firstinspires.ftc.robotcore.internal.ui.UILocation;
 import org.firstinspires.ftc.robotcore.internal.webserver.RobotControllerWebInfo;
 import org.firstinspires.ftc.robotcore.internal.webserver.WebServer;
+import org.firstinspires.ftc.teamcode.Autonomous.JewelView;
 import org.firstinspires.inspection.RcInspectionActivity;
 
 import java.util.Queue;
@@ -174,7 +175,7 @@ public class FtcRobotControllerActivity extends Activity
           context.preview = new CameraPreview(FtcRobotControllerActivity.this, camera, previewCallback);
           FrameLayout previewLayout = (FrameLayout) findViewById(R.id.previewLayout);
           previewLayout.addView(context.preview);
-          previewLayout.addView(new JewelView());
+          previewLayout.addView(new JewelView(FtcRobotControllerActivity.this));
         }
       });
     }

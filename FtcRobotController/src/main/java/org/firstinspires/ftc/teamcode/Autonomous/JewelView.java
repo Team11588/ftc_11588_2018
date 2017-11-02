@@ -13,7 +13,7 @@ import android.graphics.Color;
 public class JewelView extends View {
     public JewelView(Context context) {
         super(context);
-    }
+        }
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -23,10 +23,8 @@ public class JewelView extends View {
         double yPercent = (960)/100.0;
 
         Paint p = new Paint();
-        p.setColor(Color.BLACK);
+        p.setColor(Color.argb(100,0,0,0));
         canvas.drawRect((int) (20*xPercent),(int) (60*yPercent), (int) (30*xPercent),(int) (80*yPercent), p);
-
-
 
     }
 }

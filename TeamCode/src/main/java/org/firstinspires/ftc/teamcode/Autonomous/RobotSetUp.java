@@ -32,7 +32,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 /**
- * Created by kearneyg20428 on 10/23/2017.
+ * Created by piscullin18641 on 10/23/2017.
  */
 
 
@@ -43,7 +43,7 @@ import java.io.OutputStream;
  */
 
 @Autonomous (name = "RobotSetUp")
-public class RobotSetUp extends LinearOpModeCamera{
+public class RobotSetUp extends LinearOpModeCamera {
 
     VuforiaLocalizer vuforia;
 
@@ -54,7 +54,7 @@ public class RobotSetUp extends LinearOpModeCamera{
     public void runOpMode() throws InterruptedException {
 
 
-        startCamera();
+        //startCamera();
         telemetry.addData(String.valueOf(width), height);
         telemetry.update();
 
@@ -62,48 +62,32 @@ public class RobotSetUp extends LinearOpModeCamera{
         OpenGLMatrix lastLocation = null;
 
 
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        VuforiaLocalizer.Parameters parametersv = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
+      int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+      VuforiaLocalizer.Parameters parametersv = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
 
-        parametersv.vuforiaLicenseKey = "AW/DxXD/////AAAAGYJtW/yP3kG0pVGawWtQZngsJNFQ8kp1Md8CaP2NP72Q0on4mGKPLt/lsSnMnUkCFNymrXXOjs0eHMDTvijWRIixEe/sJ4KHEVf1fhf0kqUB29+dZEvh4qeI7tlTU6pIy/MLW0a/t9cpqMksBRFqXIrhtR/vw7ZnErMTZrJNNXqmbecBnRhDfLncklzgH2wAkGmQDn0JSP7scEczgrggcmerXy3v6flLDh1/Tt2QZ8l/bTcEJtthE82i8/8p0NuDDhUyatFK1sZSSebykRz5A4PDUkw+jMTV28iUytrr1QLiQBwaTX7ikl71a1XkBHacnxrqyY07x9QfabtJf/PYNFiU17m/l9DB6Io7DPnnIaFP";
+      parametersv.vuforiaLicenseKey = "AW/DxXD/////AAAAGYJtW/yP3kG0pVGawWtQZngsJNFQ8kp1Md8CaP2NP72Q0on4mGKPLt/lsSnMnUkCFNymrXXOjs0eHMDTvijWRIixEe/sJ4KHEVf1fhf0kqUB29+dZEvh4qeI7tlTU6pIy/MLW0a/t9cpqMksBRFqXIrhtR/vw7ZnErMTZrJNNXqmbecBnRhDfLncklzgH2wAkGmQDn0JSP7scEczgrggcmerXy3v6flLDh1/Tt2QZ8l/bTcEJtthE82i8/8p0NuDDhUyatFK1sZSSebykRz5A4PDUkw+jMTV28iUytrr1QLiQBwaTX7ikl71a1XkBHacnxrqyY07x9QfabtJf/PYNFiU17m/l9DB6Io7DPnnIaFP";
 
 
-        parametersv.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
-        this.vuforia = ClassFactory.createVuforiaLocalizer(parametersv);
+      parametersv.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
+      this.vuforia = ClassFactory.createVuforiaLocalizer(parametersv);
 
 
         VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
         VuforiaTrackable relicTemplate = relicTrackables.get(0);
         relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
 
-       //**********************************************************************************************
+        //**********************************************************************************************
 
         waitForStart();
 // The init process has finished by here
-
+// stopCamera();
         //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-                if (isCameraAvailable()) {
 
-            Bitmap rgbImage = convertYuvImageToRgb(yuvImage, width, height, 0);
-            stopCamera();
-            File sd = Environment.getExternalStorageDirectory();
-            File image = new File(sd + "/" + filePath, imageName);
-            try {
-                OutputStream outStream = new FileOutputStream(image);
-                //rgbImage.compress(Bitmap.CompressFormat.JPEG, 0, outStream);
-                yuvImage.compressToJpeg(new Rect(0, 0, width, height), 0, outStream);
-                outStream.flush();
-                outStream.close();
-            } catch (Exception e) {
-                telemetry.addData("NEED TO FIX", e.getMessage());
-            }
-        }
-
-      //  relicTrackables.activate();
+        relicTrackables.activate();
 
 
-      //  int mark = 0;
+       int mark = 0;
         /*
         Right - 1
         Center - 2
@@ -112,42 +96,30 @@ public class RobotSetUp extends LinearOpModeCamera{
 
 // This can be used to identify the pictograph and this loop will run until it is found and it'll store the mark
 
-       /* do {
+      while (opModeIsActive()) {
 
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
             if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
 
                 if (vuMark == RelicRecoveryVuMark.RIGHT) {
-                    mark = 1;
+
                     telemetry.addData("RIGHT","");
                 }
                 else if (vuMark == RelicRecoveryVuMark.CENTER) {
                     telemetry.addData("CENTER", "");
-                    mark = 2;
+
                 }
                 else if (vuMark == RelicRecoveryVuMark.LEFT) {
                     telemetry.addData("Left", "");
-                    mark = 3;
+
                 }
 
                 telemetry.update();
             }
-        }while(mark == 0);*/
+        }
 
-        //double xPercent = (bitmap.getWidth())/100.0;
-        //double yPercent = (bitmap.getHeight())/100.0;
+        while (opModeIsActive());
+       // stopCamera();
 
-       /* telemetry.addData("Start For loop", "");
-        for(int x=20; x<30; x++){ // replace 200 with x pixel size value
-            for(int y=60;y<80;y++){
-            }
-        }*/
-
-        /*Bitmap mutableBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
-        Canvas c = new Canvas(mutableBitmap);
-        Paint p = new Paint();
-        p.setColor(Color.BLACK);
-        c.drawRect((int) (20*xPercent),(int) (60*yPercent), (int) (30*xPercent),(int) (80*yPercent), p);
-
-     */
     }
+}
