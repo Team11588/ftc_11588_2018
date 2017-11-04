@@ -70,16 +70,28 @@ public class EncoderTest extends LinearOpMode {
         robot.fRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
 
+
+
+        waitForStart();
+
+
+        robot.bLeft.setTargetPosition(1140);
+        robot.bRight.setTargetPosition(1140);
+        robot.fLeft.setTargetPosition(1140);
+        robot.fRight.setTargetPosition(1140);
+
         robot.bLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.bRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.fLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.fRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        waitForStart();
+        robot.bLeft.setPower(.5);
+        robot.bRight.setPower(.5);
+        robot.fLeft.setPower(.5);
+        robot.fRight.setPower(.5);
 
-      position(1140,1140,1140,1140);
-        power(.5, .5, .5, .5);
 
+while (opModeIsActive());
 
     }
 
