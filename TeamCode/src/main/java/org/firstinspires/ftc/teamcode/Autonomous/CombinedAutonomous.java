@@ -63,6 +63,10 @@ import java.util.Locale;
 
 @Autonomous (name = "Combined Autonomous")
 public class CombinedAutonomous extends LinearOpModeCamera{
+public static final int SAMPLE_LEFT_X_PCT=20;
+public static final int SAMPLE_RIGHT_X_PCT=30;
+public static final int SAMPLE_TOP_Y_PCT=60;
+public static final int SAMPLE_BOT_Y_PCT=80;
 
     HardwareDxm robot = new HardwareDxm();
     HardwareMap hwMap = null;
@@ -132,17 +136,7 @@ public class CombinedAutonomous extends LinearOpModeCamera{
             while(yuvImage == null);
             Bitmap rgbImage = convertYuvImageToRgb(yuvImage, width, height, 0);
             stopCamera();
-            File sd = Environment.getExternalStorageDirectory();
-            File image = new File(sd + "/" + filePath, imageName);
-            try {
-                OutputStream outStream = new FileOutputStream(image);
-                rgbImage.compress(Bitmap.CompressFormat.JPEG, 0, outStream);
-                yuvImage.compressToJpeg(new Rect(0, 0, width, height), 100, outStream);
-                outStream.flush();
-                outStream.close();
-            } catch (Exception e) {
-                telemetry.addData("NEED TO FIX", e.getMessage());
-            }
+            saveBitmap(imageName,rgbImage);
         }
 
         //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
@@ -179,17 +173,15 @@ public class CombinedAutonomous extends LinearOpModeCamera{
 
         }
         int LeftRed = 0;
-        int RightRed = 0;
         int LeftBlue = 0;
-        int RightBlue = 0;
         int count = 0;
 
         double xPercent = (bitmap.getWidth())/100.0;
         double yPercent = (bitmap.getHeight())/100.0;
 
         telemetry.addData("Start For loop", "");
-        for(int x=20; x<30; x++){ // replace 200 with x pixel size value
-            for(int y=60;y<80;y++){
+        for(int x=SAMPLE_LEFT_X_PCT; x<SAMPLE_RIGHT_X_PCT; x++){ // replace 200 with x pixel size value
+            for(int y=SAMPLE_TOP_Y_PCT;y<SAMPLE_BOT_Y_PCT;y++){
                 int color = bitmap.getPixel((int) (x*xPercent),(int) (y*yPercent));
                 //telemetry.addData("Color", "%d", color);
                 count++;
@@ -207,19 +199,13 @@ public class CombinedAutonomous extends LinearOpModeCamera{
                     LeftBlue = LeftBlue + 1;
             }
         }
+        drawSamplingBox(bitmap);
 
-        Bitmap mutableBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
-        Canvas c = new Canvas(mutableBitmap);
-        Paint p = new Paint();
-        p.setColor(Color.BLACK);
-        c.drawRect((int) (20*xPercent),(int) (60*yPercent), (int) (30*xPercent),(int) (80*yPercent), p);
 
         telemetry.addData("Red count", "%d", LeftRed);
         telemetry.addData("Blue count", "%d", LeftBlue);
         telemetry.addData("Count", "%d", count);
         telemetry.update();
-
-        saveBitmap("previewImage.png",mutableBitmap);
 
         if (LeftRed > LeftBlue){
             robot.jewelKnockDevice.setPosition(0);
@@ -357,6 +343,16 @@ public class CombinedAutonomous extends LinearOpModeCamera{
             robot.fRight.setPower(fR);
             robot.bLeft.setPower(bL);
             robot.bRight.setPower(bR);
+        }
+        public void drawSamplingBox(Bitmap bitmap){
+            double xPercent = (bitmap.getWidth())/100.0;
+            double yPercent = (bitmap.getHeight())/100.0;
+            Bitmap mutableBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+            Canvas c = new Canvas(mutableBitmap);
+            Paint p = new Paint();
+            p.setARGB(100,128,128,128);
+            c.drawRect((int) (SAMPLE_LEFT_X_PCT*xPercent),(int) (SAMPLE_TOP_Y_PCT*yPercent), (int) (SAMPLE_RIGHT_X_PCT*xPercent),(int) (SAMPLE_BOT_Y_PCT*yPercent), p);
+            saveBitmap("previewImage.png",mutableBitmap);
         }
 }
 

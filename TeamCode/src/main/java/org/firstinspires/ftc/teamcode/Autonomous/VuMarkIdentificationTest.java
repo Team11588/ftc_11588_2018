@@ -87,11 +87,11 @@ public class VuMarkIdentificationTest extends LinearOpMode {
          */
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
-
-        // OR...  Do Not Activate the Camera Monitor View, to save power
         // VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
 
-        /*
+        /*cameraMonitorViewId);
+
+        // OR...  Do Not Activate the Camera Monitor View, to save power
          * IMPORTANT: You need to obtain your own license key to use Vuforia. The string below with which
          * 'parameters.vuforiaLicenseKey' is initialized is for illustration only, and will not function.
          * A Vuforia 'Development' license key, can be obtained free of charge from the Vuforia developer
@@ -108,7 +108,7 @@ public class VuMarkIdentificationTest extends LinearOpMode {
         /*
          * We also indicate which camera on the RC that we wish to use.
          * Here we chose the back (HiRes) camera (for greater range), but
-         * for a competition robot, the front camera might be more convenient.
+         * for a competition robot,2388 the front camera might be more convenient.
          */
         parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
         this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
@@ -179,4 +179,8 @@ public class VuMarkIdentificationTest extends LinearOpMode {
     String format(OpenGLMatrix transformationMatrix) {
         return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
     }
+
+    public void thisIsThing(){
+    }
+
 }
