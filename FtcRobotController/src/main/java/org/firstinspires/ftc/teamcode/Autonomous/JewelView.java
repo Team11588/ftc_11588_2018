@@ -25,7 +25,7 @@ public class JewelView extends View {
         Paint p = new Paint();
         //scan box
         p.setColor(Color.argb(100,0,0,0));
-        canvas.drawRect((int) (20*xPercent),(int) (60*yPercent), (int) (30*xPercent),(int) (80*yPercent), p);
+        canvas.drawRect((int) (30*xPercent),(int) (30*yPercent), (int) (52.5*xPercent),(int) (45*yPercent), p);
 
         //top
         p.setColor(Color.argb(200,255,0,0));
