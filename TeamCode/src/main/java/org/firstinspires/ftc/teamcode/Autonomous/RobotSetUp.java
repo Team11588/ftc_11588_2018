@@ -59,6 +59,14 @@ public class RobotSetUp extends LinearOpModeCamera {
         telemetry.update();
 
 
+        //**********************************************************************************************
+
+        waitForStart();
+// The init process has finished by here
+        stopCamera();
+        //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+
         OpenGLMatrix lastLocation = null;
 
 
@@ -77,13 +85,6 @@ public class RobotSetUp extends LinearOpModeCamera {
         VuforiaTrackable relicTemplate = relicTrackables.get(0);
         relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
 
-        //**********************************************************************************************
-
-        waitForStart();
-// The init process has finished by here
-        stopCamera();
-        //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-
         relicTrackables.activate();
 
 
@@ -97,7 +98,6 @@ public class RobotSetUp extends LinearOpModeCamera {
 // This can be used to identify the pictograph and this loop will run until it is found and it'll store the mark
 
       while (opModeIsActive()) {
-
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
             if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
 
@@ -118,7 +118,7 @@ public class RobotSetUp extends LinearOpModeCamera {
             }
         }
 
-        while (opModeIsActive());
+        //while (opModeIsActive());
        // stopCamera();
 
     }
