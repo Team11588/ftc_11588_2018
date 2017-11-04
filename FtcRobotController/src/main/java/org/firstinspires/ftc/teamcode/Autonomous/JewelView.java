@@ -19,8 +19,8 @@ public class JewelView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        double xPercent = (1280)/100.0;
-        double yPercent = (960)/100.0;
+        double xPercent = (this.getWidth())/100.0;
+        double yPercent = (this.getHeight())/100.0;
 
         Paint p = new Paint();
         //scan box
