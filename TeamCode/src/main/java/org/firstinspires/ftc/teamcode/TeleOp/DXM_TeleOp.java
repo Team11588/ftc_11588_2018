@@ -74,7 +74,15 @@ public class DXM_TeleOp extends OpMode {
         telemetry.addData("back right motor: ",wheelPower[3]);
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+        if(gamepad1.a){
+            robot.jewelKnockDevice.setPosition(1);
+        }
+        else if (gamepad1.b){
+            robot.jewelKnockDevice.setPosition(.25);
+        }
+
 //**************************************************************************************************
+
         if (triggerL2 > 0.5)
         {
             double position = robot.claw.getPosition();
