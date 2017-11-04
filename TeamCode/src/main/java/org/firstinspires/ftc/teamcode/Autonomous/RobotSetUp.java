@@ -54,7 +54,7 @@ public class RobotSetUp extends LinearOpModeCamera {
     public void runOpMode() throws InterruptedException {
 
 
-        //startCamera();
+        startCamera();
         telemetry.addData(String.valueOf(width), height);
         telemetry.update();
 
@@ -81,7 +81,7 @@ public class RobotSetUp extends LinearOpModeCamera {
 
         waitForStart();
 // The init process has finished by here
-// stopCamera();
+        stopCamera();
         //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
         relicTrackables.activate();
