@@ -62,7 +62,27 @@ public class EncoderTest extends LinearOpMode {
 
     @Override
     public void runOpMode() {
+
+        BNO055IMU imu;
+
+        Orientation angles;
+        Acceleration gravity;
+
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
+        parameters.loggingEnabled = true;
+        parameters.loggingTag = "IMU";
+        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
+
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
+        imu.initialize(parameters);
+
+        imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
+
         robot.init(hardwareMap);
+
 
         robot.bLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.bRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -70,29 +90,38 @@ public class EncoderTest extends LinearOpMode {
         robot.fRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
 
-
+        robot.bLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.bRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.fLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.fRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         waitForStart();
 
+        robot.jewelKnockDevice.setPosition(.20);
 
-        robot.bLeft.setTargetPosition(1140);
-        robot.bRight.setTargetPosition(1140);
-        robot.fLeft.setTargetPosition(1140);
-        robot.fRight.setTargetPosition(1140);
+        while (opModeIsActive()) {
 
-        robot.bLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.bRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.fLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.fRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
-        robot.bLeft.setPower(.5);
-        robot.bRight.setPower(.5);
-        robot.fLeft.setPower(.5);
-        robot.fRight.setPower(.5);
+            telemetry.addData("Angle", angles.firstAngle);
+            telemetry.update();
 
 
-while (opModeIsActive());
+            robot.bLeft.setTargetPosition(8140);
+            //robot.bRight.setTargetPosition(8140);
+            //robot.fLeft.setTargetPosition(8140);
+            //robot.fRight.setTargetPosition(-8140);
 
+            robot.bLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            //robot.bRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            //robot.fLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            //robot.fRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+
+            power(.5, .5, .5, .5);
+
+
+        }
     }
 
 
@@ -108,6 +137,9 @@ while (opModeIsActive());
         robot.bRight.setPower(bR);
         robot.fLeft.setPower(fL);
         robot.fRight.setPower(fR);
+
+
+
     }
 
 }

@@ -43,7 +43,7 @@ with machanum wheels all 4 wheels need to be motorized
         claw = hwMap.servo.get("claw");
         jewelKnockDevice = hwMap.servo.get("jewelKnockDevice");
         claw.setPosition(0);
-        jewelKnockDevice.setPosition(90);
+        jewelKnockDevice.setPosition(1);
 
         fLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         fRight.setDirection(DcMotorSimple.Direction.FORWARD);
