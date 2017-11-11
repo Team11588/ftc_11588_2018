@@ -173,9 +173,10 @@ public class FtcRobotControllerActivity extends Activity
         @Override
         public void run() {
           context.preview = new CameraPreview(FtcRobotControllerActivity.this, camera, previewCallback);
+          context.jewel = new JewelView(FtcRobotControllerActivity.this);
           FrameLayout previewLayout = (FrameLayout) findViewById(R.id.previewLayout);
           previewLayout.addView(context.preview,0);
-          previewLayout.addView(new JewelView(FtcRobotControllerActivity.this));
+          previewLayout.addView(context.jewel);
         }
       });
     }

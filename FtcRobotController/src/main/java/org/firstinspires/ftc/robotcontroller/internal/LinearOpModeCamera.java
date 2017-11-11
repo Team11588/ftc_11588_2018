@@ -10,6 +10,8 @@ import android.util.Log;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.teamcode.Autonomous.JewelView;
+
 /**
  * TeleOp Mode
  * <p/>
@@ -19,6 +21,7 @@ public class LinearOpModeCamera extends LinearOpMode {
 
   public Camera camera;
   public CameraPreview preview;
+  public JewelView jewel;
 
   public int width;
   public int height;

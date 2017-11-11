@@ -11,6 +11,12 @@ import android.graphics.Color;
  */
 
 public class JewelView extends View {
+
+    public int SAMPLE_LEFT_X_PCT = 0;
+    public int SAMPLE_RIGHT_X_PCT = 20;
+    public int SAMPLE_TOP_Y_PCT = 0;
+    public int SAMPLE_BOT_Y_PCT = 20;
+
     public JewelView(Context context) {
         super(context);
         }
@@ -29,7 +35,7 @@ public class JewelView extends View {
         int y = (int)(50*yPercent);
 
         //canvas.drawRect((int) (x-(11.25*xPercent)),(int) (y-(7.5*yPercent)), (int) (x+(11.25*xPercent)),(int) (y+(7.5*yPercent)), p);
-        canvas.drawRect((int) (30*xPercent),(int) (30*yPercent), (int) (50*xPercent),(int) (50*yPercent), p);
+        canvas.drawRect((int) (SAMPLE_LEFT_X_PCT*xPercent),(int) (SAMPLE_TOP_Y_PCT*yPercent), (int) (SAMPLE_RIGHT_X_PCT*xPercent),(int) (SAMPLE_BOT_Y_PCT*yPercent), p);
 
         //top
         p.setColor(Color.argb(200,255,0,0));

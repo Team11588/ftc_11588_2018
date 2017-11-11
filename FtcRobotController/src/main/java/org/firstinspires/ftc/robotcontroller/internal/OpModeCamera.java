@@ -11,6 +11,8 @@ import android.util.Log;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
+import org.firstinspires.ftc.teamcode.Autonomous.JewelView;
+
 import java.io.ByteArrayOutputStream;
 
 /**
@@ -22,6 +24,7 @@ public class OpModeCamera extends OpMode {
 
   public Camera camera;
   public CameraPreview preview;
+  public JewelView jewel;
 
   public int width;
   public int height;
@@ -199,7 +202,7 @@ public class OpModeCamera extends OpMode {
     // get image and rotate it so (0,0) is in the bottom left
     Bitmap tmpImage;
     Matrix matrix = new Matrix();
-    //matrix.postRotate(90); // to rotate the camera images so (0,0) is in the bottom left
+    matrix.postRotate(90); // to rotate the camera images so (0,0) is in the bottom left
     tmpImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length, opt);
     rgbImage=Bitmap.createBitmap(tmpImage , 0, 0, tmpImage.getWidth(), tmpImage.getHeight(), matrix, true);
 

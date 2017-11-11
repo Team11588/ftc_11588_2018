@@ -40,10 +40,7 @@ import java.io.IOException;
 
 @Autonomous(name = "Combined Autonomous Red")
 public class CombinedAutonomousRed extends LinearOpModeCamera {
-    public static final int SAMPLE_LEFT_X_PCT = 30;
-    public static final int SAMPLE_RIGHT_X_PCT = 50;
-    public static final int SAMPLE_TOP_Y_PCT = 30;
-    public static final int SAMPLE_BOT_Y_PCT = 50;
+
     public static final String TEAM_COLOR = "red";
     public   static final int ENCODER_RUN = 1140;
     HardwareDxm robot = new HardwareDxm();
@@ -149,7 +146,7 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
 
         //**********************************************************************************************
 
-
+/*
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parametersv = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
@@ -176,6 +173,7 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
         Center - 2
         Left - 3
          */
+/*
 
 // This can be used to identify the pictograph and this loop will run until it is found and it'll store the mark
 
@@ -199,7 +197,7 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
             }
         }
         while (mark == 0);
-
+*/
 
         if (isOurJewelonLeft(bitmap)) {
             toJewel();
@@ -361,7 +359,10 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
         Canvas c = new Canvas(mutableBitmap);
         Paint p = new Paint();
         p.setARGB(100, 0, 200, 0);
-        c.drawRect((int) (SAMPLE_LEFT_X_PCT * xPercent), (int) (SAMPLE_TOP_Y_PCT * yPercent), (int) (SAMPLE_RIGHT_X_PCT * xPercent), (int) (SAMPLE_BOT_Y_PCT * yPercent), p);
+        c.drawRect((int) (jewel.SAMPLE_LEFT_X_PCT * xPercent),
+                (int) (jewel.SAMPLE_TOP_Y_PCT * yPercent),
+                (int) (jewel.SAMPLE_RIGHT_X_PCT * xPercent),
+                (int) (jewel.SAMPLE_BOT_Y_PCT * yPercent), p);
         saveBitmap("previewImage.png", mutableBitmap);
     }
 
@@ -374,8 +375,8 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
         double yPercent = (bitmap.getHeight()) / 100.0;
 
         telemetry.addData("Start For loop", "");
-        for (int x = SAMPLE_LEFT_X_PCT; x < SAMPLE_RIGHT_X_PCT; x++) { // replace 200 with x pixel size value
-            for (int y = SAMPLE_TOP_Y_PCT; y < SAMPLE_BOT_Y_PCT; y++) {
+        for (int x = jewel.SAMPLE_LEFT_X_PCT; x < jewel.SAMPLE_RIGHT_X_PCT; x++) { // replace 200 with x pixel size value
+            for (int y = jewel.SAMPLE_TOP_Y_PCT; y < jewel.SAMPLE_BOT_Y_PCT; y++) {
                 int color = bitmap.getPixel((int) (x * xPercent), (int) (y * yPercent));
                 //telemetry.addData("Color", "%d", color);
                 count++;
