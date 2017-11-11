@@ -17,6 +17,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -35,37 +36,30 @@ import java.io.IOException;
  */
 
 
-/*PSA These distinguish the different processes
-------------------------IMU SENSOR-------------------------------------
-************************VUFORIA****************************************
-&&&&&&&&&&&&&&&&&&&&&&&&Picture Taking&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-????????????????????????Pixel Testing??????????????????????????????????
-~~~~~~~~~~~~~~~~~~~~~~~~Mechanum Driving~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- */
 
-@Autonomous(name = "Combined Autonomous")
-public class CombinedAutonomous extends LinearOpModeCamera {
-    public static final int SAMPLE_LEFT_X_PCT = 20;
-    public static final int SAMPLE_RIGHT_X_PCT = 30;
-    public static final int SAMPLE_TOP_Y_PCT = 60;
-    public static final int SAMPLE_BOT_Y_PCT = 80;
+
+@Autonomous(name = "Combined Autonomous Red")
+public class CombinedAutonomousRed extends LinearOpModeCamera {
+    public static final int SAMPLE_LEFT_X_PCT = 30;
+    public static final int SAMPLE_RIGHT_X_PCT = 50;
+    public static final int SAMPLE_TOP_Y_PCT = 30;
+    public static final int SAMPLE_BOT_Y_PCT = 50;
     public static final String TEAM_COLOR = "red";
+    public   static final int ENCODER_RUN = 1140;
     HardwareDxm robot = new HardwareDxm();
     HardwareMap hwMap = null;
 
-    //**************************************************************************************************
+
 
     VuforiaLocalizer vuforia;
 
-    //**************************************************************************************************
 
-    //??????????????????????????????????????????????????????????????????????????????????????????????????
 
     String filePath = "Pictures";
     String imageName = "TestImage.JPEG";
     private ElapsedTime runtime = new ElapsedTime();
 
-    //??????????????????????????????????????????????????????????????????????????????????????????????????
+
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -73,7 +67,18 @@ public class CombinedAutonomous extends LinearOpModeCamera {
 
         robot.init(hardwareMap);
 
-        //----------------------------------------------------------------------------------------------
+
+        robot.bLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.bRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.fLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.fRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
+        robot.bLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.bRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.fLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.fRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
         BNO055IMU imu;
 
         Orientation angles;
@@ -90,40 +95,28 @@ public class CombinedAutonomous extends LinearOpModeCamera {
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
 
-        //----------------------------------------------------------------------------------------------
 
-        //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-
-
-        //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
         telemetry.addData("ready", "");
         telemetry.update();
 
 
-        waitForStart();
 // The init process has finished by here
 
-
-        //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
         telemetry.addData(String.valueOf(width), height);
         telemetry.update();
 
 
-        if (isCameraAvailable()) {
+        if (!isCameraAvailable()) {
+            return;
+        }
             startCamera();
             while (yuvImage == null) ;
+            waitForStart();
             Bitmap rgbImage = convertYuvImageToRgb(yuvImage, width, height, 0);
             stopCamera();
+
             saveBitmap(imageName, rgbImage);
-        }
-
-        //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-
-
-        //**********************************************************************************************
-
-        //??????????????????????????????????????????????????????????????????????????????????????????????
 
         File sd = Environment.getExternalStorageDirectory();
 
@@ -151,11 +144,7 @@ public class CombinedAutonomous extends LinearOpModeCamera {
 
         drawSamplingBox(bitmap);
 
-        if (isOurJewelonLeft(bitmap)) {
-            robot.jewelKnockDevice.setPosition(0);
-            drive(.5, .5, .5, .5);//,drive forward
-            drive(0, 0, 0, 0);//stop
-        }
+
         //??????????????????????????????????????????????????????????????????????????????????????????????????
 
         //**********************************************************************************************
@@ -211,13 +200,31 @@ public class CombinedAutonomous extends LinearOpModeCamera {
         }
         while (mark == 0);
 
-        //**********************************************************************************************
+
+        if (isOurJewelonLeft(bitmap)) {
+            toJewel();
+
+            telemetry.addData("left" , "");
+            telemetry.update();
+
+            jewelRight();
+
+        }
+        else {
+            toJewel();
+
+            telemetry.addData("right" , "");
+            telemetry.update();
+
+
+            jewelLeft();
+        }
 
         while (opModeIsActive()) ;
     }
 
 
-    public static double[] RGBtoHSV(double r, double g, double b) {
+    public static double[]  RGBtoHSV(double r, double g, double b) {
 
         double h, s, v;
 
@@ -258,6 +265,69 @@ public class CombinedAutonomous extends LinearOpModeCamera {
         return new double[]{h,/*s,*/v};
     }
 
+    public  void toJewel(){
+
+        robot.jewelKnockDevice.setPosition(.65);
+
+        robot.bLeft.setTargetPosition(-ENCODER_RUN);
+        robot.fLeft.setTargetPosition(ENCODER_RUN);
+        robot.bRight.setTargetPosition(ENCODER_RUN);
+        robot.fRight.setTargetPosition(-ENCODER_RUN);
+
+        robot.bLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.fLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.bRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.fRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        drive(.5,.5,.5,.5);
+
+        while(robot.bLeft.isBusy());
+    }
+
+    public void jewelRight(){
+        robot.bLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.bRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.fLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.fRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+
+        robot.bLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.fLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.bRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.fRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        robot.bLeft.setTargetPosition(-1140);
+        robot.fLeft.setTargetPosition(-1140);
+        robot.bRight.setTargetPosition(-1140);
+        robot.fRight.setTargetPosition(-1140);
+
+        drive(.5, .5, .5, .5);
+
+        while (robot.bLeft.isBusy()) ;
+    }
+
+    public void jewelLeft(){
+
+        robot.bLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.bRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.fLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.fRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        robot.bLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.fLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.bRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.fRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        robot.bLeft.setTargetPosition(1140);
+        robot.fLeft.setTargetPosition(1140);
+        robot.bRight.setTargetPosition(1140);
+        robot.fRight.setTargetPosition(1140);
+
+        drive(.5, .5, .5, .5);
+
+        while (robot.bLeft.isBusy()) ;
+    }
+
     public static void saveBitmap(String filename, Bitmap bitmap) {
 
         String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Pictures";
@@ -290,7 +360,7 @@ public class CombinedAutonomous extends LinearOpModeCamera {
         Bitmap mutableBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
         Canvas c = new Canvas(mutableBitmap);
         Paint p = new Paint();
-        p.setARGB(100, 128, 128, 128);
+        p.setARGB(100, 0, 200, 0);
         c.drawRect((int) (SAMPLE_LEFT_X_PCT * xPercent), (int) (SAMPLE_TOP_Y_PCT * yPercent), (int) (SAMPLE_RIGHT_X_PCT * xPercent), (int) (SAMPLE_BOT_Y_PCT * yPercent), p);
         saveBitmap("previewImage.png", mutableBitmap);
     }
@@ -341,6 +411,5 @@ public class CombinedAutonomous extends LinearOpModeCamera {
         else
             return false;
     }
+
 }
-
-

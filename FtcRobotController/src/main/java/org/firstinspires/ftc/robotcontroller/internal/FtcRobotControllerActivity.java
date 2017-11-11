@@ -162,7 +162,7 @@ public class FtcRobotControllerActivity extends Activity
         public void run() {
           context.preview = new CameraPreview(FtcRobotControllerActivity.this, camera, previewCallback);
           FrameLayout previewLayout = (FrameLayout) findViewById(R.id.previewLayout);
-          previewLayout.addView(context.preview);
+          previewLayout.addView(context.preview, 0);
         }
       });
     }
@@ -174,7 +174,7 @@ public class FtcRobotControllerActivity extends Activity
         public void run() {
           context.preview = new CameraPreview(FtcRobotControllerActivity.this, camera, previewCallback);
           FrameLayout previewLayout = (FrameLayout) findViewById(R.id.previewLayout);
-          previewLayout.addView(context.preview);
+          previewLayout.addView(context.preview,0);
           previewLayout.addView(new JewelView(FtcRobotControllerActivity.this));
         }
       });
