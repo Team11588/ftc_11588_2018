@@ -146,7 +146,7 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
 
         //**********************************************************************************************
 
-/*
+
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parametersv = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
@@ -173,7 +173,7 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
         Center - 2
         Left - 3
          */
-/*
+
 
 // This can be used to identify the pictograph and this loop will run until it is found and it'll store the mark
 
@@ -197,7 +197,7 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
             }
         }
         while (mark == 0);
-*/
+
 
         if (isOurJewelonLeft(bitmap)) {
             toJewel();
