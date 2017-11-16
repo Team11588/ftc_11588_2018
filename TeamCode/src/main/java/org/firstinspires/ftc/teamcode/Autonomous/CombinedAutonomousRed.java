@@ -45,6 +45,11 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
     public   static final int ENCODER_RUN = 1140;
     HardwareDxm robot = new HardwareDxm();
     HardwareMap hwMap = null;
+    BNO055IMU imu;
+
+    Orientation angles;
+    Acceleration gravity;
+
 
 
 
@@ -76,10 +81,6 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
         robot.fLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.fRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        BNO055IMU imu;
-
-        Orientation angles;
-        Acceleration gravity;
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
@@ -93,11 +94,6 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
         imu.initialize(parameters);
 
 
-        telemetry.addData("ready", "");
-        telemetry.update();
-
-
-// The init process has finished by here
 
 
         telemetry.addData(String.valueOf(width), height);
@@ -107,13 +103,13 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
         if (!isCameraAvailable()) {
             return;
         }
-            startCamera();
-            while (yuvImage == null) ;
-            waitForStart();
-            Bitmap rgbImage = convertYuvImageToRgb(yuvImage, width, height, 0);
-            stopCamera();
+        startCamera();
+        while (yuvImage == null) ;
+        waitForStart();
+        Bitmap rgbImage = convertYuvImageToRgb(yuvImage, width, height, 0);
+        stopCamera();
 
-            saveBitmap(imageName, rgbImage);
+        saveBitmap(imageName, rgbImage);
 
         File sd = Environment.getExternalStorageDirectory();
 
@@ -202,25 +198,56 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
         if (isOurJewelonLeft(bitmap)) {
             toJewel();
 
-            telemetry.addData("left" , "");
+            telemetry.addData("left", "");
             telemetry.update();
 
-            jewelRight();
+            knockJewelRight();
 
-        }
-        else {
+            knockJewelLeft();
+            knockJewelLeft();
+        } else {
             toJewel();
 
-            telemetry.addData("right" , "");
+            telemetry.addData("right", "");
             telemetry.update();
 
 
-            jewelLeft();
+            knockJewelLeft();
         }
 
-        while (opModeIsActive()) ;
-    }
+        knockJewelLeft();
+        while (angles.firstAngle < 85) {
 
+            if (angles != null) {
+
+                if (angles.firstAngle < 35) {
+                    robot.fLeft.setPower(-.5);
+                    robot.bLeft.setPower(-.5);
+                    robot.fRight.setPower(.5);
+                    robot.bRight.setPower(.5);
+                } else if (angles.firstAngle < 50) {
+                    robot.fLeft.setPower(-.35);
+                    robot.bLeft.setPower(-.35);
+                    robot.fRight.setPower(.35);
+                    robot.bRight.setPower(.35);
+                } else if (angles.firstAngle < 75) {
+                    robot.fLeft.setPower(-.2);
+                    robot.bLeft.setPower(-.2);
+                    robot.fRight.setPower(.2);
+                    robot.bRight.setPower(.2);
+                } else {
+                    robot.fLeft.setPower(0);
+                    robot.bLeft.setPower(0);
+                    robot.fRight.setPower(0);
+                    robot.bRight.setPower(0);
+                }
+
+            }
+        }
+            while (opModeIsActive()) ;
+
+
+    }
 
     public static double[]  RGBtoHSV(double r, double g, double b) {
 
@@ -265,7 +292,7 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
 
     public  void toJewel(){
 
-        robot.jewelKnockDevice.setPosition(.65);
+        robot.jewelKnockDevice.setPosition(.5);
 
         robot.bLeft.setTargetPosition(-ENCODER_RUN);
         robot.fLeft.setTargetPosition(ENCODER_RUN);
@@ -282,7 +309,7 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
         while(robot.bLeft.isBusy());
     }
 
-    public void jewelRight(){
+    public void knockJewelRight(){
         robot.bLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.bRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.fLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -301,10 +328,12 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
 
         drive(.5, .5, .5, .5);
 
+        robot.jewelKnockDevice.setPosition(.85);
+
         while (robot.bLeft.isBusy()) ;
     }
 
-    public void jewelLeft(){
+    public void knockJewelLeft(){
 
         robot.bLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.bRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -323,8 +352,15 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
 
         drive(.5, .5, .5, .5);
 
+        robot.jewelKnockDevice.setPosition(.85);
+
         while (robot.bLeft.isBusy()) ;
     }
+
+
+
+
+
 
     public static void saveBitmap(String filename, Bitmap bitmap) {
 
@@ -359,10 +395,10 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
         Canvas c = new Canvas(mutableBitmap);
         Paint p = new Paint();
         p.setARGB(100, 0, 200, 0);
-        c.drawRect((int) (jewel.SAMPLE_LEFT_X_PCT * xPercent),
-                (int) (jewel.SAMPLE_TOP_Y_PCT * yPercent),
-                (int) (jewel.SAMPLE_RIGHT_X_PCT * xPercent),
-                (int) (jewel.SAMPLE_BOT_Y_PCT * yPercent), p);
+        c.drawRect((int) (jewel.sampleLeftXPct * xPercent),
+                (int) (jewel.sampleTopYPct * yPercent),
+                (int) (jewel.sampleRightXPct * xPercent),
+                (int) (jewel.sampleBotYPct * yPercent), p);
         saveBitmap("previewImage.png", mutableBitmap);
     }
 
@@ -375,8 +411,8 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
         double yPercent = (bitmap.getHeight()) / 100.0;
 
         telemetry.addData("Start For loop", "");
-        for (int x = jewel.SAMPLE_LEFT_X_PCT; x < jewel.SAMPLE_RIGHT_X_PCT; x++) { // replace 200 with x pixel size value
-            for (int y = jewel.SAMPLE_TOP_Y_PCT; y < jewel.SAMPLE_BOT_Y_PCT; y++) {
+        for (int x = jewel.sampleLeftXPct; x < jewel.sampleRightXPct; x++) { // replace 200 with x pixel size value
+            for (int y = jewel.sampleTopYPct; y < jewel.sampleBotYPct; y++) {
                 int color = bitmap.getPixel((int) (x * xPercent), (int) (y * yPercent));
                 //telemetry.addData("Color", "%d", color);
                 count++;
