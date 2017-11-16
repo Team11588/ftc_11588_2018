@@ -19,7 +19,15 @@ public class JewelFinder extends TextView implements View.OnTouchListener {
     private float mTextWidth;
     private float mTextHeight;
     private int pWidth;
-    private int emilia;
+    private int pHeight;
+
+
+    public int sampleLeftXPct = 0;
+    public int sampleRightXPct = 20;
+    public int sampleTopYPct = 0;
+    public int sampleBotYPct = 20;
+
+
 
     public JewelFinder(Context context) {
         super(context);
@@ -56,7 +64,7 @@ public class JewelFinder extends TextView implements View.OnTouchListener {
         int contentWidth = getWidth() - paddingLeft - paddingRight;
         int contentHeight = getHeight() - paddingTop - paddingBottom;
         pWidth = ((View) this.getParent()).getWidth();
-        emilia = ((View) this.getParent()).getHeight();
+        pHeight = ((View) this.getParent()).getHeight();
     }
 
     /**
@@ -79,12 +87,19 @@ public class JewelFinder extends TextView implements View.OnTouchListener {
         float rawY = event.getRawY();
 
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            this.setText(String.format("Hi"));
             dx = v.getX() - event.getRawX();
             dy = v.getY() - event.getRawY();
             return true;
         } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-            float x = applesauceX(rawX + dx);
-            float y = applesauceY(rawY + dy);
+            float x = getXBound(rawX + dx);
+            float y = getYBound(rawY + dy);
+
+            //sampleLeftXPct = (int) x;
+            //sampleRightXPct = (int) x + (this.getWidth()) ;
+            //sampleTopYPct = (int) y;
+            //sampleBotYPct = (int) y + (this.getHeight());
+
             this.setText(String.format("%.1f %.1f", x, y));
 
             v.animate()
@@ -96,7 +111,7 @@ public class JewelFinder extends TextView implements View.OnTouchListener {
         }
         return false;
     }
-    public float applesauceX(float valueX){
+    public float getXBound(float valueX){
 
         float x;
 
@@ -109,12 +124,12 @@ public class JewelFinder extends TextView implements View.OnTouchListener {
 
         return x;
     }
-    public float applesauceY(float valueY){
+    public float getYBound(float valueY){
 
         float y;
 
-        if(valueY > emilia - this.getHeight()) //half box y size
-            y = emilia - this.getHeight() ;
+        if(valueY > pHeight - this.getHeight()) //half box y size
+            y = pHeight - this.getHeight() ;
         else if(valueY  < 0)
             y = 0 ;
         else

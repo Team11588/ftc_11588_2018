@@ -11,8 +11,6 @@ import android.util.Log;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
-import org.firstinspires.ftc.teamcode.Autonomous.JewelView;
-
 import java.io.ByteArrayOutputStream;
 
 /**
@@ -24,7 +22,7 @@ public class OpModeCamera extends OpMode {
 
   public Camera camera;
   public CameraPreview preview;
-  public JewelView jewel;
+  public JewelFinder jewel;
 
   public int width;
   public int height;

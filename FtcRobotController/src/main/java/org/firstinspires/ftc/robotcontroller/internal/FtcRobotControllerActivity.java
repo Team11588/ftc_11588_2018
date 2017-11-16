@@ -109,7 +109,6 @@ import org.firstinspires.ftc.robotcore.internal.ui.ThemedActivity;
 import org.firstinspires.ftc.robotcore.internal.ui.UILocation;
 import org.firstinspires.ftc.robotcore.internal.webserver.RobotControllerWebInfo;
 import org.firstinspires.ftc.robotcore.internal.webserver.WebServer;
-import org.firstinspires.ftc.teamcode.Autonomous.JewelView;
 import org.firstinspires.inspection.RcInspectionActivity;
 
 import java.util.Queue;
@@ -161,8 +160,12 @@ public class FtcRobotControllerActivity extends Activity
         @Override
         public void run() {
           context.preview = new CameraPreview(FtcRobotControllerActivity.this, camera, previewCallback);
-          FrameLayout previewLayout = (FrameLayout) findViewById(R.id.previewLayout);
+          context.jewel = new JewelFinder(FtcRobotControllerActivity.this);
+
+            FrameLayout previewLayout = (FrameLayout) findViewById(R.id.previewLayout);
           previewLayout.addView(context.preview, 0);
+            previewLayout.addView(context.jewel);
+
         }
       });
     }
@@ -173,13 +176,12 @@ public class FtcRobotControllerActivity extends Activity
         @Override
         public void run() {
           context.preview = new CameraPreview(FtcRobotControllerActivity.this, camera, previewCallback);
-          context.jewel = new JewelView(FtcRobotControllerActivity.this);
+          context.jewel = new JewelFinder(FtcRobotControllerActivity.this);
           FrameLayout previewLayout = (FrameLayout) findViewById(R.id.previewLayout);
           JewelFinder box = new JewelFinder(FtcRobotControllerActivity.this);
 
           previewLayout.addView(context.preview,0);
           previewLayout.addView(context.jewel);
-          previewLayout.addView(box);
         }
       });
     }
