@@ -2,6 +2,7 @@ package org.firstinspires.ftc.robotcontroller.internal;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.os.Environment;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -9,6 +10,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+
+import java.io.File;
 
 /**
  * Created by butterss21317 on 11/14/2017.
@@ -48,6 +51,7 @@ public class JewelFinder extends TextView implements View.OnTouchListener {
         this.setBackgroundColor(0x55FF2500);
         this.setLayoutParams(new FrameLayout.LayoutParams(175,175));
         this.setOnTouchListener(this);
+
     }
 
     @Override

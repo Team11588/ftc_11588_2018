@@ -26,9 +26,11 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import org.firstinspires.ftc.teamcode.Hardware.HardwareDxm;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 
 /**
@@ -60,7 +62,10 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
     String filePath = "Pictures";
     String imageName = "TestImage.JPEG";
     private ElapsedTime runtime = new ElapsedTime();
-
+    private int sampleBox_x1;
+    private int sampleBox_y1;
+    private int sampleBox_x2;
+    private int sampleBox_y2;
 
 
     @Override
@@ -94,10 +99,39 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
         imu.initialize(parameters);
 
 
+        File sd = Environment.getExternalStorageDirectory();
+        File sampleBox = new File(sd + "/team", "sampleBox.txt" );
 
+        BufferedReader reader = null;
 
+        try {
+            reader = new BufferedReader(new FileReader(sampleBox));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        String text = null;
+
+        try {
+            text = reader.readLine();
+            sampleBox_x1 = Integer.parseInt(text);
+            text = reader.readLine();
+            sampleBox_y1 = Integer.parseInt(text);
+            text = reader.readLine();
+            sampleBox_x2 = Integer.parseInt(text);
+            text = reader.readLine();
+            sampleBox_y2 = Integer.parseInt(text);
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        telemetry.addData("x1" , "%d" , sampleBox_x1);
+        telemetry.addData("y1" , "%d" , sampleBox_y1);
+        telemetry.addData("x2" , "%d" , sampleBox_x2);
+        telemetry.addData("y2" , "%d" , sampleBox_y2);
         telemetry.addData(String.valueOf(width), height);
         telemetry.update();
+
 
 
         if (!isCameraAvailable()) {
@@ -110,8 +144,6 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
         stopCamera();
 
         saveBitmap(imageName, rgbImage);
-
-        File sd = Environment.getExternalStorageDirectory();
 
         if (sd == null) {
             telemetry.addLine("Open External Storage Failed");
@@ -145,7 +177,6 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parametersv = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
-
 
         parametersv.vuforiaLicenseKey = "AW/DxXD/////AAAAGYJtW/yP3kG0pVGawWtQZngsJNFQ8kp1Md8CaP2NP72Q0on4mGKPLt/lsSnMnUkCFNymrXXOjs0eHMDTvijWRIixEe/sJ4KHEVf1fhf0kqUB29+dZEvh4qeI7tlTU6pIy/MLW0a/t9cpqMksBRFqXIrhtR/vw7ZnErMTZrJNNXqmbecBnRhDfLncklzgH2wAkGmQDn0JSP7scEczgrggcmerXy3v6flLDh1/Tt2QZ8l/bTcEJtthE82i8/8p0NuDDhUyatFK1sZSSebykRz5A4PDUkw+jMTV28iUytrr1QLiQBwaTX7ikl71a1XkBHacnxrqyY07x9QfabtJf/PYNFiU17m/l9DB6Io7DPnnIaFP";
 
@@ -411,8 +442,8 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
         double yPercent = (bitmap.getHeight()) / 100.0;
 
         telemetry.addData("Start For loop", "");
-        for (int x = jewel.sampleLeftXPct; x < jewel.sampleRightXPct; x++) { // replace 200 with x pixel size value
-            for (int y = jewel.sampleTopYPct; y < jewel.sampleBotYPct; y++) {
+        for (int x = sampleBox_x1; x < sampleBox_x2; x++) { // replace 200 with x pixel size value
+            for (int y = sampleBox_y1; y < sampleBox_y2; y++) {
                 int color = bitmap.getPixel((int) (x * xPercent), (int) (y * yPercent));
                 //telemetry.addData("Color", "%d", color);
                 count++;
