@@ -99,10 +99,10 @@ public class JewelFinder extends TextView implements View.OnTouchListener {
             float x = getXBound(rawX + dx);
             float y = getYBound(rawY + dy);
 
-            //sampleLeftXPct = (int) x;
-            //sampleRightXPct = (int) x + (this.getWidth()) ;
-            //sampleTopYPct = (int) y;
-            //sampleBotYPct = (int) y + (this.getHeight());
+            sampleLeftXPct = (int) ((x/pWidth)*100);
+            sampleRightXPct = (int) (((x + this.getWidth())/pWidth)*100);
+            sampleTopYPct = (int) ((y/pHeight)*100);
+            sampleBotYPct = (int) (((y + this.getHeight())/pHeight)*100);
 
             this.setText(String.format("%.1f %.1f", x, y));
 
