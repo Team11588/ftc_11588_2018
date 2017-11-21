@@ -76,6 +76,8 @@ public class VuMarkIdentificationTest extends LinearOpMode {
     /**
      * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
      * localization engine.
+
+     All this does is to say if a VuMark is visable
      */
     VuforiaLocalizer vuforia;
 

@@ -61,6 +61,9 @@ import java.util.Locale;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  *
  * @see <a href="http://www.adafruit.com/products/2472">Adafruit IMU</a>
+ *
+ *
+ * This turns 90 degrees and manually slows down
  */
 @Autonomous(name = "Sensor: BNO055 IMU", group = "Sensor")
 public class SensorBNO055IMU extends OpMode {
