@@ -21,6 +21,8 @@ import java.io.OutputStream;
 
 /**
  * Created by gallagherb20503 on 10/21/2017.
+ *
+ *This is bridgett's code to take a picture and save it to the phone
  */
 
 @Autonomous
