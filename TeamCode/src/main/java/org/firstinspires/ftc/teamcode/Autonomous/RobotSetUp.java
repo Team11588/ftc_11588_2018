@@ -26,10 +26,12 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import org.firstinspires.ftc.teamcode.Hardware.HardwareDxm;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -58,7 +60,9 @@ public class RobotSetUp extends LinearOpModeCamera {
     public void runOpMode() throws InterruptedException {
 
         if (!isCameraAvailable()) {
-            return;
+            telemetry.addData("camera is not available","");
+            telemetry.update();
+            waitForStart();
         }
         startCamera();
         telemetry.addData(String.valueOf(width), height);
@@ -69,10 +73,13 @@ public class RobotSetUp extends LinearOpModeCamera {
         waitForStart();
 
         takePicture();
-        //saveCoordinates();
+        saveFile();
         createBoxBitmap();
+        readFile();
 
         stopCamera();
+
+        telemetry.update();
         //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
 
@@ -98,11 +105,6 @@ public class RobotSetUp extends LinearOpModeCamera {
 
 
         int mark = 0;
-        /*
-        Right - 1
-        Center - 2
-        Left - 3
-         */
 
 // This can be used to identify the pictograph and this loop will run until it is found and it'll store the mark
 
@@ -124,7 +126,6 @@ public class RobotSetUp extends LinearOpModeCamera {
                 telemetry.update();
             }
         }
-
         //while (opModeIsActive());
         // stopCamera();
     }
@@ -177,23 +178,56 @@ public class RobotSetUp extends LinearOpModeCamera {
     }
 
     public void saveFile(){
-        String sampleBox = "sampleBox";
+        File sd = Environment.getExternalStorageDirectory();
+        File sampleBox = new File(sd + "/Pictures", "sampleBox.txt" );
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(sampleBox))){
 
-            writer.write(jewel.sampleLeftXPct);
+            writer.write(String.format("%03d",jewel.sampleLeftXPct), 0 , 3);
             writer.newLine();
-            writer.write(jewel.sampleTopYPct);
+            writer.write(String.format("%03d",jewel.sampleTopYPct), 0 , 3);
             writer.newLine();
-            writer.write(jewel.sampleRightXPct);
+            writer.write(String.format("%03d",jewel.sampleRightXPct), 0 , 3);
             writer.newLine();
-            writer.write(jewel.sampleBotYPct);
+            writer.write(String.format("%03d",jewel.sampleBotYPct), 0 , 3);
             writer.newLine();
 
         }catch(IOException yee)
         {
             telemetry.addData("ERROR WRITING TO FILE", yee.getMessage());
         }
+    }
+
+    public void readFile() {
+        File sd = Environment.getExternalStorageDirectory();
+        File sampleBox = new File(sd + "/Pictures", "sampleBox.txt" );
+        int sampleBox_x1 = 0;
+        int sampleBox_y1 = 0;
+        int sampleBox_x2 = 0;
+        int sampleBox_y2 = 0;
+
+
+        String text = null;
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(sampleBox)))
+        {
+            text = reader.readLine();
+            sampleBox_x1 = Integer.parseInt(text);
+            text = reader.readLine();
+            sampleBox_y1 = Integer.parseInt(text);
+            text = reader.readLine();
+            sampleBox_x2 = Integer.parseInt(text);
+            text = reader.readLine();
+            sampleBox_y2 = Integer.parseInt(text);
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            telemetry.addData("","couldn't read");
+        }
+        telemetry.addData("","start x: %d", sampleBox_x1);
+        telemetry.addData("","start y: %d", sampleBox_y1);
+        telemetry.addData("","end x: %d", sampleBox_x2);
+        telemetry.addData("","end y: %d", sampleBox_y2);
     }
 
 
