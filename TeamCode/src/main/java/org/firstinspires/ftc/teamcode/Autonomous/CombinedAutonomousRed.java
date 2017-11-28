@@ -111,28 +111,8 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
         File sd = Environment.getExternalStorageDirectory();
         File sampleBox = new File(sd + "/team", "sampleBox.txt" );
 
-        BufferedReader reader = null;
-
-        try {
-            reader = new BufferedReader(new FileReader(sampleBox));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
         String text = null;
-
-        try {
-            text = reader.readLine();
-            sampleBox_x1 = Integer.parseInt(text);
-            text = reader.readLine();
-            sampleBox_y1 = Integer.parseInt(text);
-            text = reader.readLine();
-            sampleBox_x2 = Integer.parseInt(text);
-            text = reader.readLine();
-            sampleBox_y2 = Integer.parseInt(text);
-            reader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        readFile();
 
         telemetry.addData("x1" , "%d" , sampleBox_x1);
         telemetry.addData("y1" , "%d" , sampleBox_y1);
@@ -485,5 +465,26 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
         else
             return false;
     }
+        public void readFile() {
+            File sd = Environment.getExternalStorageDirectory();
+            File sampleBox = new File(sd + "/team", "sampleBox.txt" );
 
+            String text = null;
+
+            try (BufferedReader reader = new BufferedReader(new FileReader(sampleBox)))
+            {
+                text = reader.readLine();
+                sampleBox_x1 = Integer.parseInt(text);
+                text = reader.readLine();
+                sampleBox_y1 = Integer.parseInt(text);
+                text = reader.readLine();
+                sampleBox_x2 = Integer.parseInt(text);
+                text = reader.readLine();
+                sampleBox_y2 = Integer.parseInt(text);
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+                telemetry.addData("","couldn't read");
+            }
+        }
 }
