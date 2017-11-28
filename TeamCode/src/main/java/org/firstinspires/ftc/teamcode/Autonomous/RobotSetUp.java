@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Environment;
+import android.support.annotation.RequiresPermission;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
@@ -25,11 +26,14 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import org.firstinspires.ftc.teamcode.Hardware.HardwareDxm;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.Writer;
 
 /**
  * Created by piscullin18641 on 10/23/2017.
@@ -123,7 +127,6 @@ public class RobotSetUp extends LinearOpModeCamera {
 
         //while (opModeIsActive());
         // stopCamera();
-
     }
 
 
@@ -153,6 +156,7 @@ public class RobotSetUp extends LinearOpModeCamera {
                 (int) (jewel.sampleRightXPct * xPercent),
                 (int) (jewel.sampleBotYPct * yPercent), p);
         savePic("RobotSetUpPreviewImage.png", mutableBitmap);
+        //saveFile();
     }
 
     public void savePic (String filename, Bitmap bitmap){
@@ -171,4 +175,26 @@ public class RobotSetUp extends LinearOpModeCamera {
             telemetry.addData("NEED TO FIX", e.getMessage());
         }
     }
+
+    public void saveFile(){
+        String sampleBox = "sampleBox";
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(sampleBox))){
+
+            writer.write(jewel.sampleLeftXPct);
+            writer.newLine();
+            writer.write(jewel.sampleTopYPct);
+            writer.newLine();
+            writer.write(jewel.sampleRightXPct);
+            writer.newLine();
+            writer.write(jewel.sampleBotYPct);
+            writer.newLine();
+
+        }catch(IOException yee)
+        {
+            telemetry.addData("ERROR WRITING TO FILE", yee.getMessage());
+        }
+    }
+
+
 }
