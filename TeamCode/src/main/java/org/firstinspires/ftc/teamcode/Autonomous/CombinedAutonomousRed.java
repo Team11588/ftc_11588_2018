@@ -15,12 +15,14 @@ import org.firstinspires.ftc.robotcontroller.internal.LinearOpModeCamera;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
@@ -112,7 +114,7 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
         File sampleBox = new File(sd + "/team", "sampleBox.txt" );
 
         String text = null;
-        readFile();
+      //  readFile();
 
         telemetry.addData("x1" , "%d" , sampleBox_x1);
         telemetry.addData("y1" , "%d" , sampleBox_y1);
@@ -232,8 +234,12 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
             knockJewelLeft();
         }
 
+        imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
+
+        int count = 0;
+
         knockJewelLeft();
-        while (angles.firstAngle < 85) {
+        while (count < 100000) {
 
             if (angles != null) {
 
@@ -247,7 +253,7 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
                     robot.bLeft.setPower(-.35);
                     robot.fRight.setPower(.35);
                     robot.bRight.setPower(.35);
-                } else if (angles.firstAngle < 75) {
+                } else if (angles.firstAngle < 65) {
                     robot.fLeft.setPower(-.2);
                     robot.bLeft.setPower(-.2);
                     robot.fRight.setPower(.2);
@@ -260,6 +266,7 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
                 }
 
             }
+        count++;
         }
             while (opModeIsActive()) ;
 

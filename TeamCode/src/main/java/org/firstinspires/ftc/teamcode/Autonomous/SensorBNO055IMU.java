@@ -164,7 +164,7 @@ public class SensorBNO055IMU extends OpMode {
                   robot.bRight.setPower(.35);
               }
 
-              else if (angles.firstAngle < 75){
+              else if (angles.firstAngle < 65){
                     robot.fLeft.setPower(-.2);
                     robot.bLeft.setPower(-.2);
                     robot.fRight.setPower(.2);
