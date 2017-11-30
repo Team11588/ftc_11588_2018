@@ -114,7 +114,7 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
         File sampleBox = new File(sd + "/team", "sampleBox.txt" );
 
         String text = null;
-      //  readFile();
+        readFile();
 
         telemetry.addData("x1" , "%d" , sampleBox_x1);
         telemetry.addData("y1" , "%d" , sampleBox_y1);
