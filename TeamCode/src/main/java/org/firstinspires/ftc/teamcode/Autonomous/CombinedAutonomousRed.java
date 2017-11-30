@@ -57,13 +57,10 @@ import java.io.IOException;
 @Autonomous(name = "Combined Autonomous Red")
 public class CombinedAutonomousRed extends LinearOpModeCamera {
 
-<<<<<<< HEAD
-    public static final String TEAM_COLOR = "red";
-    public static final int ENCODER_RUN = 1140;
-=======
+
     public String teamColor = "red";
     public   static final int ENCODER_RUN = 1140;
->>>>>>> 62125c364525de572d354c2a26e6456f7c2b2727
+
     HardwareDxm robot = new HardwareDxm();
     HardwareMap hwMap = null;
     BNO055IMU imu;
@@ -120,11 +117,8 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
         File sampleBox = new File(sd + "/team", "sampleBox.txt");
 
         String text = null;
-<<<<<<< HEAD
-        //  readFile();
-=======
+
         readFile();
->>>>>>> 62125c364525de572d354c2a26e6456f7c2b2727
 
         telemetry.addData("x1", "%d", sampleBox_x1);
         telemetry.addData("y1", "%d", sampleBox_y1);
@@ -262,21 +256,21 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
 
             if (angles != null) {
 
-                if (angles.firstAngle < 35) {
-                    robot.fLeft.setPower(-.5);
-                    robot.bLeft.setPower(-.5);
-                    robot.fRight.setPower(.5);
-                    robot.bRight.setPower(.5);
-                } else if (angles.firstAngle < 50) {
-                    robot.fLeft.setPower(-.35);
-                    robot.bLeft.setPower(-.35);
-                    robot.fRight.setPower(.35);
-                    robot.bRight.setPower(.35);
-                } else if (angles.firstAngle < 85) {
-                    robot.fLeft.setPower(-.2);
-                    robot.bLeft.setPower(-.2);
-                    robot.fRight.setPower(.2);
-                    robot.bRight.setPower(.2);
+                if (angles.firstAngle > -35) {
+                    robot.fLeft.setPower(.5);
+                    robot.bLeft.setPower(.5);
+                    robot.fRight.setPower(-.5);
+                    robot.bRight.setPower(-.5);
+                } else if (angles.firstAngle > -50) {
+                    robot.fLeft.setPower(.35);
+                    robot.bLeft.setPower(.35);
+                    robot.fRight.setPower(-.35);
+                    robot.bRight.setPower(-.35);
+                } else if (angles.firstAngle > -85) {
+                    robot.fLeft.setPower(.2);
+                    robot.bLeft.setPower(.2);
+                    robot.fRight.setPower(-.2);
+                    robot.bRight.setPower(-.2);
                 } else {
                     robot.fLeft.setPower(0);
                     robot.bLeft.setPower(0);
@@ -488,28 +482,6 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
         else
             return false;
     }
-<<<<<<< HEAD
-
-    public void readFile() {
-        File sd = Environment.getExternalStorageDirectory();
-        File sampleBox = new File(sd + "/team", "sampleBox.txt");
-
-        String text = null;
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(sampleBox))) {
-            text = reader.readLine();
-            sampleBox_x1 = Integer.parseInt(text);
-            text = reader.readLine();
-            sampleBox_y1 = Integer.parseInt(text);
-            text = reader.readLine();
-            sampleBox_x2 = Integer.parseInt(text);
-            text = reader.readLine();
-            sampleBox_y2 = Integer.parseInt(text);
-            reader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-            telemetry.addData("", "couldn't read");
-=======
         public void readFile() {
             File sd = Environment.getExternalStorageDirectory();
             File sampleBox = new File(sd + "/team", "sampleBox.txt" );
@@ -535,7 +507,5 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
                 e.printStackTrace();
                 telemetry.addData("","couldn't read");
             }
->>>>>>> 62125c364525de572d354c2a26e6456f7c2b2727
         }
     }
-}
