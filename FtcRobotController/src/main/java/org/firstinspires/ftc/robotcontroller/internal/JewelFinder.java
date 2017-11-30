@@ -21,8 +21,8 @@ public class JewelFinder extends TextView implements View.OnTouchListener {
     private TextPaint mTextPaint;
     private float mTextWidth;
     private float mTextHeight;
-    private int pWidth;
-    private int pHeight;
+    public int pWidth;
+    public int pHeight;
 
 
     public int sampleLeftXPct = 0;
