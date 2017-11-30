@@ -352,9 +352,11 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
 
         drive(.5, .5, .5, .5);
 
+        while (robot.bLeft.isBusy()) ;
+
         robot.jewelKnockDevice.setPosition(.85);
 
-        while (robot.bLeft.isBusy()) ;
+
     }
 
     public void knockJewelLeft(){
@@ -376,15 +378,10 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
 
         drive(.5, .5, .5, .5);
 
-        robot.jewelKnockDevice.setPosition(.85);
-
         while (robot.bLeft.isBusy()) ;
-    }
 
-
-
-
-
+        robot.jewelKnockDevice.setPosition(.85);
+   }
 
     public static void saveBitmap(String filename, Bitmap bitmap) {
 
