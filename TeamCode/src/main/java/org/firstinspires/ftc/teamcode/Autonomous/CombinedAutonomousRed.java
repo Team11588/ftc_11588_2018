@@ -57,12 +57,17 @@ import java.io.IOException;
 @Autonomous(name = "Combined Autonomous Red")
 public class CombinedAutonomousRed extends LinearOpModeCamera {
 
+<<<<<<< HEAD
     public static final String TEAM_COLOR = "red";
     public static final int ENCODER_RUN = 1140;
+=======
+    public String teamColor = "red";
+    public   static final int ENCODER_RUN = 1140;
+>>>>>>> 62125c364525de572d354c2a26e6456f7c2b2727
     HardwareDxm robot = new HardwareDxm();
     HardwareMap hwMap = null;
     BNO055IMU imu;
-
+    public int startingPosition = 1;
     Orientation angles;
     Acceleration gravity;
 
@@ -115,7 +120,11 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
         File sampleBox = new File(sd + "/team", "sampleBox.txt");
 
         String text = null;
+<<<<<<< HEAD
         //  readFile();
+=======
+        readFile();
+>>>>>>> 62125c364525de572d354c2a26e6456f7c2b2727
 
         telemetry.addData("x1", "%d", sampleBox_x1);
         telemetry.addData("y1", "%d", sampleBox_y1);
@@ -474,11 +483,12 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
         telemetry.addData("Count", "%d", count);
         telemetry.update();
 
-        if (leftJewelColor.equals(TEAM_COLOR))
+        if (leftJewelColor.equals(teamColor))
             return true;
         else
             return false;
     }
+<<<<<<< HEAD
 
     public void readFile() {
         File sd = Environment.getExternalStorageDirectory();
@@ -499,6 +509,33 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
         } catch (IOException e) {
             e.printStackTrace();
             telemetry.addData("", "couldn't read");
+=======
+        public void readFile() {
+            File sd = Environment.getExternalStorageDirectory();
+            File sampleBox = new File(sd + "/team", "sampleBox.txt" );
+
+            String text = null;
+
+            try (BufferedReader reader = new BufferedReader(new FileReader(sampleBox)))
+            {
+                text = reader.readLine();
+                teamColor = text;
+                text = reader.readLine();
+                startingPosition = Integer.parseInt(text);
+                text = reader.readLine();
+                sampleBox_x1 = Integer.parseInt(text);
+                text = reader.readLine();
+                sampleBox_y1 = Integer.parseInt(text);
+                text = reader.readLine();
+                sampleBox_x2 = Integer.parseInt(text);
+                text = reader.readLine();
+                sampleBox_y2 = Integer.parseInt(text);
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+                telemetry.addData("","couldn't read");
+            }
+>>>>>>> 62125c364525de572d354c2a26e6456f7c2b2727
         }
     }
 }
