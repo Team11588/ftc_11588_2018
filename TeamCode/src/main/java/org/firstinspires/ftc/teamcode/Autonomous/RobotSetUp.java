@@ -70,6 +70,24 @@ public class RobotSetUp extends LinearOpModeCamera {
 
         //**********************************************************************************************
 
+        int[] boxCords = readFile();
+
+        this.jewel.setX (((float) boxCords[0])/100*jewel.pWidth);
+        this.jewel.setY(((float) boxCords[1])/100*jewel.pHeight);
+
+        this.jewel.sampleLeftXPct = boxCords[0];
+        this.jewel.sampleTopYPct = boxCords[1];
+        this.jewel.sampleRightXPct = boxCords[2];
+        this.jewel.sampleBotYPct = boxCords[3];
+
+        telemetry.addData("", "x position = %f", jewel.getX());
+        telemetry.addData("", "y position = %f", jewel.getY());
+
+        telemetry.addData("", "x-cords = %d", ((boxCords[0])/100*jewel.pWidth));
+        telemetry.addData("", "y-cords = %d", ((boxCords[1])/100*jewel.pHeight));
+
+        telemetry.update();
+
         waitForStart();
 
         takePicture();
@@ -198,14 +216,15 @@ public class RobotSetUp extends LinearOpModeCamera {
         }
     }
 
-    public void readFile() {
+    public int[] readFile() {
         File sd = Environment.getExternalStorageDirectory();
         File sampleBox = new File(sd + "/Pictures", "sampleBox.txt" );
+
+
         int sampleBox_x1 = 0;
         int sampleBox_y1 = 0;
         int sampleBox_x2 = 0;
         int sampleBox_y2 = 0;
-
 
         String text = null;
 
@@ -219,16 +238,21 @@ public class RobotSetUp extends LinearOpModeCamera {
             sampleBox_x2 = Integer.parseInt(text);
             text = reader.readLine();
             sampleBox_y2 = Integer.parseInt(text);
-            reader.close();
         } catch (IOException e) {
             e.printStackTrace();
             telemetry.addData("","couldn't read");
+
+            int[] defaultCords = {50,50,70,70};
+            return defaultCords;
         }
         telemetry.addData("","start x: %d", sampleBox_x1);
         telemetry.addData("","start y: %d", sampleBox_y1);
         telemetry.addData("","end x: %d", sampleBox_x2);
         telemetry.addData("","end y: %d", sampleBox_y2);
-    }
 
+        int[] boxCords= {sampleBox_x1, sampleBox_y1, sampleBox_x2, sampleBox_y2};
+
+        return boxCords;
+    }
 
 }
