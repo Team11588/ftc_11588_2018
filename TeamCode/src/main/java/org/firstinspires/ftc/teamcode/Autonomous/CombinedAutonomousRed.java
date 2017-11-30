@@ -488,8 +488,9 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
 
             String text = null;
 
-            try (BufferedReader reader = new BufferedReader(new FileReader(sampleBox)))
+            try
             {
+                BufferedReader reader = new BufferedReader(new FileReader(sampleBox));
                 text = reader.readLine();
                 teamColor = text;
                 text = reader.readLine();
