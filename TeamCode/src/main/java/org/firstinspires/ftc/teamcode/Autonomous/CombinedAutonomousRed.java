@@ -54,12 +54,12 @@ import java.io.IOException;
 @Autonomous(name = "Combined Autonomous Red")
 public class CombinedAutonomousRed extends LinearOpModeCamera {
 
-    public static final String TEAM_COLOR = "red";
+    public String teamColor = "red";
     public   static final int ENCODER_RUN = 1140;
     HardwareDxm robot = new HardwareDxm();
     HardwareMap hwMap = null;
     BNO055IMU imu;
-
+    public int startingPosition = 1;
     Orientation angles;
     Acceleration gravity;
 
@@ -464,7 +464,7 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
         telemetry.addData("Count", "%d", count);
         telemetry.update();
 
-        if (leftJewelColor.equals(TEAM_COLOR))
+        if (leftJewelColor.equals(teamColor))
             return true;
         else
             return false;
@@ -477,6 +477,10 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
 
             try (BufferedReader reader = new BufferedReader(new FileReader(sampleBox)))
             {
+                text = reader.readLine();
+                teamColor = text;
+                text = reader.readLine();
+                startingPosition = Integer.parseInt(text);
                 text = reader.readLine();
                 sampleBox_x1 = Integer.parseInt(text);
                 text = reader.readLine();
