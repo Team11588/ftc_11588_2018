@@ -250,7 +250,7 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
         robot.fLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.fRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        while (angles.firstAngle < 87) {
+        while (angles.firstAngle > -89) {
 
             angles   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
@@ -266,7 +266,7 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
                     robot.bLeft.setPower(.35);
                     robot.fRight.setPower(-.35);
                     robot.bRight.setPower(-.35);
-                } else if (angles.firstAngle > -85) {
+                } else if (angles.firstAngle > -80) {
                     robot.fLeft.setPower(.2);
                     robot.bLeft.setPower(.2);
                     robot.fRight.setPower(-.2);
