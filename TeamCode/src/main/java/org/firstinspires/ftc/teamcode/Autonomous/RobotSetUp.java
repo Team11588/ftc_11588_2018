@@ -20,6 +20,7 @@ import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
@@ -55,6 +56,11 @@ public class RobotSetUp extends LinearOpModeCamera {
 
     private ElapsedTime runtime = new ElapsedTime();
 
+    String teamColor = "red";
+    int teamPosition = 1;
+
+    File sd = Environment.getExternalStorageDirectory();
+    File sampleBox = new File(sd + "/team", "sampleBox.txt" );
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -196,11 +202,13 @@ public class RobotSetUp extends LinearOpModeCamera {
     }
 
     public void saveFile(){
-        File sd = Environment.getExternalStorageDirectory();
-        File sampleBox = new File(sd + "/Pictures", "sampleBox.txt" );
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(sampleBox))){
 
+            writer.write(teamColor);
+            writer.newLine();
+            writer.write(String.format("%03d",teamPosition));
+            writer.newLine();
             writer.write(String.format("%03d",jewel.sampleLeftXPct), 0 , 3);
             writer.newLine();
             writer.write(String.format("%03d",jewel.sampleTopYPct), 0 , 3);
@@ -210,6 +218,8 @@ public class RobotSetUp extends LinearOpModeCamera {
             writer.write(String.format("%03d",jewel.sampleBotYPct), 0 , 3);
             writer.newLine();
 
+
+
         }catch(IOException yee)
         {
             telemetry.addData("ERROR WRITING TO FILE", yee.getMessage());
@@ -217,9 +227,6 @@ public class RobotSetUp extends LinearOpModeCamera {
     }
 
     public int[] readFile() {
-        File sd = Environment.getExternalStorageDirectory();
-        File sampleBox = new File(sd + "/Pictures", "sampleBox.txt" );
-
 
         int sampleBox_x1 = 0;
         int sampleBox_y1 = 0;
@@ -230,6 +237,10 @@ public class RobotSetUp extends LinearOpModeCamera {
 
         try (BufferedReader reader = new BufferedReader(new FileReader(sampleBox)))
         {
+            text = reader.readLine();
+            teamColor = text;
+            text = reader.readLine();
+            teamPosition = Integer.parseInt(text);
             text = reader.readLine();
             sampleBox_x1 = Integer.parseInt(text);
             text = reader.readLine();
