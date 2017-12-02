@@ -1,42 +1,29 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.os.Environment;
-import android.support.annotation.RequiresPermission;
 
-import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcontroller.internal.LinearOpModeCamera;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
-import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
-import org.firstinspires.ftc.teamcode.Hardware.HardwareDxm;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.Writer;
 
 /**
  * Created by piscullin18641 on 10/23/2017.
@@ -76,7 +63,7 @@ public class RobotSetUp extends LinearOpModeCamera {
 
         //**********************************************************************************************
 
-        int[] boxCords = readFile();
+        int[] boxCords = readConfigFile();
 
         this.jewel.setX (((float) boxCords[0])/100*jewel.pWidth);
         this.jewel.setY(((float) boxCords[1])/100*jewel.pHeight);
@@ -97,9 +84,9 @@ public class RobotSetUp extends LinearOpModeCamera {
         waitForStart();
 
         takePicture();
-        saveFile();
+        saveConfigFile();
         createBoxBitmap();
-        readFile();
+        readConfigFile();
 
         stopCamera();
 
@@ -201,7 +188,7 @@ public class RobotSetUp extends LinearOpModeCamera {
         }
     }
 
-    public void saveFile(){
+    public void saveConfigFile(){
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(sampleBox))){
 
@@ -226,7 +213,7 @@ public class RobotSetUp extends LinearOpModeCamera {
         }
     }
 
-    public int[] readFile() {
+    public int[] readConfigFile() {
 
         int sampleBox_x1 = 0;
         int sampleBox_y1 = 0;
