@@ -64,10 +64,9 @@ public class RobotSetUp extends LinearOpModeCamera {
         //**********************************************************************************************
 
         int[] boxCords = readConfigFile();
-
-        this.jewel.setX (((float) boxCords[0])/100*jewel.pWidth);
-        this.jewel.setY(((float) boxCords[1])/100*jewel.pHeight);
-
+        while (jewel == null)
+            sleep(1);
+        this.jewel.moveBox(boxCords[0], boxCords[1]);
         this.jewel.sampleLeftXPct = boxCords[0];
         this.jewel.sampleTopYPct = boxCords[1];
         this.jewel.sampleRightXPct = boxCords[2];

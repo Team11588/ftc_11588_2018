@@ -54,6 +54,14 @@ public class JewelFinder extends TextView implements View.OnTouchListener {
 
     }
 
+    public void moveBox(float xpct, float ypct){
+        pWidth = ((View) this.getParent()).getWidth();
+        pHeight = ((View) this.getParent()).getHeight();
+        this.setX (((float) xpct)/100*pWidth);
+        this.setY(((float) ypct)/100*pHeight);
+    }
+
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);

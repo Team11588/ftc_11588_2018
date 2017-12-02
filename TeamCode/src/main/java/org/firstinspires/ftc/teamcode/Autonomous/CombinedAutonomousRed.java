@@ -19,7 +19,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
-import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -81,6 +80,7 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
     private int sampleBox_y2;
 
 
+
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -118,7 +118,20 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
 
         String text = null;
 
-        readFile();
+        if (!isCameraAvailable()) {
+            return;
+        }
+        startCamera();
+
+        while (yuvImage == null) ;
+
+        readConfigFile();
+
+        this.jewel.moveBox(sampleBox_x1, sampleBox_y1);
+        this.jewel.sampleLeftXPct = sampleBox_x1;
+        this.jewel.sampleTopYPct = sampleBox_y1;
+        this.jewel.sampleRightXPct = sampleBox_x2;
+        this.jewel.sampleBotYPct = sampleBox_y2;
 
         telemetry.addData("x1", "%d", sampleBox_x1);
         telemetry.addData("y1", "%d", sampleBox_y1);
@@ -127,12 +140,6 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
         telemetry.addData(String.valueOf(width), height);
         telemetry.update();
 
-
-        if (!isCameraAvailable()) {
-            return;
-        }
-        startCamera();
-        while (yuvImage == null) ;
 
         telemetry.addData("ready" , "");
         telemetry.update();
@@ -482,7 +489,7 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
         else
             return false;
     }
-        public void readFile() {
+        public void readConfigFile() {
             File sd = Environment.getExternalStorageDirectory();
             File sampleBox = new File(sd + "/team", "sampleBox.txt" );
 
