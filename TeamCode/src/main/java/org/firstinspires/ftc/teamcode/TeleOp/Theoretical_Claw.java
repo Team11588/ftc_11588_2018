@@ -43,7 +43,23 @@ public class Theoretical_Claw extends OpMode {
            double newPosition = Range.clip( position - SERVO_SHIFT, Servo.MIN_POSITION, Servo.MAX_POSITION);
            robot.claw.setPosition(newPosition);
            telemetry.addData("position" , position);
+
+           double tgtPower = 0;
+
+               tgtPower = -this.gamepad1.left_stick_y;
+              // check to see if we need to move the servo.
+               if(gamepad1.y) {
+                   // move to 0 degrees.
+                   robot.claw.setPosition(0);
+               } else if (gamepad1.x || gamepad1.y) {
+                   // move to 90 degrees.
+                   robot.claw.setPosition(0.5);
+
+
+
+
        }
+
 telemetry.update();
 
     }
