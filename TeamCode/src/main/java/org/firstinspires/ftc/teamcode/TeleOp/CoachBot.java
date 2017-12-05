@@ -30,6 +30,5 @@ public class CoachBot extends OpMode {
         else {
             armMotor.setPower(0.0);
         }
-        gamepad1.
     }
 }
