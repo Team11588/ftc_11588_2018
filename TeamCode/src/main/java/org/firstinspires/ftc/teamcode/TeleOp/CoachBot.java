@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.Servo;
  * Created by butterss21317 on 12/2/2017.
  */
 
-@TeleOp(name="DXM TeleOp" , group = "TeleOp")
+@TeleOp(name="CoachBot" , group = "TeleOp")
 public class CoachBot extends OpMode {
     DcMotor armMotor;
     Servo handServo;
@@ -30,6 +30,7 @@ public class CoachBot extends OpMode {
         else {
             armMotor.setPower(0.0);
         }
-        gamepad1.
+    //gamepad1.
+
     }
 }
