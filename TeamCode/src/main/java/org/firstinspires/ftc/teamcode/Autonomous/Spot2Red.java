@@ -62,6 +62,7 @@ public class Spot2Red extends LinearOpModeCamera {
     HardwareMap hwMap = null;
     BNO055IMU imu;
     public int startingPosition = 1;
+
     Orientation angles;
     Acceleration gravity;
 
@@ -110,7 +111,7 @@ public class Spot2Red extends LinearOpModeCamera {
         imu.initialize(parameters);
 
         imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
-
+/*
         File sd = Environment.getExternalStorageDirectory();
         File sampleBox = new File(sd + "/team", "sampleBox.txt");
 
@@ -137,13 +138,13 @@ public class Spot2Red extends LinearOpModeCamera {
         telemetry.addData("y2", "%d", sampleBox_y2);
         telemetry.addData(String.valueOf(width), height);
         telemetry.update();
+*/
 
-
-        telemetry.addData("ready" , "");
+        telemetry.addData("ready", "");
         telemetry.update();
 
         waitForStart();
-        Bitmap rgbImage = convertYuvImageToRgb(yuvImage, width, height, 0);
+       /* Bitmap rgbImage = convertYuvImageToRgb(yuvImage, width, height, 0);
         stopCamera();
 
         saveBitmap(imageName, rgbImage);
@@ -169,9 +170,10 @@ public class Spot2Red extends LinearOpModeCamera {
             telemetry.addLine("Could not read bitmap");
 
         }
-        angles   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+       */
+        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
-        drawSamplingBox(bitmap);
+        //   drawSamplingBox(bitmap);
 
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
@@ -190,7 +192,7 @@ public class Spot2Red extends LinearOpModeCamera {
 
         //**********************************************************************************************
 
-        relicTrackables.activate();
+        //  relicTrackables.activate();
 
 
         int mark = 0;
@@ -224,9 +226,9 @@ public class Spot2Red extends LinearOpModeCamera {
         }
         while (mark == 0);
 */
-        angles   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
-        if (isOurJewelonLeft(bitmap)) {
+       /* if (isOurJewelonLeft(bitmap)) {
             toJewel();
 
             telemetry.addData("left", "");
@@ -234,61 +236,28 @@ public class Spot2Red extends LinearOpModeCamera {
 
             knockJewelRight();
 
-            knockJewelLeft();
-            knockJewelLeft();
+
         } else {
-            toJewel();
+*/
+        toJewel();
 
-            telemetry.addData("right", "");
-            telemetry.update();
+        telemetry.addData("right", "");
+        telemetry.update();
 
 
-            knockJewelLeft();
-        }
+        knockJewelRight();
 
-        angles   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+
+        knockJewelRight();
+
+        leftTurn();
 
         knockJewelLeft();
 
-        robot.bLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        robot.bRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        robot.fLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        robot.fRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftTurn();
 
-        while (angles.firstAngle < 89) {
-
-            angles   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-
-            if (angles != null) {
-
-                if (angles.firstAngle < 35) {
-                    robot.fLeft.setPower(-.5);
-                    robot.bLeft.setPower(-.5);
-                    robot.fRight.setPower(.5);
-                    robot.bRight.setPower(.5);
-                } else if (angles.firstAngle < 50) {
-                    robot.fLeft.setPower(-.35);
-                    robot.bLeft.setPower(-.35);
-                    robot.fRight.setPower(.35);
-                    robot.bRight.setPower(.35);
-                } else if (angles.firstAngle < 80) {
-                    robot.fLeft.setPower(-.2);
-                    robot.bLeft.setPower(-.2);
-                    robot.fRight.setPower(.2);
-                    robot.bRight.setPower(.2);
-                } else {
-                    robot.fLeft.setPower(0);
-                    robot.bLeft.setPower(0);
-                    robot.fRight.setPower(0);
-                    robot.bRight.setPower(0);
-                }
-
-            }
-
-            telemetry.addData("imu" , angles.firstAngle);
-            telemetry.update();
-        }
-        while (opModeIsActive());
+        while (opModeIsActive()) ;
     }
 
     public static double[] RGBtoHSV(double r, double g, double b) {
@@ -373,6 +342,110 @@ public class Spot2Red extends LinearOpModeCamera {
 
     }
 
+    public void leftTurn() {
+
+       float goalAngle;
+        float y;
+        robot.bLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.bRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.fLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.fRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+
+         float absGoalAngle = angles.firstAngle + 90;
+
+        if (absGoalAngle > 180) {
+            y = absGoalAngle - 180;
+            goalAngle = -180 + y;
+        }
+        else if (absGoalAngle < -180){
+            y = absGoalAngle + 180;
+            goalAngle = 180 + y;
+        }
+        else {
+            goalAngle = absGoalAngle;
+        }
+
+        while (angles.firstAngle < goalAngle - 4) {
+
+            angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+
+            if (angles.firstAngle < goalAngle - 65) {
+                robot.fLeft.setPower(-.5);
+                robot.bLeft.setPower(-.5);
+                robot.fRight.setPower(.5);
+                robot.bRight.setPower(.5);
+            } else if (angles.firstAngle < goalAngle - 40) {
+                robot.fLeft.setPower(-.35);
+                robot.bLeft.setPower(-.35);
+                robot.fRight.setPower(.35);
+                robot.bRight.setPower(.35);
+            } else if (angles.firstAngle < goalAngle - 2) {
+                robot.fLeft.setPower(-.2);
+                robot.bLeft.setPower(-.2);
+                robot.fRight.setPower(.2);
+                robot.bRight.setPower(.2);
+            } else {
+                robot.fLeft.setPower(0);
+                robot.bLeft.setPower(0);
+                robot.fRight.setPower(0);
+                robot.bRight.setPower(0);
+            }
+            telemetry.addData("imu", angles.firstAngle);
+            telemetry.update();
+        }
+    }
+/*
+    public void rightTurn() {
+
+        robot.bLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.bRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.fLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.fRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+
+        float goalAngle = angles.firstAngle -90;
+
+        if ((angles.firstAngle-90)<180)
+
+
+        while (angles.firstAngle > goalAngle+4) {
+
+            angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+
+
+            if (angles != null) {
+
+                if (angles.firstAngle > goalAngle+65) {
+                    robot.fLeft.setPower(.5);
+                    robot.bLeft.setPower(.5);
+                    robot.fRight.setPower(-.5);
+                    robot.bRight.setPower(-.5);
+                } else if (angles.firstAngle > goalAngle+40) {
+                    robot.fLeft.setPower(.35);
+                    robot.bLeft.setPower(.35);
+                    robot.fRight.setPower(-.35);
+                    robot.bRight.setPower(-.35);
+                } else if (angles.firstAngle > goalAngle+ 2) {
+                    robot.fLeft.setPower(.2);
+                    robot.bLeft.setPower(.2);
+                    robot.fRight.setPower(-.2);
+                    robot.bRight.setPower(-.2);
+                } else {
+                    robot.fLeft.setPower(0);
+                    robot.bLeft.setPower(0);
+                    robot.fRight.setPower(0);
+                    robot.bRight.setPower(0);
+                }
+            }
+
+            telemetry.addData("imu", angles.firstAngle);
+            telemetry.update();
+        }
+    }
+*/
     public void knockJewelLeft() {
 
         robot.bLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);

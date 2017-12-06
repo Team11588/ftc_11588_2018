@@ -99,6 +99,8 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
         robot.fLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.fRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
+        telemetry.addData("1","");
+        telemetry.update();
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
@@ -107,6 +109,9 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
         parameters.loggingEnabled = true;
         parameters.loggingTag = "IMU";
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
+
+        telemetry.addData("2","");
+        telemetry.update();
 
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
@@ -117,6 +122,9 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
         File sampleBox = new File(sd + "/team", "sampleBox.txt");
 
         String text = null;
+
+        telemetry.addData("3","");
+        telemetry.update();
 
         if (!isCameraAvailable()) {
             return;
@@ -250,7 +258,8 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
 
         angles   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
-        knockJewelLeft();
+        knockJewelRight();
+        knockJewelRight();
 
         robot.bLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.bRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
