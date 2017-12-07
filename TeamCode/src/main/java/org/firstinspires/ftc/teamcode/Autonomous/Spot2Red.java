@@ -22,6 +22,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
+import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
@@ -111,7 +112,7 @@ public class Spot2Red extends LinearOpModeCamera {
         imu.initialize(parameters);
 
         imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
-/*
+
         File sd = Environment.getExternalStorageDirectory();
         File sampleBox = new File(sd + "/team", "sampleBox.txt");
 
@@ -138,13 +139,13 @@ public class Spot2Red extends LinearOpModeCamera {
         telemetry.addData("y2", "%d", sampleBox_y2);
         telemetry.addData(String.valueOf(width), height);
         telemetry.update();
-*/
+
 
         telemetry.addData("ready", "");
         telemetry.update();
 
         waitForStart();
-       /* Bitmap rgbImage = convertYuvImageToRgb(yuvImage, width, height, 0);
+        Bitmap rgbImage = convertYuvImageToRgb(yuvImage, width, height, 0);
         stopCamera();
 
         saveBitmap(imageName, rgbImage);
@@ -170,10 +171,10 @@ public class Spot2Red extends LinearOpModeCamera {
             telemetry.addLine("Could not read bitmap");
 
         }
-       */
+
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
-        //   drawSamplingBox(bitmap);
+        drawSamplingBox(bitmap);
 
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
@@ -191,8 +192,7 @@ public class Spot2Red extends LinearOpModeCamera {
         relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
 
         //**********************************************************************************************
-
-        //  relicTrackables.activate();
+          relicTrackables.activate();
 
 
         int mark = 0;
@@ -205,7 +205,7 @@ public class Spot2Red extends LinearOpModeCamera {
 
 // This can be used to identify the pictograph and this loop will run until it is found and it'll store the mark
 
-       /* do {
+        do {
 
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
             if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
@@ -225,10 +225,10 @@ public class Spot2Red extends LinearOpModeCamera {
             }
         }
         while (mark == 0);
-*/
-        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
-       /* if (isOurJewelonLeft(bitmap)) {
+      angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+
+       if (isOurJewelonLeft(bitmap)) {
             toJewel();
 
             telemetry.addData("left", "");
@@ -238,8 +238,8 @@ public class Spot2Red extends LinearOpModeCamera {
 
 
         } else {
-*/
-        toJewel();
+           toJewel();
+
 
         telemetry.addData("right", "");
         telemetry.update();
@@ -258,6 +258,9 @@ public class Spot2Red extends LinearOpModeCamera {
         leftTurn();
 
         while (opModeIsActive()) ;
+    }
+
+
     }
 
     public static double[] RGBtoHSV(double r, double g, double b) {
@@ -344,7 +347,7 @@ public class Spot2Red extends LinearOpModeCamera {
 
     public void leftTurn() {
 
-       float goalAngle;
+        float goalAngle;
         float y;
         robot.bLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.bRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -353,19 +356,19 @@ public class Spot2Red extends LinearOpModeCamera {
 
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
-         float absGoalAngle = angles.firstAngle + 90;
+        float absGoalAngle = angles.firstAngle + 90;
 
         if (absGoalAngle > 180) {
             y = absGoalAngle - 180;
             goalAngle = -180 + y;
-        }
-        else if (absGoalAngle < -180){
+        } else if (absGoalAngle < -180) {
             y = absGoalAngle + 180;
             goalAngle = 180 + y;
-        }
-        else {
+        } else {
             goalAngle = absGoalAngle;
         }
+
+        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
         while (angles.firstAngle < goalAngle - 4) {
 
@@ -396,9 +399,10 @@ public class Spot2Red extends LinearOpModeCamera {
             telemetry.update();
         }
     }
-/*
-    public void rightTurn() {
 
+    public void rightTurn() {
+        float goalAngle;
+        float y;
         robot.bLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.bRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.fLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -406,10 +410,17 @@ public class Spot2Red extends LinearOpModeCamera {
 
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
-        float goalAngle = angles.firstAngle -90;
+        float absGoalAngle = angles.firstAngle + 90;
 
-        if ((angles.firstAngle-90)<180)
-
+        if (absGoalAngle > 180) {
+            y = absGoalAngle - 180;
+            goalAngle = -180 + y;
+        } else if (absGoalAngle < -180) {
+            y = absGoalAngle + 180;
+            goalAngle = 180 + y;
+        } else {
+            goalAngle = absGoalAngle;
+        }
 
         while (angles.firstAngle > goalAngle+4) {
 
@@ -445,7 +456,7 @@ public class Spot2Red extends LinearOpModeCamera {
             telemetry.update();
         }
     }
-*/
+
     public void knockJewelLeft() {
 
         robot.bLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);

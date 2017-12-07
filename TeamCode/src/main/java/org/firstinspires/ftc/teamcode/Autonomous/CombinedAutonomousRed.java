@@ -24,6 +24,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
@@ -58,7 +59,7 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
 
 
     public String teamColor = "red";
-    public   static final int ENCODER_RUN = 1140;
+    public static final int ENCODER_RUN = 1140;
 
     HardwareDxm robot = new HardwareDxm();
     HardwareMap hwMap = null;
@@ -80,7 +81,6 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
     private int sampleBox_y2;
 
 
-
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -99,7 +99,7 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
         robot.fLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.fRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        telemetry.addData("1","");
+        telemetry.addData("1", "");
         telemetry.update();
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
@@ -110,7 +110,7 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
         parameters.loggingTag = "IMU";
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
 
-        telemetry.addData("2","");
+        telemetry.addData("2", "");
         telemetry.update();
 
         imu = hardwareMap.get(BNO055IMU.class, "imu");
@@ -123,7 +123,7 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
 
         String text = null;
 
-        telemetry.addData("3","");
+        telemetry.addData("3", "");
         telemetry.update();
 
         if (!isCameraAvailable()) {
@@ -133,7 +133,7 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
 
         while (yuvImage == null) ;
 
-        readConfigFile();
+//        readConfigFile();
 
         this.jewel.moveBox(sampleBox_x1, sampleBox_y1);
         this.jewel.sampleLeftXPct = sampleBox_x1;
@@ -149,7 +149,7 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
         telemetry.update();
 
 
-        telemetry.addData("ready" , "");
+        telemetry.addData("ready", "");
         telemetry.update();
 
         waitForStart();
@@ -179,7 +179,7 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
             telemetry.addLine("Could not read bitmap");
 
         }
-        angles   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
         drawSamplingBox(bitmap);
 
@@ -213,7 +213,7 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
 
 // This can be used to identify the pictograph and this loop will run until it is found and it'll store the mark
 
-       /* do {
+        do {
 
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
             if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
@@ -233,8 +233,8 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
             }
         }
         while (mark == 0);
-*/
-        angles   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+
+        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
         if (isOurJewelonLeft(bitmap)) {
             toJewel();
@@ -256,51 +256,18 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
             knockJewelLeft();
         }
 
-        angles   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
         knockJewelRight();
         knockJewelRight();
+        leftTurn();
 
-        robot.bLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        robot.bRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        robot.fLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        robot.fRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        telemetry.addData("imu", angles.firstAngle);
+        telemetry.update();
 
-        while (angles.firstAngle > -89) {
-
-            angles   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-
-            if (angles != null) {
-
-                if (angles.firstAngle > -35) {
-                    robot.fLeft.setPower(.5);
-                    robot.bLeft.setPower(.5);
-                    robot.fRight.setPower(-.5);
-                    robot.bRight.setPower(-.5);
-                } else if (angles.firstAngle > -50) {
-                    robot.fLeft.setPower(.35);
-                    robot.bLeft.setPower(.35);
-                    robot.fRight.setPower(-.35);
-                    robot.bRight.setPower(-.35);
-                } else if (angles.firstAngle > -80) {
-                    robot.fLeft.setPower(.2);
-                    robot.bLeft.setPower(.2);
-                    robot.fRight.setPower(-.2);
-                    robot.bRight.setPower(-.2);
-                } else {
-                    robot.fLeft.setPower(0);
-                    robot.bLeft.setPower(0);
-                    robot.fRight.setPower(0);
-                    robot.bRight.setPower(0);
-                }
-
-            }
-
-            telemetry.addData("imu" , angles.firstAngle);
-            telemetry.update();
-        }
-        while (opModeIsActive());
+        while(opModeIsActive());
     }
+
 
     public static double[] RGBtoHSV(double r, double g, double b) {
 
@@ -360,6 +327,110 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
         drive(.5, .5, .5, .5);
 
         while (robot.bLeft.isBusy()) ;
+    }
+
+    public void leftTurn() {
+
+        float goalAngle;
+        float y;
+        robot.bLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.bRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.fLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.fRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+
+        float absGoalAngle = angles.firstAngle + 90;
+
+        if (absGoalAngle > 180) {
+            y = absGoalAngle - 180;
+            goalAngle = -180 + y;
+        } else if (absGoalAngle < -180) {
+            y = absGoalAngle + 180;
+            goalAngle = 180 + y;
+        } else {
+            goalAngle = absGoalAngle;
+        }
+
+        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+
+        while (angles.firstAngle < goalAngle - 4) {
+
+            angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+
+            if (angles.firstAngle < goalAngle - 65) {
+                robot.fLeft.setPower(-.5);
+                robot.bLeft.setPower(-.5);
+                robot.fRight.setPower(.5);
+                robot.bRight.setPower(.5);
+            } else if (angles.firstAngle < goalAngle - 40) {
+                robot.fLeft.setPower(-.35);
+                robot.bLeft.setPower(-.35);
+                robot.fRight.setPower(.35);
+                robot.bRight.setPower(.35);
+            } else if (angles.firstAngle < goalAngle - 2) {
+                robot.fLeft.setPower(-.2);
+                robot.bLeft.setPower(-.2);
+                robot.fRight.setPower(.2);
+                robot.bRight.setPower(.2);
+            } else {
+                robot.fLeft.setPower(0);
+                robot.bLeft.setPower(0);
+                robot.fRight.setPower(0);
+                robot.bRight.setPower(0);
+            }
+            telemetry.addData("imu", angles.firstAngle);
+            telemetry.update();
+        }
+    }
+
+    public void rightTurn() {
+
+        robot.bLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.bRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.fLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.fRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+
+        float goalAngle = angles.firstAngle -90;
+
+        if ((angles.firstAngle-90)<180)
+
+
+            while (angles.firstAngle > goalAngle+4) {
+
+                angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+
+
+                if (angles != null) {
+
+                    if (angles.firstAngle > goalAngle+65) {
+                        robot.fLeft.setPower(.5);
+                        robot.bLeft.setPower(.5);
+                        robot.fRight.setPower(-.5);
+                        robot.bRight.setPower(-.5);
+                    } else if (angles.firstAngle > goalAngle+40) {
+                        robot.fLeft.setPower(.35);
+                        robot.bLeft.setPower(.35);
+                        robot.fRight.setPower(-.35);
+                        robot.bRight.setPower(-.35);
+                    } else if (angles.firstAngle > goalAngle+ 2) {
+                        robot.fLeft.setPower(.2);
+                        robot.bLeft.setPower(.2);
+                        robot.fRight.setPower(-.2);
+                        robot.bRight.setPower(-.2);
+                    } else {
+                        robot.fLeft.setPower(0);
+                        robot.bLeft.setPower(0);
+                        robot.fRight.setPower(0);
+                        robot.bRight.setPower(0);
+                    }
+                }
+
+                telemetry.addData("imu", angles.firstAngle);
+                telemetry.update();
+            }
     }
 
     public void knockJewelRight() {
@@ -498,31 +569,31 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
         else
             return false;
     }
-        public void readConfigFile() {
-            File sd = Environment.getExternalStorageDirectory();
-            File sampleBox = new File(sd + "/team", "sampleBox.txt" );
 
-            String text = null;
+    public void readConfigFile() {
+        File sd = Environment.getExternalStorageDirectory();
+        File sampleBox = new File(sd + "/team", "sampleBox.txt");
 
-            try
-            {
-                BufferedReader reader = new BufferedReader(new FileReader(sampleBox));
-                text = reader.readLine();
-                teamColor = text;
-                text = reader.readLine();
-                startingPosition = Integer.parseInt(text);
-                text = reader.readLine();
-                sampleBox_x1 = Integer.parseInt(text);
-                text = reader.readLine();
-                sampleBox_y1 = Integer.parseInt(text);
-                text = reader.readLine();
-                sampleBox_x2 = Integer.parseInt(text);
-                text = reader.readLine();
-                sampleBox_y2 = Integer.parseInt(text);
-                reader.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-                telemetry.addData("","couldn't read");
-            }
+        String text = null;
+
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(sampleBox));
+            text = reader.readLine();
+            teamColor = text;
+            text = reader.readLine();
+            startingPosition = Integer.parseInt(text);
+            text = reader.readLine();
+            sampleBox_x1 = Integer.parseInt(text);
+            text = reader.readLine();
+            sampleBox_y1 = Integer.parseInt(text);
+            text = reader.readLine();
+            sampleBox_x2 = Integer.parseInt(text);
+            text = reader.readLine();
+            sampleBox_y2 = Integer.parseInt(text);
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            telemetry.addData("", "couldn't read");
         }
     }
+}
