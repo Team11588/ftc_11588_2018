@@ -30,39 +30,35 @@ public class Theoretical_Claw extends OpMode {
         double triggerR2 = gamepad1.right_trigger;
         double triggerL2 = gamepad1.left_trigger;
 
-        if (triggerL2 > 0.5)
-       {
-           double position = robot.claw.getPosition();
-           double newPosition = Range.clip( position + SERVO_SHIFT, Servo.MIN_POSITION, Servo.MAX_POSITION);
-           robot.claw.setPosition(newPosition);
-           telemetry.addData("position" , position);
-       }
-       else if (triggerR2 > .5)
-       {
-           double position = robot.claw.getPosition();
-           double newPosition = Range.clip( position - SERVO_SHIFT, Servo.MIN_POSITION, Servo.MAX_POSITION);
-           robot.claw.setPosition(newPosition);
-           telemetry.addData("position" , position);
+        if (triggerL2 > 0.5) {
+            double position = robot.claw.getPosition();
+            double newPosition = Range.clip(position + SERVO_SHIFT, Servo.MIN_POSITION, Servo.MAX_POSITION);
+            robot.claw.setPosition(newPosition);
+            telemetry.addData("position", position);
+        } else if (triggerR2 > .5) {
+            double position = robot.claw.getPosition();
+            double newPosition = Range.clip(position - SERVO_SHIFT, Servo.MIN_POSITION, Servo.MAX_POSITION);
+            robot.claw.setPosition(newPosition);
+            telemetry.addData("position", position);
 
-           double tgtPower = 0;
+            double tgtPower = 0;
 
-               tgtPower = -this.gamepad1.left_stick_y;
-              // check to see if we need to move the servo.
-               if(gamepad1.y) {
-                   // move to 0 degrees.
-                   robot.claw.setPosition(0);
-               } else if (gamepad1.x || gamepad1.y) {
-                   // move to 90 degrees.
-                   robot.claw.setPosition(0.5);
+            tgtPower = -this.gamepad1.left_stick_y;
+            // check to see if we need to move the servo.
+            if (gamepad1.y) {
+                // move to 0 degrees.
+                robot.claw.setPosition(0);
+            } else if (gamepad1.x || gamepad1.y) {
+                // move to 90 degrees.
+                robot.claw.setPosition(0.5);
 
 
+            }
 
+            telemetry.update();
 
-       }
-
-telemetry.update();
-
+        }
     }
-    }
+}
 
 
