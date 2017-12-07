@@ -36,7 +36,6 @@ import java.io.OutputStream;
 ????????????????????????Pixel Testing??????????????????????????????????
  */
 
-@Autonomous (name = "RobotSetUp")
 public class RobotSetUp extends LinearOpModeCamera {
 
     VuforiaLocalizer vuforia;
@@ -47,7 +46,7 @@ public class RobotSetUp extends LinearOpModeCamera {
     int teamPosition = 1;
 
     File sd = Environment.getExternalStorageDirectory();
-    File sampleBox = new File(sd + "/team", "sampleBox.txt" );
+    File sampleBox = new File(sd + "/Picture", "sampleBox.txt" );
 
     @Override
     public void runOpMode() throws InterruptedException {
