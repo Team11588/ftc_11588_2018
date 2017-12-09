@@ -35,7 +35,7 @@ import java.io.OutputStream;
 &&&&&&&&&&&&&&&&&&&&&&&&Picture Taking&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 ????????????????????????Pixel Testing??????????????????????????????????
  */
-
+@Autonomous (name = "RobotSetUP")
 public class RobotSetUp extends LinearOpModeCamera {
 
     VuforiaLocalizer vuforia;
@@ -46,13 +46,13 @@ public class RobotSetUp extends LinearOpModeCamera {
     int teamPosition = 1;
 
     File sd = Environment.getExternalStorageDirectory();
-    File sampleBox = new File(sd + "/Picture", "sampleBox.txt" );
+    File sampleBox = new File(sd + "/Picture", "sampleBox.txt");
 
     @Override
     public void runOpMode() throws InterruptedException {
 
         if (!isCameraAvailable()) {
-            telemetry.addData("camera is not available","");
+            telemetry.addData("camera is not available", "");
             telemetry.update();
             waitForStart();
         }
@@ -74,8 +74,8 @@ public class RobotSetUp extends LinearOpModeCamera {
         telemetry.addData("", "x position = %f", jewel.getX());
         telemetry.addData("", "y position = %f", jewel.getY());
 
-        telemetry.addData("", "x-cords = %d", ((boxCords[0])/100*jewel.pWidth));
-        telemetry.addData("", "y-cords = %d", ((boxCords[1])/100*jewel.pHeight));
+        telemetry.addData("", "x-cords = %d", ((boxCords[0]) / 100 * jewel.pWidth));
+        telemetry.addData("", "y-cords = %d", ((boxCords[1]) / 100 * jewel.pHeight));
 
         telemetry.update();
 
@@ -140,7 +140,7 @@ public class RobotSetUp extends LinearOpModeCamera {
     }
 
 
-    public void takePicture (){
+    public void takePicture() {
 
         String filePath = "Pictures";
         String imageName = "RobotSetUp.JPEG";
@@ -149,7 +149,7 @@ public class RobotSetUp extends LinearOpModeCamera {
         savePic(imageName, rgbImage);
     }
 
-    public void createBoxBitmap(){
+    public void createBoxBitmap() {
         Bitmap rgbImage = convertYuvImageToRgb(yuvImage, width, height, 0);
         drawSamplingBox(rgbImage);
     }
@@ -169,44 +169,42 @@ public class RobotSetUp extends LinearOpModeCamera {
         //saveFile();
     }
 
-    public void savePic (String filename, Bitmap bitmap){
+    public void savePic(String filename, Bitmap bitmap) {
         File sd = Environment.getExternalStorageDirectory();
         File image = new File(sd + "/" + "Pictures", filename);
         try
 
         {
             OutputStream outStream = new FileOutputStream(image);
-            bitmap.compress( Bitmap.CompressFormat.PNG, 0, outStream);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 0, outStream);
             outStream.flush();
             outStream.close();
-        } catch(Exception e)
+        } catch (Exception e)
 
         {
             telemetry.addData("NEED TO FIX", e.getMessage());
         }
     }
 
-    public void saveConfigFile(){
+    public void saveConfigFile() {
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(sampleBox))){
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(sampleBox))) {
 
             writer.write(teamColor);
             writer.newLine();
-            writer.write(String.format("%03d",teamPosition));
+            writer.write(String.format("%03d", teamPosition));
             writer.newLine();
-            writer.write(String.format("%03d",jewel.sampleLeftXPct), 0 , 3);
+            writer.write(String.format("%03d", jewel.sampleLeftXPct), 0, 3);
             writer.newLine();
-            writer.write(String.format("%03d",jewel.sampleTopYPct), 0 , 3);
+            writer.write(String.format("%03d", jewel.sampleTopYPct), 0, 3);
             writer.newLine();
-            writer.write(String.format("%03d",jewel.sampleRightXPct), 0 , 3);
+            writer.write(String.format("%03d", jewel.sampleRightXPct), 0, 3);
             writer.newLine();
-            writer.write(String.format("%03d",jewel.sampleBotYPct), 0 , 3);
+            writer.write(String.format("%03d", jewel.sampleBotYPct), 0, 3);
             writer.newLine();
 
 
-
-        }catch(IOException yee)
-        {
+        } catch (IOException yee) {
             telemetry.addData("ERROR WRITING TO FILE", yee.getMessage());
         }
     }
@@ -220,8 +218,7 @@ public class RobotSetUp extends LinearOpModeCamera {
 
         String text = null;
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(sampleBox)))
-        {
+        try (BufferedReader reader = new BufferedReader(new FileReader(sampleBox))) {
             text = reader.readLine();
             teamColor = text;
             text = reader.readLine();
@@ -236,17 +233,17 @@ public class RobotSetUp extends LinearOpModeCamera {
             sampleBox_y2 = Integer.parseInt(text);
         } catch (IOException e) {
             e.printStackTrace();
-            telemetry.addData("","couldn't read");
+            telemetry.addData("", "couldn't read");
 
-            int[] defaultCords = {50,50,70,70};
+            int[] defaultCords = {50, 50, 70, 70};
             return defaultCords;
         }
-        telemetry.addData("","start x: %d", sampleBox_x1);
-        telemetry.addData("","start y: %d", sampleBox_y1);
-        telemetry.addData("","end x: %d", sampleBox_x2);
-        telemetry.addData("","end y: %d", sampleBox_y2);
+        telemetry.addData("", "start x: %d", sampleBox_x1);
+        telemetry.addData("", "start y: %d", sampleBox_y1);
+        telemetry.addData("", "end x: %d", sampleBox_x2);
+        telemetry.addData("", "end y: %d", sampleBox_y2);
 
-        int[] boxCords= {sampleBox_x1, sampleBox_y1, sampleBox_x2, sampleBox_y2};
+        int[] boxCords = {sampleBox_x1, sampleBox_y1, sampleBox_x2, sampleBox_y2};
 
         return boxCords;
     }

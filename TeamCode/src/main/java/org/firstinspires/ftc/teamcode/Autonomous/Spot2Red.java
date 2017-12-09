@@ -347,17 +347,15 @@ public class Spot2Red extends LinearOpModeCamera {
 
     public void leftTurn() {
 
-        float goalAngle;
-        float y;
+        int goalAngle = getCurrentAngle() + 90;
+
         robot.bLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.bRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.fLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.fRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-
-        float absGoalAngle = angles.firstAngle + 90;
-
+        //  float absGoalAngle = angles.firstAngle + 90;
+/*
         if (absGoalAngle > 180) {
             y = absGoalAngle - 180;
             goalAngle = -180 + y;
@@ -367,24 +365,25 @@ public class Spot2Red extends LinearOpModeCamera {
         } else {
             goalAngle = absGoalAngle;
         }
+*/
 
-        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        int angle = getCurrentAngle();
 
-        while (angles.firstAngle < goalAngle - 4) {
+        while (angle < goalAngle - 4) {
 
-            angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+            angle = getCurrentAngle();
 
-            if (angles.firstAngle < goalAngle - 65) {
+            if (angle < goalAngle - 65) {
                 robot.fLeft.setPower(-.5);
                 robot.bLeft.setPower(-.5);
                 robot.fRight.setPower(.5);
                 robot.bRight.setPower(.5);
-            } else if (angles.firstAngle < goalAngle - 40) {
+            } else if (angle < goalAngle - 40) {
                 robot.fLeft.setPower(-.35);
                 robot.bLeft.setPower(-.35);
                 robot.fRight.setPower(.35);
                 robot.bRight.setPower(.35);
-            } else if (angles.firstAngle < goalAngle - 2) {
+            } else if (angle < goalAngle - 2) {
                 robot.fLeft.setPower(-.2);
                 robot.bLeft.setPower(-.2);
                 robot.fRight.setPower(.2);
@@ -395,66 +394,52 @@ public class Spot2Red extends LinearOpModeCamera {
                 robot.fRight.setPower(0);
                 robot.bRight.setPower(0);
             }
-            telemetry.addData("imu", angles.firstAngle);
+            telemetry.addData("imu", angle);
             telemetry.update();
         }
     }
 
     public void rightTurn() {
-        float goalAngle;
-        float y;
+
         robot.bLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.bRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.fLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.fRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
-        float absGoalAngle = angles.firstAngle + 90;
-
-        if (absGoalAngle > 180) {
-            y = absGoalAngle - 180;
-            goalAngle = -180 + y;
-        } else if (absGoalAngle < -180) {
-            y = absGoalAngle + 180;
-            goalAngle = 180 + y;
-        } else {
-            goalAngle = absGoalAngle;
-        }
-
-        while (angles.firstAngle > goalAngle+4) {
-
-            angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        int goalAngle = getCurrentAngle() - 90;
 
 
-            if (angles != null) {
+        int angle = getCurrentAngle();
 
-                if (angles.firstAngle > goalAngle+65) {
-                    robot.fLeft.setPower(.5);
-                    robot.bLeft.setPower(.5);
-                    robot.fRight.setPower(-.5);
-                    robot.bRight.setPower(-.5);
-                } else if (angles.firstAngle > goalAngle+40) {
-                    robot.fLeft.setPower(.35);
-                    robot.bLeft.setPower(.35);
-                    robot.fRight.setPower(-.35);
-                    robot.bRight.setPower(-.35);
-                } else if (angles.firstAngle > goalAngle+ 2) {
-                    robot.fLeft.setPower(.2);
-                    robot.bLeft.setPower(.2);
-                    robot.fRight.setPower(-.2);
-                    robot.bRight.setPower(-.2);
-                } else {
-                    robot.fLeft.setPower(0);
-                    robot.bLeft.setPower(0);
-                    robot.fRight.setPower(0);
-                    robot.bRight.setPower(0);
-                }
+        while (angle > goalAngle + 4) {
+
+            angle = getCurrentAngle();
+            if (angle > goalAngle + 65) {
+                robot.fLeft.setPower(.5);
+                robot.bLeft.setPower(.5);
+                robot.fRight.setPower(-.5);
+                robot.bRight.setPower(-.5);
+            } else if (angle > goalAngle + 40) {
+                robot.fLeft.setPower(.35);
+                robot.bLeft.setPower(.35);
+                robot.fRight.setPower(-.35);
+                robot.bRight.setPower(-.35);
+            } else if (angle > goalAngle + 2) {
+                robot.fLeft.setPower(.2);
+                robot.bLeft.setPower(.2);
+                robot.fRight.setPower(-.2);
+                robot.bRight.setPower(-.2);
+            } else {
+                robot.fLeft.setPower(0);
+                robot.bLeft.setPower(0);
+                robot.fRight.setPower(0);
+                robot.bRight.setPower(0);
             }
-
-            telemetry.addData("imu", angles.firstAngle);
-            telemetry.update();
         }
+
+        telemetry.addData("imu", angles.firstAngle);
+        telemetry.update();
     }
 
     public void knockJewelLeft() {
@@ -605,4 +590,10 @@ public class Spot2Red extends LinearOpModeCamera {
                 telemetry.addData("","couldn't read");
             }
         }
+
+    public int getCurrentAngle() {
+        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+
+        return ((int) angles.firstAngle + 360) % 360;
+    }
     }

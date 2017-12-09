@@ -20,7 +20,7 @@ import org.firstinspires.ftc.teamcode.Hardware.HardwareDxm;
 
 /**
  * Created by kearneyg20428 on 11/4/2017.
- * This class is set up to quickly test encoder values in order to help the combined
+ * This class is set up to quickly normalizeAngle encoder values in order to help the combined
  *
  */
 
