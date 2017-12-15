@@ -133,7 +133,7 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
 
         while (yuvImage == null) ;
 
-        readConfigFile();
+       // readConfigFile();
 
         this.jewel.moveBox(sampleBox_x1, sampleBox_y1);
         this.jewel.sampleLeftXPct = sampleBox_x1;
@@ -258,13 +258,14 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
         knockJewelRight();
-       */ knockJewelRight();
+       */// knockJewelRight();
 
         //leftTurn();
         //rightTurn();
 
         turn(90, "right" );
 
+//        turn(180, "left");
 
         while (opModeIsActive()) ;
     }
