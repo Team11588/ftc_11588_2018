@@ -133,7 +133,7 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
 
         while (yuvImage == null) ;
 
-        // readConfigFile();
+        //readConfigFile();
 
         this.jewel.moveBox(sampleBox_x1, sampleBox_y1);
         this.jewel.sampleLeftXPct = sampleBox_x1;
@@ -257,7 +257,9 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
 
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
-      knockJewelLeft();
+        knockJewelLeft();
+
+        knockJewelLeft();
 
         turn(90, "right");
 
@@ -325,156 +327,6 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
         drive(.5, .5, .5, .5);
 
         while (robot.bLeft.isBusy()) ;
-    }
-
-    public void leftTurn() {
-
-        int goalAngle = normalizeAngle(getCurrentAngle() + 90);
-
-        robot.bLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        robot.bRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        robot.fLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        robot.fRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-        //  float absGoalAngle = angles.firstAngle + 90;
-/*
-        if (absGoalAngle > 180) {
-            y = absGoalAngle - 180;
-            goalAngle = -180 + y;
-        } else if (absGoalAngle < -180) {
-            y = absGoalAngle + 180;
-            goalAngle = 180 + y;
-        } else {
-            goalAngle = absGoalAngle;
-        }
-*/
-
-        int angle = getCurrentAngle();
-
-        while (angle < goalAngle - 1) {
-
-
-            if (angle < goalAngle - 65) {
-                robot.fLeft.setPower(-.5);
-                robot.bLeft.setPower(-.5);
-                robot.fRight.setPower(.5);
-                robot.bRight.setPower(.5);
-                telemetry.addData("state 1", "");
-            } else if (angle < goalAngle - 40) {
-                robot.fLeft.setPower(-.35);
-                robot.bLeft.setPower(-.35);
-                robot.fRight.setPower(.35);
-                robot.bRight.setPower(.35);
-                telemetry.addData("state 2", "");
-            } else if (angle < goalAngle - 20) {
-                robot.fLeft.setPower(-.2);
-                robot.bLeft.setPower(-.2);
-                robot.fRight.setPower(.2);
-                robot.bRight.setPower(.2);
-                telemetry.addData("state 3", "");
-            } else if (angle < goalAngle - 2) {
-                robot.fLeft.setPower(-.15);
-                robot.bLeft.setPower(-.15);
-                robot.fRight.setPower(.15);
-                robot.bRight.setPower(.15);
-                telemetry.addData("state 4", "");
-            } else {
-                telemetry.addData("state 5", "");
-            }
-
-
-            telemetry.addData("goal", goalAngle);
-            telemetry.addData("angle", angle);
-            telemetry.addData("imu", angles.firstAngle);
-            telemetry.update();
-
-            angle = getCurrentAngle();
-            angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        }
-
-
-        robot.fLeft.setPower(0);
-        robot.bLeft.setPower(0);
-        robot.fRight.setPower(0);
-        robot.bRight.setPower(0);
-
-        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-
-        telemetry.addData("goal", goalAngle);
-        telemetry.addData("angle", angle);
-        telemetry.addData("get current", getCurrentAngle());
-        telemetry.addData("imu", angles.firstAngle);
-        telemetry.update();
-
-    }
-
-    public void rightTurn() {
-
-        robot.bLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        robot.bRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        robot.fLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        robot.fRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-
-        int goalAngle = normalizeAngle(getCurrentAngle() - 90);
-
-
-        int angle = getCurrentAngle();
-
-        while (angle == 0 || angle > goalAngle + 1) {
-
-            if (angle > goalAngle + 65) {
-
-                robot.fLeft.setPower(.5);
-                robot.bLeft.setPower(.5);
-                robot.fRight.setPower(-.5);
-                robot.bRight.setPower(-.5);
-                telemetry.addData("state 1", "");
-
-            } else if (angle > goalAngle + 40) {
-                robot.fLeft.setPower(.35);
-                robot.bLeft.setPower(.35);
-                robot.fRight.setPower(-.35);
-                robot.bRight.setPower(-.35);
-                telemetry.addData("state 2", "");
-
-            } else if (angle > goalAngle + 20) {
-                robot.fLeft.setPower(.2);
-                robot.bLeft.setPower(.2);
-                robot.fRight.setPower(-.2);
-                robot.bRight.setPower(-.2);
-                telemetry.addData("state 3", "");
-            } else if (angle > goalAngle + 2) {
-                robot.fLeft.setPower(.15);
-                robot.bLeft.setPower(.15);
-                robot.fRight.setPower(-.15);
-                robot.bRight.setPower(-.15);
-                telemetry.addData("state 4", "");
-            } else {
-                telemetry.addData("state 5", "");
-            }
-            telemetry.addData("goal", goalAngle);
-            telemetry.addData("angle", angle);
-            telemetry.addData("get current", getCurrentAngle());
-            telemetry.addData("imu", angles.firstAngle);
-            telemetry.update();
-
-            angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-            angle = getCurrentAngle();
-        }
-
-        robot.fLeft.setPower(0);
-        robot.bLeft.setPower(0);
-        robot.fRight.setPower(0);
-        robot.bRight.setPower(0);
-
-        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-
-        telemetry.addData("goal", goalAngle);
-        telemetry.addData("angle", angle);
-        telemetry.addData("get current", getCurrentAngle());
-        telemetry.addData("imu", angles.firstAngle);
-        telemetry.update();
     }
 
     public void knockJewelRight() {
@@ -669,10 +521,13 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
         int start = getCurrentAngle();
         getRelativePosition(goal , direction , start);
 
-        if (direction == "right") {
-            while (getRelativePosition(goal, direction, start) < goal - 2) {
+        int current = getRelativePosition(goal, direction,start);
 
-                if (getRelativePosition(goal, direction, start) < (.27 * goal)) {
+        if (direction == "right") {
+
+            while (getRelativePosition(goal, direction, start) < goal - 4) {
+
+                if (current < (.27 * goal)) {
 
                     robot.fLeft.setPower(.5);
                     robot.bLeft.setPower(.5);
@@ -680,20 +535,20 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
                     robot.bRight.setPower(-.5);
                     telemetry.addData("state 1", "");
 
-                } else if (getRelativePosition(goal, direction, start) < (goal * .56)) {
+                } else if (current < (goal * .56)) {
                     robot.fLeft.setPower(.35);
                     robot.bLeft.setPower(.35);
                     robot.fRight.setPower(-.35);
                     robot.bRight.setPower(-.35);
                     telemetry.addData("state 2", "");
 
-                } else if (getRelativePosition(goal, direction, start) < goal * .78) {
+                } else if (current < goal * .78) {
                     robot.fLeft.setPower(.2);
                     robot.bLeft.setPower(.2);
                     robot.fRight.setPower(-.2);
                     robot.bRight.setPower(-.2);
                     telemetry.addData("state 3", "");
-                } else if (getRelativePosition(goal, direction, start) < goal - 3) {
+                } else if (current < goal - 10) {
                     robot.fLeft.setPower(.15);
                     robot.bLeft.setPower(.15);
                     robot.fRight.setPower(-.15);
@@ -702,8 +557,11 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
                 } else {
                     telemetry.addData("state 5", "");
                 }
+
+                current = getRelativePosition(goal, direction,start);
                 angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
                 telemetry.addData("goal", goal);
+                telemetry.addData("current", current);
                 telemetry.addData("get current", getCurrentAngle());
                 telemetry.addData("imu", angles.firstAngle);
                 telemetry.addData("Relative position", getRelativePosition(goal, direction, start));
@@ -717,35 +575,36 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
 
             angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
+            angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
             telemetry.addData("goal", goal);
+            telemetry.addData("current", current);
             telemetry.addData("get current", getCurrentAngle());
             telemetry.addData("imu", angles.firstAngle);
             telemetry.addData("Relative position", getRelativePosition(goal, direction, start));
             telemetry.update();
         }
         else if (direction == "left") {
-            while (getRelativePosition(goal, direction, start) < goal - 2) {
+            while (current  < goal - 4) {
 
-
-                if (getRelativePosition(goal, direction, start) < (.27 * goal)) {
+                if (current < (.27 * goal)) {
                     robot.fLeft.setPower(-.5);
                     robot.bLeft.setPower(-.5);
                     robot.fRight.setPower(.5);
                     robot.bRight.setPower(.5);
                     telemetry.addData("state 1", "");
-                } else if (getRelativePosition(goal, direction, start) < (goal * .56)) {
+                } else if (current < (goal * .56)) {
                     robot.fLeft.setPower(-.35);
                     robot.bLeft.setPower(-.35);
                     robot.fRight.setPower(.35);
                     robot.bRight.setPower(.35);
                     telemetry.addData("state 2", "");
-                } else if (getRelativePosition(goal, direction, start) < goal * .78) {
+                } else if (current < goal * .78) {
                     robot.fLeft.setPower(-.2);
                     robot.bLeft.setPower(-.2);
                     robot.fRight.setPower(.2);
                     robot.bRight.setPower(.2);
                     telemetry.addData("state 3", "");
-                } else if (getRelativePosition(goal, direction, start) < goal - 3) {
+                } else if (current < goal - 10) {
                     robot.fLeft.setPower(-.15);
                     robot.bLeft.setPower(-.15);
                     robot.fRight.setPower(.15);
@@ -754,15 +613,18 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
                 } else {
                     telemetry.addData("state 5", "");
                 }
-
+                current = getRelativePosition(goal, direction, start);
+                angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
                 angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
                 telemetry.addData("goal", goal);
+                telemetry.addData("current", current);
                 telemetry.addData("get current", getCurrentAngle());
                 telemetry.addData("imu", angles.firstAngle);
                 telemetry.addData("Relative position", getRelativePosition(goal, direction, start));
                 telemetry.update();
 
             }
+
 
 
             robot.fLeft.setPower(0);
@@ -772,7 +634,9 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
 
             angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
+            angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
             telemetry.addData("goal", goal);
+            telemetry.addData("current", current);
             telemetry.addData("get current", getCurrentAngle());
             telemetry.addData("imu", angles.firstAngle);
             telemetry.addData("Relative position", getRelativePosition(goal, direction, start));
