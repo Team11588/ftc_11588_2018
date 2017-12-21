@@ -133,7 +133,7 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
 
         while (yuvImage == null) ;
 
-       // readConfigFile();
+        // readConfigFile();
 
         this.jewel.moveBox(sampleBox_x1, sampleBox_y1);
         this.jewel.sampleLeftXPct = sampleBox_x1;
@@ -212,7 +212,7 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
 
 // This can be used to identify the pictograph and this loop will run until it is found and it'll store the mark
 
-      /*  do {
+        do {
 
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
             if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
@@ -257,15 +257,11 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
 
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
-        knockJewelRight();
-       */// knockJewelRight();
+      knockJewelLeft();
 
-        //leftTurn();
-        //rightTurn();
+        turn(90, "right");
 
-        turn(90, "right" );
 
-//        turn(180, "left");
 
         while (opModeIsActive()) ;
     }
@@ -673,10 +669,10 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
         int start = getCurrentAngle();
         getRelativePosition(goal , direction , start);
 
-        if (direction == "right"){
-            while (getRelativePosition(goal , direction , start)< goal-1) {
+        if (direction == "right") {
+            while (getRelativePosition(goal, direction, start) < goal - 2) {
 
-                if (getRelativePosition(goal , direction , start) < (.27*goal)) {
+                if (getRelativePosition(goal, direction, start) < (.27 * goal)) {
 
                     robot.fLeft.setPower(.5);
                     robot.bLeft.setPower(.5);
@@ -684,20 +680,20 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
                     robot.bRight.setPower(-.5);
                     telemetry.addData("state 1", "");
 
-                } else if ( getRelativePosition(goal , direction , start) < (goal*.56)) {
+                } else if (getRelativePosition(goal, direction, start) < (goal * .56)) {
                     robot.fLeft.setPower(.35);
                     robot.bLeft.setPower(.35);
                     robot.fRight.setPower(-.35);
                     robot.bRight.setPower(-.35);
                     telemetry.addData("state 2", "");
 
-                } else if ( getRelativePosition(goal , direction , start) < goal * .78) {
+                } else if (getRelativePosition(goal, direction, start) < goal * .78) {
                     robot.fLeft.setPower(.2);
                     robot.bLeft.setPower(.2);
                     robot.fRight.setPower(-.2);
                     robot.bRight.setPower(-.2);
                     telemetry.addData("state 3", "");
-                } else if ( getRelativePosition(goal , direction , start)< goal - 2) {
+                } else if (getRelativePosition(goal, direction, start) < goal - 3) {
                     robot.fLeft.setPower(.15);
                     robot.bLeft.setPower(.15);
                     robot.fRight.setPower(-.15);
@@ -710,7 +706,7 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
                 telemetry.addData("goal", goal);
                 telemetry.addData("get current", getCurrentAngle());
                 telemetry.addData("imu", angles.firstAngle);
-                telemetry.addData("Relative position",  getRelativePosition(goal , direction , start));
+                telemetry.addData("Relative position", getRelativePosition(goal, direction, start));
                 telemetry.update();
             }
 
@@ -724,11 +720,11 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
             telemetry.addData("goal", goal);
             telemetry.addData("get current", getCurrentAngle());
             telemetry.addData("imu", angles.firstAngle);
-            telemetry.addData("Relative position",  getRelativePosition(goal , direction , start));
+            telemetry.addData("Relative position", getRelativePosition(goal, direction, start));
             telemetry.update();
         }
         else if (direction == "left") {
-            while (getRelativePosition(goal, direction, start) < goal - 1) {
+            while (getRelativePosition(goal, direction, start) < goal - 2) {
 
 
                 if (getRelativePosition(goal, direction, start) < (.27 * goal)) {
@@ -749,7 +745,7 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
                     robot.fRight.setPower(.2);
                     robot.bRight.setPower(.2);
                     telemetry.addData("state 3", "");
-                } else if (getRelativePosition(goal, direction, start) < goal - 2) {
+                } else if (getRelativePosition(goal, direction, start) < goal - 3) {
                     robot.fLeft.setPower(-.15);
                     robot.bLeft.setPower(-.15);
                     robot.fRight.setPower(.15);
