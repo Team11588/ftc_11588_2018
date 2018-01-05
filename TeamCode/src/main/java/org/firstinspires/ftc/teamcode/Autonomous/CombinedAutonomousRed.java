@@ -133,7 +133,7 @@ public class CombinedAutonomousRed extends LinearOpModeCamera {
 
         while (yuvImage == null) ;
 
-        //readConfigFile();
+        readConfigFile();
 
         this.jewel.moveBox(sampleBox_x1, sampleBox_y1);
         this.jewel.sampleLeftXPct = sampleBox_x1;
