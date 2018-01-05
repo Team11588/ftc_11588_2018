@@ -64,4 +64,17 @@ with machanum wheels all 4 wheels need to be motorized
         bRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
     }
+
+    public void move(double speed, double angle){
+
+        double pFL = (speed * (Math.sin((angle) + ((Math.PI)/4))));
+        double pFR = (speed * (Math.cos((angle) + ((Math.PI)/4))));
+        double pBL = (speed * (Math.cos((angle) + ((Math.PI)/4))));
+        double pBR = (speed * (Math.sin((angle) + ((Math.PI)/4))));
+
+        fLeft.setPower(pFL);
+        fRight.setPower(pFR);
+        bLeft.setPower(pBL);
+        bRight.setPower(pBR);
+    }
 }
