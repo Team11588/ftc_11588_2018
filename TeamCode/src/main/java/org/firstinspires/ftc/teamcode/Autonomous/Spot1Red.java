@@ -54,8 +54,8 @@ import java.io.IOException;
 
 
 
-@Autonomous(name = "Combined Autonomous Red")
-public class Red1 extends LinearOpModeCamera {
+@Autonomous(name = "Spot 1 Red")
+public class Spot1Red extends LinearOpModeCamera {
 
 
     public String teamColor = "red";
@@ -243,8 +243,7 @@ public class Red1 extends LinearOpModeCamera {
 
             knockJewelRight();
 
-            knockJewelLeft();
-            knockJewelLeft();
+            driveForword(2);
         } else {
             toJewel();
 
@@ -257,13 +256,18 @@ public class Red1 extends LinearOpModeCamera {
 
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
-        knockJewelLeft();
+        driveForword(1.25);
 
-        knockJewelLeft();
 
         turn(90, "right");
+// Ihave discovered that to move in between crypto columbs it is 4/5 of a full rotation
 
-
+        if (mark == 1) {
+        } else if (mark == 2) {
+            strafeLeft(.8);
+        } else {
+            strafeLeft(1.6);
+        }
 
         while (opModeIsActive()) ;
     }
@@ -329,6 +333,50 @@ public class Red1 extends LinearOpModeCamera {
         while (robot.bLeft.isBusy()) ;
     }
 
+    public void driveForword(double mult) {
+        robot.bLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.bRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.fLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.fRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        robot.bLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.fLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.bRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.fRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        robot.bLeft.setTargetPosition((int) (1140 * mult));
+        robot.fLeft.setTargetPosition((int) (1140 * mult));
+        robot.bRight.setTargetPosition((int) (1140 * mult));
+        robot.fRight.setTargetPosition((int) (1140 * mult));
+
+        drive(.5, .5, .5, .5);
+
+        while (robot.bLeft.isBusy()) ;
+
+    }
+
+    public void driveBackword(int mult) {
+        robot.bLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.bRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.fLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.fRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        robot.bLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.fLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.bRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.fRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        robot.bLeft.setTargetPosition(-1140 * mult);
+        robot.fLeft.setTargetPosition(-1140 * mult);
+        robot.bRight.setTargetPosition(-1140 * mult);
+        robot.fRight.setTargetPosition(-1140 * mult);
+
+        drive(.5, .5, .5, .5);
+
+        while (robot.bLeft.isBusy()) ;
+
+    }
+
     public void knockJewelRight() {
         robot.bLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.bRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -355,8 +403,39 @@ public class Red1 extends LinearOpModeCamera {
 
     }
 
-    public void knockJewelLeft() {
+    public void strafeLeft(double mult) {
+        robot.bLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.bRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.fLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.fRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+
+        robot.bLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.bRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.fLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.fRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+
+        waitForStart();
+        robot.bLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.bRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.fLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.fRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        robot.bLeft.setTargetPosition((int) (1140 * mult));
+        robot.fLeft.setTargetPosition((int) (-1140 * mult));
+        robot.bRight.setTargetPosition((int) (-1140 * mult));
+        robot.fRight.setTargetPosition((int) (1140 * mult));
+
+        robot.fLeft.setPower(.5);
+        robot.fRight.setPower(.5);
+        robot.bLeft.setPower(.5);
+        robot.bRight.setPower(.5);
+
+        while (robot.bLeft.isBusy()) ;
+    }
+
+    public void knockJewelLeft() {
         robot.bLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.bRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.fLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -375,6 +454,7 @@ public class Red1 extends LinearOpModeCamera {
         drive(.5, .5, .5, .5);
 
         while (robot.bLeft.isBusy()) ;
+
 
         robot.jewelKnockDevice.setPosition(.85);
     }
@@ -500,9 +580,9 @@ public class Red1 extends LinearOpModeCamera {
         }
     }
 
-    public int normalizeAngle(int angle){
+    public int normalizeAngle(int angle) {
 
-      return  (angle + 360) % 360;
+        return (angle + 360) % 360;
 
     }
 
@@ -512,16 +592,16 @@ public class Red1 extends LinearOpModeCamera {
         return normalizeAngle((int) angles.firstAngle);
     }
 
-    public void turn(int goal , String direction){
+    public void turn(int goal, String direction) {
         robot.bLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.bRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.fLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.fRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         int start = getCurrentAngle();
-        getRelativePosition(goal , direction , start);
+        getRelativePosition(goal, direction, start);
 
-        int current = getRelativePosition(goal, direction,start);
+        int current = getRelativePosition(goal, direction, start);
 
         if (direction == "right") {
 
@@ -558,7 +638,7 @@ public class Red1 extends LinearOpModeCamera {
                     telemetry.addData("state 5", "");
                 }
 
-                current = getRelativePosition(goal, direction,start);
+                current = getRelativePosition(goal, direction, start);
                 angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
                 telemetry.addData("goal", goal);
                 telemetry.addData("current", current);
@@ -582,9 +662,8 @@ public class Red1 extends LinearOpModeCamera {
             telemetry.addData("imu", angles.firstAngle);
             telemetry.addData("Relative position", getRelativePosition(goal, direction, start));
             telemetry.update();
-        }
-        else if (direction == "left") {
-            while (current  < goal - 4) {
+        } else if (direction == "left") {
+            while (current < goal - 4) {
 
                 if (current < (.27 * goal)) {
                     robot.fLeft.setPower(-.5);
@@ -626,7 +705,6 @@ public class Red1 extends LinearOpModeCamera {
             }
 
 
-
             robot.fLeft.setPower(0);
             robot.bLeft.setPower(0);
             robot.fRight.setPower(0);
@@ -644,18 +722,15 @@ public class Red1 extends LinearOpModeCamera {
         }
     }
 
-    public int getRelativePosition(int goal , String direction , int start) {
-      int  current = getCurrentAngle();
-        if (direction == "right" && goal > start && current > goal){
-            return Math.abs(360-(current - start));
-        }
-        else if (direction == "right"){
-            return Math.abs(current-start);
-        }
-        else if (direction == "left" && start > goal && current < goal){
+    public int getRelativePosition(int goal, String direction, int start) {
+        int current = getCurrentAngle();
+        if (direction == "right" && goal > start && current > goal) {
+            return Math.abs(360 - (current - start));
+        } else if (direction == "right") {
+            return Math.abs(current - start);
+        } else if (direction == "left" && start > goal && current < goal) {
             return Math.abs(360 - (start - current));
-        }
-        else {
+        } else {
             return Math.abs(start - current);
         }
     }
