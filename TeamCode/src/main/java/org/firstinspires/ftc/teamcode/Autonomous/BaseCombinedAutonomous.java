@@ -46,7 +46,6 @@ import java.io.IOException;
  */
 
 
-@Autonomous(name = "Combined Autonomous base")
 public class BaseCombinedAutonomous extends LinearOpModeCamera{
 
     HardwareDxm robot = new HardwareDxm();

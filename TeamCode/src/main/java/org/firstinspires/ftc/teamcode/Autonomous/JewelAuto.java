@@ -25,7 +25,7 @@ import java.io.OutputStream;
  *This is bridgett's code to take a picture and save it to the phone
  */
 
-@Autonomous
+
 public class JewelAuto extends LinearOpModeCamera {
     String filePath = "Pictures";
     String imageName = "TestImage.JPEG"; //TODO come back//

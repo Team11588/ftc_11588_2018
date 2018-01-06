@@ -52,8 +52,8 @@ import java.io.IOException;
 
 
 
-@Autonomous(name = "Spot 2 Red")
-public class Spot2Red extends LinearOpModeCamera {
+@Autonomous(name = "Spot 1 Red")
+public class Spot1Blue extends LinearOpModeCamera {
 
 
     public String teamColor = "red";
@@ -63,7 +63,6 @@ public class Spot2Red extends LinearOpModeCamera {
     HardwareMap hwMap = null;
     BNO055IMU imu;
     public int startingPosition = 1;
-
     Orientation angles;
     Acceleration gravity;
 
@@ -83,8 +82,6 @@ public class Spot2Red extends LinearOpModeCamera {
     @Override
     public void runOpMode() throws InterruptedException {
 
-
-        robot.init(hardwareMap);
 
         robot.init(hardwareMap);
 
@@ -255,9 +252,13 @@ public class Spot2Red extends LinearOpModeCamera {
             knockJewelLeft();
         }
 
+        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+
         driveForword(1.25);
 
-        strafeLeft(1.4);
+
+        turn(90, "right");
+// Ihave discovered that to move in between crypto columbs it is 4/5 of a full rotation
 
         if (mark == 1) {
         } else if (mark == 2) {
@@ -265,10 +266,10 @@ public class Spot2Red extends LinearOpModeCamera {
         } else {
             strafeLeft(1.6);
         }
-        driveForword(.25);
 
         while (opModeIsActive()) ;
     }
+
 
     public static double[] RGBtoHSV(double r, double g, double b) {
 
@@ -731,5 +732,4 @@ public class Spot2Red extends LinearOpModeCamera {
             return Math.abs(start - current);
         }
     }
-
 }

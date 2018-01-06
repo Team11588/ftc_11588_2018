@@ -53,7 +53,7 @@ import java.io.IOException;
 
 
 @Autonomous(name = "Spot 2 Red")
-public class Spot2Red extends LinearOpModeCamera {
+public class Spot2Blue extends LinearOpModeCamera {
 
 
     public String teamColor = "red";

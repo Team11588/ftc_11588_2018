@@ -46,7 +46,7 @@ public class RobotSetUp extends LinearOpModeCamera {
     int teamPosition = 1;
 
     File sd = Environment.getExternalStorageDirectory();
-    File sampleBox = new File(sd + "/Picture", "sampleBox.txt");
+    File sampleBox = new File(sd + "/team", "sampleBox.txt");
 
     @Override
     public void runOpMode() throws InterruptedException {
