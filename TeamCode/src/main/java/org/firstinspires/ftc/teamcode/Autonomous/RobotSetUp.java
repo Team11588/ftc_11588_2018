@@ -30,11 +30,6 @@ import java.io.OutputStream;
  */
 
 
-/*PSA These distinguish the different processes
-************************VUFORIA****************************************
-&&&&&&&&&&&&&&&&&&&&&&&&Picture Taking&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-????????????????????????Pixel Testing??????????????????????????????????
- */
 @Autonomous (name = "RobotSetUP")
 public class RobotSetUp extends LinearOpModeCamera {
 
@@ -50,6 +45,11 @@ public class RobotSetUp extends LinearOpModeCamera {
 
     @Override
     public void runOpMode() throws InterruptedException {
+
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+        }
 
         if (!isCameraAvailable()) {
             telemetry.addData("camera is not available", "");
