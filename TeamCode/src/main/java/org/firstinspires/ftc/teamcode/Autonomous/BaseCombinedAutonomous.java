@@ -69,7 +69,7 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera{
 
         robot.jewelKnockDevice.setPosition(.8);
 
-        return ;
+        return 3;
     }
 
 

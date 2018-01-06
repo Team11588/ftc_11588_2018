@@ -100,167 +100,23 @@ public class Spot2Red extends LinearOpModeCamera {
         robot.fRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
 
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
-        parameters.loggingEnabled = true;
-        parameters.loggingTag = "IMU";
-        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
-
-        imu = hardwareMap.get(BNO055IMU.class, "imu");
-        imu.initialize(parameters);
-
-        imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
-
-        File sd = Environment.getExternalStorageDirectory();
-        File sampleBox = new File(sd + "/team", "sampleBox.txt");
-
-        String text = null;
-
-        if (!isCameraAvailable()) {
-            return;
-        }
-        startCamera();
-
-        while (yuvImage == null) ;
-
-        readConfigFile();
-
-        this.jewel.moveBox(sampleBox_x1, sampleBox_y1);
-        this.jewel.sampleLeftXPct = sampleBox_x1;
-        this.jewel.sampleTopYPct = sampleBox_y1;
-        this.jewel.sampleRightXPct = sampleBox_x2;
-        this.jewel.sampleBotYPct = sampleBox_y2;
-
-        telemetry.addData("x1", "%d", sampleBox_x1);
-        telemetry.addData("y1", "%d", sampleBox_y1);
-        telemetry.addData("x2", "%d", sampleBox_x2);
-        telemetry.addData("y2", "%d", sampleBox_y2);
-        telemetry.addData(String.valueOf(width), height);
-        telemetry.update();
-
-
-        telemetry.addData("ready", "");
-        telemetry.update();
-
         waitForStart();
-        Bitmap rgbImage = convertYuvImageToRgb(yuvImage, width, height, 0);
-        stopCamera();
+        robot.bLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.bRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.fLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.fRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        saveBitmap(imageName, rgbImage);
+        robot.bLeft.setTargetPosition(1140);
+        robot.fLeft.setTargetPosition(-1140);
+        robot.bRight.setTargetPosition(-1140);
+        robot.fRight.setTargetPosition(1140);
 
-        if (sd == null) {
-            telemetry.addLine("Open External Storage Failed");
-        }
+        robot.fLeft.setPower(.5);
+        robot.fRight.setPower(.5);
+        robot.bLeft.setPower(.5);
+        robot.bRight.setPower(.5);
 
-        File image = new File(sd + "/" + filePath, imageName);
-
-        if (image == null) {
-            telemetry.addLine("Open Image File Failed");
-        } else {
-            telemetry.addLine("Open Image Successful");
-        }
-        telemetry.addData("Image Name", "%s", image.getAbsolutePath());
-
-
-        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-        Bitmap bitmap = BitmapFactory.decodeFile(image.getAbsolutePath(), bmOptions);
-
-        if (bitmap == null) {
-            telemetry.addLine("Could not read bitmap");
-
-        }
-
-        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-
-        drawSamplingBox(bitmap);
-
-
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        VuforiaLocalizer.Parameters parametersv = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
-
-        parametersv.vuforiaLicenseKey = "AW/DxXD/////AAAAGYJtW/yP3kG0pVGawWtQZngsJNFQ8kp1Md8CaP2NP72Q0on4mGKPLt/lsSnMnUkCFNymrXXOjs0eHMDTvijWRIixEe/sJ4KHEVf1fhf0kqUB29+dZEvh4qeI7tlTU6pIy/MLW0a/t9cpqMksBRFqXIrhtR/vw7ZnErMTZrJNNXqmbecBnRhDfLncklzgH2wAkGmQDn0JSP7scEczgrggcmerXy3v6flLDh1/Tt2QZ8l/bTcEJtthE82i8/8p0NuDDhUyatFK1sZSSebykRz5A4PDUkw+jMTV28iUytrr1QLiQBwaTX7ikl71a1XkBHacnxrqyY07x9QfabtJf/PYNFiU17m/l9DB6Io7DPnnIaFP";
-
-
-        parametersv.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
-        this.vuforia = ClassFactory.createVuforiaLocalizer(parametersv);
-
-
-        VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
-        VuforiaTrackable relicTemplate = relicTrackables.get(0);
-        relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
-
-        //**********************************************************************************************
-          relicTrackables.activate();
-
-
-        int mark = 0;
-        /*
-        Right - 1
-        Center - 2
-        Left - 3
-         */
-
-
-// This can be used to identify the pictograph and this loop will run until it is found and it'll store the mark
-
-        do {
-
-            RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
-            if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
-
-                if (vuMark == RelicRecoveryVuMark.RIGHT) {
-                    mark = 1;
-                    telemetry.addData("RIGHT", "");
-                } else if (vuMark == RelicRecoveryVuMark.CENTER) {
-                    telemetry.addData("CENTER", "");
-                    mark = 2;
-                } else if (vuMark == RelicRecoveryVuMark.LEFT) {
-                    telemetry.addData("Left", "");
-                    mark = 3;
-                }
-
-                telemetry.update();
-            }
-        }
-        while (mark == 0);
-
-      angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-
-       if (isOurJewelonLeft(bitmap)) {
-            toJewel();
-
-            telemetry.addData("left", "");
-            telemetry.update();
-
-            knockJewelRight();
-
-
-        } else {
-           toJewel();
-
-
-        telemetry.addData("right", "");
-        telemetry.update();
-
-
-        knockJewelRight();
-
-        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-
-        knockJewelRight();
-
-        leftTurn();
-
-        knockJewelLeft();
-
-        leftTurn();
-
-        while (opModeIsActive()) ;
-    }
-
-
+        while (robot.bLeft.isBusy());
     }
 
     public static double[] RGBtoHSV(double r, double g, double b) {

@@ -55,7 +55,7 @@ import java.io.IOException;
 
 
 @Autonomous(name = "Combined Autonomous Red")
-public class CombinedAutonomousRed extends LinearOpModeCamera {
+public class Red1 extends LinearOpModeCamera {
 
 
     public String teamColor = "red";
