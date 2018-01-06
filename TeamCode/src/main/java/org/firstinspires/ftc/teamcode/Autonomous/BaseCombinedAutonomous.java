@@ -37,16 +37,12 @@ import java.io.FileReader;
 import java.io.IOException;
 
 /**
- * Created by kearneyg20428 on 10/23/2017.
+ * Created by piscullin18641 on 01/05/2018.
  *
  * This is my full autonomous
  * it is my baby
  * please talk with me when editing
  *
- *  1. it inits everything
- *  2. Then takes picture and samples it
- *  3. Finds the vuforia and saves the mark number
- *  4. moves to knock of jewel
  */
 
 
