@@ -244,7 +244,7 @@ public class Spot2Red extends LinearOpModeCamera {
 
             knockJewelRight();
 
-            driveForword(2);
+            robot.driveForword(2);
         } else {
             toJewel();
 
@@ -255,17 +255,17 @@ public class Spot2Red extends LinearOpModeCamera {
             knockJewelLeft();
         }
 
-        driveForword(1.25);
+        robot.driveForword(1.25);
 
-        strafeLeft(1.4);
+        robot.strafeLeft(1.4);
 
         if (mark == 1) {
         } else if (mark == 2) {
-            strafeLeft(.8);
+            robot.strafeLeft(.8);
         } else {
-            strafeLeft(1.6);
+            robot.strafeLeft(1.6);
         }
-        driveForword(.25);
+        robot.driveForword(.25);
 
         while (opModeIsActive()) ;
     }
@@ -330,50 +330,6 @@ public class Spot2Red extends LinearOpModeCamera {
         while (robot.bLeft.isBusy()) ;
     }
 
-    public void driveForword(double mult) {
-        robot.bLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.bRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.fLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.fRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        robot.bLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.fLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.bRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.fRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        robot.bLeft.setTargetPosition((int) (1140 * mult));
-        robot.fLeft.setTargetPosition((int) (1140 * mult));
-        robot.bRight.setTargetPosition((int) (1140 * mult));
-        robot.fRight.setTargetPosition((int) (1140 * mult));
-
-        drive(.5, .5, .5, .5);
-
-        while (robot.bLeft.isBusy()) ;
-
-    }
-
-    public void driveBackword(int mult) {
-        robot.bLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.bRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.fLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.fRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        robot.bLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.fLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.bRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.fRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        robot.bLeft.setTargetPosition(-1140 * mult);
-        robot.fLeft.setTargetPosition(-1140 * mult);
-        robot.bRight.setTargetPosition(-1140 * mult);
-        robot.fRight.setTargetPosition(-1140 * mult);
-
-        drive(.5, .5, .5, .5);
-
-        while (robot.bLeft.isBusy()) ;
-
-    }
-
     public void knockJewelRight() {
         robot.bLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.bRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -398,38 +354,6 @@ public class Spot2Red extends LinearOpModeCamera {
         robot.jewelKnockDevice.setPosition(.85);
 
 
-    }
-
-    public void strafeLeft(double mult) {
-        robot.bLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.bRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.fLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.fRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-
-        robot.bLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.bRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.fLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.fRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-
-        waitForStart();
-        robot.bLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.bRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.fLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.fRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        robot.bLeft.setTargetPosition((int) (1140 * mult));
-        robot.fLeft.setTargetPosition((int) (-1140 * mult));
-        robot.bRight.setTargetPosition((int) (-1140 * mult));
-        robot.fRight.setTargetPosition((int) (1140 * mult));
-
-        robot.fLeft.setPower(.5);
-        robot.fRight.setPower(.5);
-        robot.bLeft.setPower(.5);
-        robot.bRight.setPower(.5);
-
-        while (robot.bLeft.isBusy()) ;
     }
 
     public void knockJewelLeft() {
