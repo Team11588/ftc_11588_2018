@@ -23,9 +23,10 @@ with machanum wheels all 4 wheels need to be motorized
     public DcMotor fRight = null;
     public DcMotor bLeft = null;
     public DcMotor bRight = null;
-    public DcMotor lift = null;
+    public DcMotor rLift = null;
+    public DcMotor lLift = null;
+    public DcMotor pincer = null;
 
-    public Servo claw = null;
     public Servo jewelKnockDevice = null;
 
     HardwareMap hwMap = null;
@@ -38,28 +39,39 @@ with machanum wheels all 4 wheels need to be motorized
         fRight = hwMap.dcMotor.get("fRight");
         bLeft = hwMap.dcMotor.get("bLeft");
         bRight = hwMap.dcMotor.get("bRight");
+        rLift = hwMap.dcMotor.get("rLift");
+        lLift = hwMap.dcMotor.get("lLift");
+        pincer = hwMap.dcMotor.get("pincer");
 
-        claw = hwMap.servo.get("claw");
         jewelKnockDevice = hwMap.servo.get("jewelKnockDevice");
-        claw.setPosition(0);
         jewelKnockDevice.setPosition(.8);
 
         fLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         fRight.setDirection(DcMotorSimple.Direction.FORWARD);
         bLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         bRight.setDirection(DcMotorSimple.Direction.FORWARD);
+        rLift.setDirection(DcMotorSimple.Direction.REVERSE);
+        lLift.setDirection(DcMotorSimple.Direction.FORWARD);
+        pincer.setDirection(DcMotorSimple.Direction.REVERSE);
+        //closing contraption is positive power
 
 
         fLeft.setPower(0);
         fRight.setPower(0);
         bLeft.setPower(0);
         bRight.setPower(0);
+        rLift.setPower(0);
+        lLift.setPower(0);
+        pincer.setPower(0);
 
 
         fLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         fRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         bLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         bRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        lLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        pincer.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
     }
 
