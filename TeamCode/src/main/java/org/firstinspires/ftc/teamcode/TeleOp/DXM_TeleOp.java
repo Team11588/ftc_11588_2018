@@ -52,22 +52,26 @@ public class DXM_TeleOp extends OpMode {
 
     @Override
     public void loop() {
-        double leftY= Math.abs(gamepad1.left_stick_y) > 0.3? -gamepad1.left_stick_y: 0 ;
-        double leftX= Math.abs(gamepad1.left_stick_x) > 0.3? gamepad1.left_stick_x: 0 ;
-        double rightX= Math.abs(gamepad1.right_stick_x) > 0.3? gamepad1.right_stick_x: 0;
+        double leftY1= Math.abs(gamepad1.left_stick_y) > 0.3? -gamepad1.left_stick_y: 0 ;
+        double leftX1= Math.abs(gamepad1.left_stick_x) > 0.3? gamepad1.left_stick_x: 0 ;
+        double rightX1= Math.abs(gamepad1.right_stick_x) > 0.3? gamepad1.right_stick_x: 0;
         double triggerR2 = gamepad2.right_trigger;
         double triggerL2 = gamepad2.left_trigger;
-        boolean bumperL2 = gamepad2.left_bumper;
+        double leftY2 = Math.abs(gamepad2.left_stick_y) > 0.3? -gamepad2.left_stick_y: 0;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        double[] wheelPower = wheelPower(leftX, leftY, rightX);
+        double[] wheelPower = wheelPower(leftX1, leftY1, rightX1);
         robot.fLeft.setPower(wheelPower[0]);
         robot.fRight.setPower(wheelPower[1]);
         robot.bLeft.setPower(wheelPower[2]);
         robot.bRight.setPower(wheelPower[3]);
-        telemetry.addData("left joystick y-value: ",leftY);
-        telemetry.addData("left joystick x-value: ",leftX);
-        telemetry.addData("right joystick x-value: ",rightX);
+
+        robot.lLift.setPower(leftY2);
+        robot.rLift.setPower(leftY2);
+        
+        telemetry.addData("left joystick y-value: ",leftY1);
+        telemetry.addData("left joystick x-value: ",leftX1);
+        telemetry.addData("right joystick x-value: ",rightX1);
         telemetry.addData("front left motor: ",wheelPower[0]);
         telemetry.addData("front right motor: ",wheelPower[1]);
         telemetry.addData("back left motor: ",wheelPower[2]);
@@ -83,27 +87,12 @@ public class DXM_TeleOp extends OpMode {
 
 //**************************************************************************************************
 
-        if (triggerL2 > 0.5)
-        {
-            double position = robot.claw.getPosition();
-            double newPosition = Range.clip( position + SERVO_SHIFT, Servo.MIN_POSITION, 0.25);
-            robot.claw.setPosition(newPosition);
-            telemetry.addData("position" , position);
-        }
-        else if (bumperL2)
-        {
-            double position = robot.claw.getPosition();
-            double newPosition = Range.clip( position + SERVO_SHIFT, Servo.MIN_POSITION, 0.35);
-            robot.claw.setPosition(newPosition);
-            telemetry.addData("position" , position);
-        }
-        else if (triggerR2 > .5)
-        {
-            double position = robot.claw.getPosition();
-            double newPosition = Range.clip( position - SERVO_SHIFT, Servo.MIN_POSITION, 0.25);
-            robot.claw.setPosition(newPosition);
-            telemetry.addData("position" , position);
-        }
+        if (triggerL2 > 0.3)
+            robot.pincer.setPower(triggerL2);
+        else if (triggerR2 > 0.3)
+            robot.pincer.setPower(-triggerR2);
+        else
+            robot.pincer.setPower(0.0);
 //**************************************************************************************************
         telemetry.update();
 
