@@ -176,7 +176,6 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
     }
 
 
-
     public static double[] RGBtoHSV(double r, double g, double b) {
 
         double h, s, v;
@@ -239,7 +238,7 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
 
 
             knockJewelLeft();
-            if (teamColor == "blue"){
+            if (teamColor == "blue") {
                 robot.driveBackword(2);
             }
         }
@@ -627,18 +626,20 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
 
     }
 
-    public void test(int mark) {
+    public void columnMove(int mark) {
+// Ihave discovered that to move in between crypto columbs it is 4/5 of a full rotation
         if (teamColor == "red") {
-            if (mark == 1) {
-            } else if (mark == 2) {
+            if (mark == 2) {
                 robot.strafeLeft(.8);
-            } else {
+            } else if(mark == 3) {
                 robot.strafeLeft(1.6);
             }
-        }else {
-return;
+        } else {
+            if (mark == 2) {
+                robot.strafeRight(.8);
+            } else if (mark == 1) {
+                robot.strafeRight(1.6);
             }
         }
     }
-
-
+}

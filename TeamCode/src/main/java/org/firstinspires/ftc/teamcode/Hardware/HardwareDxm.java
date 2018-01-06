@@ -97,7 +97,7 @@ with machanum wheels all 4 wheels need to be motorized
 
     }
 
-    public void driveBackword(int mult) {
+    public void driveBackword(double mult) {
         bLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         bRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         fLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -108,10 +108,10 @@ with machanum wheels all 4 wheels need to be motorized
         bRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         fRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        bLeft.setTargetPosition(-1140 * mult);
-        fLeft.setTargetPosition(-1140 * mult);
-        bRight.setTargetPosition(-1140 * mult);
-        fRight.setTargetPosition(-1140 * mult);
+        bLeft.setTargetPosition((int)(-1140 * mult));
+        fLeft.setTargetPosition((int)(-1140 * mult));
+        bRight.setTargetPosition((int)(-1140 * mult));
+        fRight.setTargetPosition((int)(-1140 * mult));
 
         move(.5, Math.PI);
 
@@ -141,6 +141,37 @@ with machanum wheels all 4 wheels need to be motorized
         fLeft.setTargetPosition((int) (-1140 * mult));
         bRight.setTargetPosition((int) (-1140 * mult));
         fRight.setTargetPosition((int) (1140 * mult));
+
+        fLeft.setPower(.5);
+        fRight.setPower(.5);
+        bLeft.setPower(.5);
+        bRight.setPower(.5);
+
+        while (bLeft.isBusy()) ;
+    }
+
+    public void strafeRight(double mult) {
+        bLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        bRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        fLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        fRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
+        bLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        bRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        fLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        fRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+
+        bLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        bRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        fLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        fRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        bLeft.setTargetPosition((int) (-1140 * mult));
+        fLeft.setTargetPosition((int) (1140 * mult));
+        bRight.setTargetPosition((int) (1140 * mult));
+        fRight.setTargetPosition((int) (-1140 * mult));
 
         fLeft.setPower(.5);
         fRight.setPower(.5);
