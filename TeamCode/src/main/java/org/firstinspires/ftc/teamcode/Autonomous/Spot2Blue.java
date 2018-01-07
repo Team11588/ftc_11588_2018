@@ -35,6 +35,8 @@ public class Spot2Blue extends BaseCombinedAutonomous {
 
         robot.driveBackword(1.25);
 
+        telemetry.addData(teamColor , "");
+        telemetry.update();
         turn(180, "right");
 
         robot.strafeRight(1.4);

@@ -175,7 +175,6 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
         return mark;
     }
 
-
     public static double[] RGBtoHSV(double r, double g, double b) {
 
         double h, s, v;
