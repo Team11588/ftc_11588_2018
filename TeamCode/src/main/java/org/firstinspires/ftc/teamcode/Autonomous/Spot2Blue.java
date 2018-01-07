@@ -15,7 +15,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
  *  4. moves to knock of jewel
  */
 
-@Autonomous(name = "Spot 2 Red")
+@Autonomous(name = "Spot 2 Blue")
 public class Spot2Blue extends BaseCombinedAutonomous {
 
     @Override

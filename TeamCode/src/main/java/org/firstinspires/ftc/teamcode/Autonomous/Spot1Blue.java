@@ -17,7 +17,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 
 
-@Autonomous(name = "Spot 1 Red")
+@Autonomous(name = "Spot 1 Blue")
 public class Spot1Blue extends BaseCombinedAutonomous {
 
 
