@@ -14,6 +14,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcontroller.internal.FtcRobotControllerActivity;
+import org.firstinspires.ftc.robotcontroller.internal.JewelFinder;
 import org.firstinspires.ftc.robotcontroller.internal.LinearOpModeCamera;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
@@ -63,6 +65,8 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
     Orientation angles;
     Acceleration gravity;
 
+    File sd = Environment.getExternalStorageDirectory();
+    File sampleBox = new File(sd + "/team", "sampleBox.txt");
 
     VuforiaLocalizer vuforia;
 
@@ -86,6 +90,12 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
         robot.fLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.fRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
+        //Left Trigger CLoses
+        int loop = 0;
+        do {
+            robot.pincer.setPower(.5);
+            loop++;
+        } while (loop < 10);
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
@@ -100,6 +110,14 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
         imu.initialize(parameters);
 
         imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
+
+
+        if (!isCameraAvailable()) {
+            return;
+        }
+        startCamera();
+
+        while (yuvImage == null) ;
 
         readConfigFile();
 
@@ -116,10 +134,6 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
         telemetry.addData(String.valueOf(width), height);
         telemetry.update();
 
-        if (!isCameraAvailable()) {
-            return;
-        }
-        startCamera();
     }
 
     public int readVuImage() {
@@ -589,8 +603,7 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
     }
 
     public boolean isOurJewelOnLeft() {
-        File sd = Environment.getExternalStorageDirectory();
-        File sampleBox = new File(sd + "/team", "sampleBox.txt");
+
 
         Bitmap rgbImage = convertYuvImageToRgb(yuvImage, width, height, 0);
         stopCamera();
@@ -630,7 +643,7 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
         if (teamColor == "red") {
             if (mark == 2) {
                 robot.strafeLeft(.8);
-            } else if(mark == 3) {
+            } else if (mark == 3) {
                 robot.strafeLeft(1.6);
             }
         } else {

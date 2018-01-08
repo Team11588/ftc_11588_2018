@@ -118,9 +118,8 @@ public class LinearOpModeCamera extends LinearOpMode {
 
     data = parameters.flatten();
 
-    if (preview == null) {
       ((FtcRobotControllerActivity) hardwareMap.appContext).initPreviewLinear(camera, this, previewCallback);
-    }
+
   }
 
   public void stopCameraInSecs(int duration) {
