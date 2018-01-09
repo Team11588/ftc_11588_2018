@@ -33,16 +33,16 @@ public class Spot2Blue extends BaseCombinedAutonomous {
 
         knockJewel(jewelSpot);
 
-        robot.driveBackword(1.25);
+        robot.driveBackword(1.25 , .5);
 
         telemetry.addData(teamColor , "");
         telemetry.update();
         turn(180, "right");
 
-        robot.strafeRight(1.4);
-
+        robot.strafeRight(1.4 , .5);
+        teamColor = "blue";
         columnMove(mark);
-        robot.driveForword(.25);
+        robot.driveForword(.5 , .5);
 
         while (opModeIsActive()) ;
     }

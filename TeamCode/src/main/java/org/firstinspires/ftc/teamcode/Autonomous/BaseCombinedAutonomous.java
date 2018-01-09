@@ -56,6 +56,7 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
 
     public String teamColor;
     public static final int ENCODER_RUN = 1140;
+    public static final int PINCH_LOOP = 12500;
 
     HardwareDxm robot = new HardwareDxm();
     HardwareMap hwMap = null;
@@ -82,20 +83,12 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
 
     public void myinit() {
 
-
         robot.init(hardwareMap);
 
         robot.bLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.bRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.fLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.fRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        //Left Trigger CLoses
-        int loop = 0;
-        do {
-            robot.pincer.setPower(.5);
-            loop++;
-        } while (loop < 10);
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
@@ -185,7 +178,7 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
             }
         }
         while (mark == 0);
-
+        relicTrackables.deactivate();
         return mark;
     }
 
@@ -231,8 +224,8 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
     }
 
     public void knockJewel(boolean jewelSpot) {
+        toJewel();
         if (jewelSpot) {
-            toJewel();
 
             telemetry.addData("left", "");
             telemetry.update();
@@ -240,11 +233,10 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
             knockJewelRight();
 
             if (teamColor == "red") {
-                robot.driveForword(2);
+                robot.driveForword(3 , .5);
             }
 
         } else {
-            toJewel();
 
             telemetry.addData("right", "");
             telemetry.update();
@@ -252,7 +244,7 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
 
             knockJewelLeft();
             if (teamColor == "blue") {
-                robot.driveBackword(2);
+                robot.driveBackword(2 , .5);
             }
         }
     }
@@ -642,16 +634,38 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
 // Ihave discovered that to move in between crypto columbs it is 4/5 of a full rotation
         if (teamColor == "red") {
             if (mark == 2) {
-                robot.strafeLeft(.8);
+                robot.strafeLeft(.8 , .5);
             } else if (mark == 3) {
-                robot.strafeLeft(1.6);
+                robot.strafeLeft(1.6 , .5);
             }
-        } else {
+        } else if (teamColor == "blue") {
             if (mark == 2) {
-                robot.strafeRight(.8);
+                robot.strafeRight(.8 , .6);
             } else if (mark == 1) {
-                robot.strafeRight(1.6);
+                robot.strafeRight(1.6 , .5);
             }
         }
+    }
+
+    public void pinch() {
+        int loop = 0;
+        do {
+            robot.pincer.setPower(.5);
+            loop++;
+            telemetry.addData("loop", loop);
+            telemetry.update();
+        } while (loop < PINCH_LOOP);
+        robot.pincer.setPower(0);
+    }
+
+    public void release() {
+        int loop = 0;
+        do {
+            robot.pincer.setPower(-.5);
+            loop++;
+            telemetry.addData("loop", loop);
+            telemetry.update();
+        } while (loop < PINCH_LOOP);
+        robot.pincer.setPower(0);
     }
 }

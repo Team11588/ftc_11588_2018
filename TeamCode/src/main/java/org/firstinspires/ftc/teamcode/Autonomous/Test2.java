@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-/**
+/*
  * Created by kearneyg20428 on 10/23/2017.
  *
  * This is my full autonomous
@@ -15,37 +15,26 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
  *  4. moves to knock of jewel
  */
 
-@Autonomous(name = "Spot 2 Red")
-public class Spot2Red extends BaseCombinedAutonomous {
+
+@Autonomous(name = "Test2")
+public class Test2 extends BaseCombinedAutonomous {
+
 
     @Override
     public void runOpMode() throws InterruptedException {
 
-        teamColor = "red";
+        teamColor = "blue";
 
         myinit();
 
         waitForStart();
 
-        boolean jewelSpot = isOurJewelOnLeft();
+        toJewel();
 
-        int mark = readVuImage();
+        knockJewelRight();
 
-        knockJewel(jewelSpot);
-
-        robot.driveForword(1.25 , .5);
-        if (jewelSpot){
-            robot.move(.5 , 0);
-        }
-
-        robot.strafeLeft(1.4 , .5);
-        telemetry.addData(teamColor, "");
-        telemetry.update();
-        teamColor = "red";
-        columnMove(mark);
-        robot.driveForword(.25 , .5);
-        release();
-
+        robot.driveForword(2,.5);
         while (opModeIsActive()) ;
     }
+
 }

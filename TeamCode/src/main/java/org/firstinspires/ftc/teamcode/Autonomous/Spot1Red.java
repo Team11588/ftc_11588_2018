@@ -33,11 +33,13 @@ public class Spot1Red extends BaseCombinedAutonomous {
 
         knockJewel(jewelSpot);
 
-        robot.driveForword(1.25);
+        robot.driveForword(1.25 , .5);
 
         turn(90, "right");
-
+        teamColor = "red";
         columnMove(mark);
+
+        release();
 
         while (opModeIsActive()) ;
     }

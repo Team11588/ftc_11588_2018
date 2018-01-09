@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-/**
+/*
  * Created by kearneyg20428 on 10/23/2017.
  *
  * This is my full autonomous
@@ -17,8 +17,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 
 
-@Autonomous(name = "Test")
-public class Test extends BaseCombinedAutonomous {
+@Autonomous(name = "Pinch")
+public class Pinch extends BaseCombinedAutonomous {
 
 
     @Override
@@ -28,7 +28,10 @@ public class Test extends BaseCombinedAutonomous {
 
         myinit();
 
+        pinch();
 
+        stopCamera();
         while (opModeIsActive()) ;
     }
+
 }

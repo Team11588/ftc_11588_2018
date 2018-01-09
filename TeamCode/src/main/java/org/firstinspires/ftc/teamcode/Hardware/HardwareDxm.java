@@ -75,7 +75,7 @@ with machanum wheels all 4 wheels need to be motorized
 
     }
 
-    public void driveForword(double mult) {
+    public void driveForword(double mult , double speed) {
         bLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         bRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         fLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -91,13 +91,13 @@ with machanum wheels all 4 wheels need to be motorized
         bRight.setTargetPosition((int) (1140 * mult));
         fRight.setTargetPosition((int) (1140 * mult));
 
-        move(.5,0);
+        move(speed,0);
 
         while (bLeft.isBusy()) ;
 
     }
 
-    public void driveBackword(double mult) {
+    public void driveBackword(double mult , double speed) {
         bLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         bRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         fLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -113,13 +113,13 @@ with machanum wheels all 4 wheels need to be motorized
         bRight.setTargetPosition((int)(-1140 * mult));
         fRight.setTargetPosition((int)(-1140 * mult));
 
-        move(.5, Math.PI);
+        move(speed, Math.PI);
 
         while (bLeft.isBusy()) ;
 
     }
 
-    public void strafeLeft(double mult) {
+    public void strafeLeft(double mult , double speed) {
         bLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         bRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         fLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -142,15 +142,15 @@ with machanum wheels all 4 wheels need to be motorized
         bRight.setTargetPosition((int) (-1140 * mult));
         fRight.setTargetPosition((int) (1140 * mult));
 
-        fLeft.setPower(.5);
-        fRight.setPower(.5);
-        bLeft.setPower(.5);
-        bRight.setPower(.5);
+        fLeft.setPower(speed);
+        fRight.setPower(speed);
+        bLeft.setPower(speed);
+        bRight.setPower(speed);
 
         while (bLeft.isBusy()) ;
     }
 
-    public void strafeRight(double mult) {
+    public void strafeRight(double mult , double speed) {
         bLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         bRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         fLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -173,10 +173,10 @@ with machanum wheels all 4 wheels need to be motorized
         bRight.setTargetPosition((int) (1140 * mult));
         fRight.setTargetPosition((int) (-1140 * mult));
 
-        fLeft.setPower(.5);
-        fRight.setPower(.5);
-        bLeft.setPower(.5);
-        bRight.setPower(.5);
+        fLeft.setPower(speed);
+        fRight.setPower(speed);
+        bLeft.setPower(speed);
+        bRight.setPower(speed);
 
         while (bLeft.isBusy()) ;
     }

@@ -36,10 +36,10 @@ public class Spot1Blue extends BaseCombinedAutonomous {
 
         knockJewel(jewelSpot);
 
-        robot.driveBackword(1.25);
+        robot.driveBackword(1.25 , .5);
 
         turn(90, "right");
-
+        teamColor = "blue";
         columnMove(mark);
 
         while (opModeIsActive()) ;
