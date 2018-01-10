@@ -44,6 +44,5 @@ public class Spot2Blue extends BaseCombinedAutonomous {
         columnMove(mark);
         robot.driveForword(.5 , .5);
 
-        while (opModeIsActive()) ;
     }
 }

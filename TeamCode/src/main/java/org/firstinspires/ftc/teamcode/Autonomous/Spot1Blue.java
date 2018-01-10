@@ -42,6 +42,5 @@ public class Spot1Blue extends BaseCombinedAutonomous {
         teamColor = "blue";
         columnMove(mark);
 
-        while (opModeIsActive()) ;
     }
 }

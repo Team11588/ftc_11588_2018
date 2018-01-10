@@ -71,8 +71,8 @@ with machanum wheels all 4 wheels need to be motorized
         bRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         lLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        pincer.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
+        pincer.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        pincer.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     public void driveForword(double mult , double speed) {

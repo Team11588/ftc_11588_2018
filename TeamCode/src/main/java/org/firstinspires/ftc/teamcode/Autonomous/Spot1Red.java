@@ -41,6 +41,5 @@ public class Spot1Red extends BaseCombinedAutonomous {
 
         release();
 
-        while (opModeIsActive()) ;
     }
 }

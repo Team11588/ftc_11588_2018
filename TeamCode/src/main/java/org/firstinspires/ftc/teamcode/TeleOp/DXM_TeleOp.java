@@ -44,6 +44,7 @@ public class DXM_TeleOp extends OpMode {
 
     HardwareDxm robot           = new HardwareDxm();
 
+    final static int PINCER_ENCODER = -(int)(1140*1.25);
     final static double SERVO_SHIFT = 0.01;
 
     public void init() {
@@ -54,7 +55,7 @@ public class DXM_TeleOp extends OpMode {
     public void loop() {
         double leftY1= Math.abs(gamepad1.left_stick_y) > 0.3? -gamepad1.left_stick_y: 0 ;
         double leftX1= Math.abs(gamepad1.left_stick_x) > 0.3? gamepad1.left_stick_x: 0 ;
-        double rightX1= Math.abs(gamepad1.right_stick_x) > 0.3? gamepad1.right_stick_x: 0;
+        double rightX1= Math.abs(gamepad1.right_stick_x) > 0.3? -gamepad1.right_stick_x: 0;
         double triggerR2 = gamepad2.right_trigger;
         double triggerL2 = gamepad2.left_trigger;
         double leftY2 = Math.abs(gamepad2.left_stick_y) > 0.3? -gamepad2.left_stick_y: 0;
@@ -87,12 +88,15 @@ public class DXM_TeleOp extends OpMode {
 
 //**************************************************************************************************
 
-        if (triggerL2 > 0.3)
+        int pincePos = robot.pincer.getCurrentPosition();
+
+        if (triggerL2 > 0.1)// && pincePos < 0)
             robot.pincer.setPower(triggerL2);
-        else if (triggerR2 > 0.3)
+        else if (triggerR2 > 0.1)// && pincePos > PINCER_ENCODER)
             robot.pincer.setPower(-triggerR2);
         else
             robot.pincer.setPower(0.0);
+        telemetry.addData("pince Position:", pincePos);
 //**************************************************************************************************
         telemetry.update();
 
