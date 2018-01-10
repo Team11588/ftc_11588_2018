@@ -137,10 +137,11 @@ with machanum wheels all 4 wheels need to be motorized
         fLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         fRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        bLeft.setTargetPosition((int) (1140 * mult));
-        fLeft.setTargetPosition((int) (-1140 * mult));
         bRight.setTargetPosition((int) (-1140 * mult));
         fRight.setTargetPosition((int) (1140 * mult));
+        bLeft.setTargetPosition((int) (1140 * mult));
+        fLeft.setTargetPosition((int) (-1140 * mult));
+
 
         fLeft.setPower(speed);
         fRight.setPower(speed);

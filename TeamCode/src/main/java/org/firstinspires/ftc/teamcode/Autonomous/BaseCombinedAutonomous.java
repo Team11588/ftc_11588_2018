@@ -56,7 +56,7 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
 
     public String teamColor;
     public static final int ENCODER_RUN = 1140;
-    public static final int PINCH_LOOP = 12500;
+    public static final int PINCH_LOOP = 15000;
 
     HardwareDxm robot = new HardwareDxm();
     HardwareMap hwMap = null;
@@ -280,18 +280,16 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
         robot.bRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.fRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        robot.bLeft.setTargetPosition(-1140);
-        robot.fLeft.setTargetPosition(-1140);
-        robot.bRight.setTargetPosition(-1140);
-        robot.fRight.setTargetPosition(-1140);
+        robot.bLeft.setTargetPosition(-1140/2);
+        robot.fLeft.setTargetPosition(-1140/2);
+        robot.bRight.setTargetPosition(-1140/2);
+        robot.fRight.setTargetPosition(-1140/2);
 
         drive(.5, .5, .5, .5);
 
         while (robot.bLeft.isBusy()) ;
 
         robot.jewelKnockDevice.setPosition(.85);
-
-
     }
 
     public void knockJewelLeft() {
@@ -305,10 +303,10 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
         robot.bRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.fRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        robot.bLeft.setTargetPosition(1140);
-        robot.fLeft.setTargetPosition(1140);
-        robot.bRight.setTargetPosition(1140);
-        robot.fRight.setTargetPosition(1140);
+        robot.bLeft.setTargetPosition(1140/2);
+        robot.fLeft.setTargetPosition(1140/2);
+        robot.bRight.setTargetPosition(1140/2);
+        robot.fRight.setTargetPosition(1140/2);
 
         drive(.5, .5, .5, .5);
 
@@ -462,7 +460,7 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
 
         int current = getRelativePosition(goal, direction, start);
 
-        if (direction == "right") {
+        if (direction == "left") {
 
             while (getRelativePosition(goal, direction, start) < goal - 4) {
 
@@ -521,7 +519,7 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
             telemetry.addData("imu", angles.firstAngle);
             telemetry.addData("Relative position", getRelativePosition(goal, direction, start));
             telemetry.update();
-        } else if (direction == "left") {
+        } else if (direction == "right") {
             while (current < goal - 4) {
 
                 if (current < (.27 * goal)) {
@@ -665,7 +663,7 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
             loop++;
             telemetry.addData("loop", loop);
             telemetry.update();
-        } while (loop < PINCH_LOOP);
+        } while (loop < PINCH_LOOP+25000);
         robot.pincer.setPower(0);
     }
 }
