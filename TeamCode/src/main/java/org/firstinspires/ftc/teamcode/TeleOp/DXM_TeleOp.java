@@ -42,10 +42,15 @@ import org.firstinspires.ftc.teamcode.Hardware.HardwareDxm;
 @TeleOp(name="DXM TeleOp" , group = "TeleOp")
 public class DXM_TeleOp extends OpMode {
 
-    HardwareDxm robot           = new HardwareDxm();
+    HardwareDxm robot = new HardwareDxm();
 
-    final static int PINCER_ENCODER = -(int)(1140*1.25);
+    final static int PINCER_ENCODER = -(int) (1140 * 1.25);
     final static double SERVO_SHIFT = 0.01;
+    public boolean speed = false;
+
+    double leftY1;
+    double leftX1;
+    double rightX1;
 
     public void init() {
         robot.init(hardwareMap);
@@ -53,12 +58,18 @@ public class DXM_TeleOp extends OpMode {
 
     @Override
     public void loop() {
-        double leftY1= Math.abs(gamepad1.left_stick_y) > 0.3? -gamepad1.left_stick_y: 0 ;
-        double leftX1= Math.abs(gamepad1.left_stick_x) > 0.3? gamepad1.left_stick_x: 0 ;
-        double rightX1= Math.abs(gamepad1.right_stick_x) > 0.3? -gamepad1.right_stick_x: 0;
+        if (speed == false) {
+            leftY1 = Math.abs(gamepad1.left_stick_y) > 0.3 ? -gamepad1.left_stick_y : 0;
+            leftX1 = Math.abs(gamepad1.left_stick_x) > 0.3 ? gamepad1.left_stick_x : 0;
+            rightX1 = Math.abs(gamepad1.right_stick_x) > 0.3 ? -gamepad1.right_stick_x : 0;
+        } else {
+            leftY1 = Math.abs(gamepad1.left_stick_y) > 0.3 ? -gamepad1.left_stick_y / 2 : 0;
+            leftX1 = Math.abs(gamepad1.left_stick_x) > 0.3 ? gamepad1.left_stick_x / 2 : 0;
+            rightX1 = Math.abs(gamepad1.right_stick_x) > 0.3 ? -gamepad1.right_stick_x / 2 : 0;
+        }
         double triggerR2 = gamepad2.right_trigger;
         double triggerL2 = gamepad2.left_trigger;
-        double leftY2 = Math.abs(gamepad2.left_stick_y) > 0.3? -gamepad2.left_stick_y: 0;
+        double leftY2 = Math.abs(gamepad2.left_stick_y) > 0.3 ? -gamepad2.left_stick_y : 0;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         double[] wheelPower = wheelPower(leftX1, leftY1, rightX1);
@@ -69,20 +80,21 @@ public class DXM_TeleOp extends OpMode {
 
         robot.lLift.setPower(leftY2);
         robot.rLift.setPower(leftY2);
-        
-        telemetry.addData("left joystick y-value: ",leftY1);
-        telemetry.addData("left joystick x-value: ",leftX1);
-        telemetry.addData("right joystick x-value: ",rightX1);
-        telemetry.addData("front left motor: ",wheelPower[0]);
-        telemetry.addData("front right motor: ",wheelPower[1]);
-        telemetry.addData("back left motor: ",wheelPower[2]);
-        telemetry.addData("back right motor: ",wheelPower[3]);
+
+        if (gamepad1.x){speed = !speed;}
+
+        telemetry.addData("left joystick y-value: ", leftY1);
+        telemetry.addData("left joystick x-value: ", leftX1);
+        telemetry.addData("right joystick x-value: ", rightX1);
+        telemetry.addData("front left motor: ", wheelPower[0]);
+        telemetry.addData("front right motor: ", wheelPower[1]);
+        telemetry.addData("back left motor: ", wheelPower[2]);
+        telemetry.addData("back right motor: ", wheelPower[3]);
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-        if(gamepad1.a){
+        if (gamepad1.a) {
             robot.jewelKnockDevice.setPosition(1);
-        }
-        else if (gamepad1.b){
+        } else if (gamepad1.b) {
             robot.jewelKnockDevice.setPosition(.25);
         }
 
@@ -91,41 +103,43 @@ public class DXM_TeleOp extends OpMode {
         int pincePos = robot.pincer.getCurrentPosition();
 
         if (triggerL2 > 0.1)// && pincePos < 0)
-            robot.pincer.setPower(triggerL2);
+            robot.pincer.setPower(.75*triggerL2);
         else if (triggerR2 > 0.1)// && pincePos > PINCER_ENCODER)
-            robot.pincer.setPower(-triggerR2);
+            robot.pincer.setPower(.75*-triggerR2);
         else
             robot.pincer.setPower(0.0);
         telemetry.addData("pince Position:", pincePos);
 //**************************************************************************************************
         telemetry.update();
 
-    }
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    public double[] wheelPower(double x, double y, double r){
 
-        double speed = speed (x,y);
-        double angle = angle (x,y);
-        double pFL = (speed * (Math.sin((angle) + ((Math.PI)/4)))) + r;
-        double pFR = (speed * (Math.cos((angle) + ((Math.PI)/4)))) - r;
-        double pBL = (speed * (Math.cos((angle) + ((Math.PI)/4)))) + r;
-        double pBR = (speed * (Math.sin((angle) + ((Math.PI)/4)))) - r;
+    }
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    public double[] wheelPower(double x, double y, double r) {
+
+        double speed = speed(x, y);
+        double angle = angle(x, y);
+        double pFL = (speed * (Math.sin((angle) + ((Math.PI) / 4)))) + r;
+        double pFR = (speed * (Math.cos((angle) + ((Math.PI) / 4)))) - r;
+        double pBL = (speed * (Math.cos((angle) + ((Math.PI) / 4)))) + r;
+        double pBR = (speed * (Math.sin((angle) + ((Math.PI) / 4)))) - r;
         double[] wP = {pFL, pFR, pBL, pBR};
-        telemetry.addData("speed: ",speed);
-        telemetry.addData("angle: ",angle);
+        telemetry.addData("speed: ", speed);
+        telemetry.addData("angle: ", angle);
 
         return wP;
     }
 
-    public double speed (double x, double y){
-        return Math.sqrt((Math.pow(x,2)) + (Math.pow(y,2)));
+    public double speed(double x, double y) {
+        return Math.sqrt((Math.pow(x, 2)) + (Math.pow(y, 2)));
     }
 
-    public double angle (double x, double y){
-       if ((y == 0)&&(x ==0))
-        return 0;
-       else
-           return Math.atan2(x,y);
+    public double angle(double x, double y) {
+        if ((y == 0) && (x == 0))
+            return 0;
+        else
+            return Math.atan2(x, y);
     }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 }
