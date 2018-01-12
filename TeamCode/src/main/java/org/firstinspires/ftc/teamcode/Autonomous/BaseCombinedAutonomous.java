@@ -170,7 +170,7 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
                     telemetry.addData("CENTER", "");
                     mark = 2;
                 } else if (vuMark == RelicRecoveryVuMark.LEFT) {
-                    telemetry.addData("Left", "");
+                    telemetry.addData("LEFT", "");
                     mark = 3;
                 }
 
@@ -227,24 +227,33 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
         toJewel();
         if (jewelSpot) {
 
-            telemetry.addData("left", "");
+            telemetry.addData("knock jewel left", "");
             telemetry.update();
 
             knockJewelRight();
-
+            if (teamColor == "blue") {
+                robot.strafeLeft(.5, .5);
+            } else if (teamColor == "red") {
+                robot.strafeLeft(.5, .5);
+            }
             if (teamColor == "red") {
-                robot.driveForword(3 , .5);
+                robot.driveForword(3, .5);
             }
 
         } else {
 
-            telemetry.addData("right", "");
+            telemetry.addData("knock jewel right", "");
             telemetry.update();
 
 
             knockJewelLeft();
             if (teamColor == "blue") {
-                robot.driveBackword(2 , .5);
+                robot.strafeLeft(.5, .5);
+            } else if (teamColor == "red") {
+                robot.strafeLeft(.5, .5);
+            }
+            if (teamColor == "blue") {
+                robot.driveBackword(2, .5);
             }
         }
     }
@@ -280,10 +289,10 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
         robot.bRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.fRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        robot.bLeft.setTargetPosition(-1140/2);
-        robot.fLeft.setTargetPosition(-1140/2);
-        robot.bRight.setTargetPosition(-1140/2);
-        robot.fRight.setTargetPosition(-1140/2);
+        robot.bLeft.setTargetPosition(-1140 / 2);
+        robot.fLeft.setTargetPosition(-1140 / 2);
+        robot.bRight.setTargetPosition(-1140 / 2);
+        robot.fRight.setTargetPosition(-1140 / 2);
 
         drive(.5, .5, .5, .5);
 
@@ -303,10 +312,10 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
         robot.bRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.fRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        robot.bLeft.setTargetPosition(1140/2);
-        robot.fLeft.setTargetPosition(1140/2);
-        robot.bRight.setTargetPosition(1140/2);
-        robot.fRight.setTargetPosition(1140/2);
+        robot.bLeft.setTargetPosition(1140 / 2);
+        robot.fLeft.setTargetPosition(1140 / 2);
+        robot.bRight.setTargetPosition(1140 / 2);
+        robot.fRight.setTargetPosition(1140 / 2);
 
         drive(.5, .5, .5, .5);
 
@@ -632,15 +641,15 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
 // Ihave discovered that to move in between crypto columbs it is 4/5 of a full rotation
         if (teamColor == "red") {
             if (mark == 2) {
-                robot.strafeLeft(.8 , .5);
+                robot.driveForword(.8, .5);
             } else if (mark == 3) {
-                robot.strafeLeft(1.6 , .5);
+                robot.driveForword(1.6, .5);
             }
         } else if (teamColor == "blue") {
             if (mark == 2) {
-                robot.strafeRight(.8 , .6);
+                robot.driveBackword(.8, .6);
             } else if (mark == 1) {
-                robot.strafeRight(1.6 , .5);
+                robot.driveBackword(1.6, .5);
             }
         }
     }
@@ -663,7 +672,7 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
             loop++;
             telemetry.addData("loop", loop);
             telemetry.update();
-        } while (loop < PINCH_LOOP+25000);
+        } while (loop < PINCH_LOOP + 25000);
         robot.pincer.setPower(0);
     }
 }

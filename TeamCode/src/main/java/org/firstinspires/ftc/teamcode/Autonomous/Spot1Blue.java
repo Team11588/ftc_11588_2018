@@ -36,23 +36,33 @@ public class Spot1Blue extends BaseCombinedAutonomous {
 
         knockJewel(jewelSpot);
         if (jewelSpot) {
-            robot.driveBackword(1.25, .5);
+            robot.driveBackword(1.65, .5);
         } else {
             robot.driveBackword(1, .5);
         }
-        if (jewelSpot) {
+       /* if (jewelSpot) {
             turn(90, "right");
         } else {
             turn(85, "right");
         }
-        if (jewelSpot) {
+        */
+
+       /* if(jewelSpot) {
             robot.strafeRight(.8, .6);
         }
+        */
         columnMove(mark);
 
-        if (jewelSpot) {
+
+
+        /*if (jewelSpot) {
             turn(10, "left");
 
         }
+        */
+
+        turn(87 , "right");
+
+        release();
     }
 }

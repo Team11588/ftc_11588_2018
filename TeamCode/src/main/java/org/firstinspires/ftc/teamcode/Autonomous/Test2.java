@@ -28,8 +28,7 @@ public class Test2 extends BaseCombinedAutonomous {
         myinit();
 
         waitForStart();
-
-        robot.strafeLeft(.8 , .5);
+toJewel();
 
         while (opModeIsActive()) ;
     }

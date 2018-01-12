@@ -43,6 +43,7 @@ public class Spot2Blue extends BaseCombinedAutonomous {
         teamColor = "blue";
         columnMove(mark);
         robot.driveForword(.5 , .5);
+        release();
 
     }
 }

@@ -46,10 +46,7 @@ public class RobotSetUp extends LinearOpModeCamera {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-        }
+
 
         if (!isCameraAvailable()) {
             telemetry.addData("camera is not available", "");
@@ -57,6 +54,12 @@ public class RobotSetUp extends LinearOpModeCamera {
             waitForStart();
         }
         startCamera();
+
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+        }
+
         telemetry.addData(String.valueOf(width), height);
         telemetry.update();
 
