@@ -29,19 +29,15 @@
 
 package org.firstinspires.ftc.teamcode.TeleOp;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.Hardware.HardwareDxm;
 
 
 @TeleOp(name="DXM TeleOp" , group = "TeleOp")
-public class DXM_TeleOp extends OpMode {
+public class DXM_TeleOp_Modified extends OpMode {
 
     HardwareDxm robot = new HardwareDxm();
 
@@ -53,23 +49,28 @@ public class DXM_TeleOp extends OpMode {
     double leftX1;
     double rightX1;
 
-    public void init() {robot.init(hardwareMap);}
+    public void init() {
+        robot.init(hardwareMap);
+
+        robot.fLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.fRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.bLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.bRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        robot.fLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.fRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.bLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.bRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
 
     @Override
     public void loop() {
         if (speed == false) {
             leftY1 = Math.abs(gamepad1.left_stick_y) > 0.3 ? -gamepad1.left_stick_y : 0;
-            leftX1 = Math.abs(gamepad1.left_stick_x) > 0.3 ? gamepad1.left_stick_x : 0;
-            rightX1 = Math.abs(gamepad1.right_stick_x) > 0.3 ? -gamepad1.right_stick_x : 0;
         } else {
             leftY1 = Math.abs(gamepad1.left_stick_y) > 0.3 ? -gamepad1.left_stick_y / 2 : 0;
-            leftX1 = Math.abs(gamepad1.left_stick_x) > 0.3 ? gamepad1.left_stick_x / 2 : 0;
-            rightX1 = Math.abs(gamepad1.right_stick_x) > 0.3 ? -gamepad1.right_stick_x / 2 : 0;
         }
-        double triggerR2 = gamepad2.right_trigger;
-        double triggerL2 = gamepad2.left_trigger;
-        double leftY2 = Math.abs(gamepad2.left_stick_y) > 0.3 ? -gamepad2.left_stick_y : 0;
-
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         double[] wheelPower = wheelPower(leftX1, leftY1, rightX1);
         robot.fLeft.setPower(wheelPower[0]);
@@ -77,44 +78,12 @@ public class DXM_TeleOp extends OpMode {
         robot.bLeft.setPower(wheelPower[2]);
         robot.bRight.setPower(wheelPower[3]);
 
-        robot.lLift.setPower(leftY2);
-        robot.rLift.setPower(leftY2);
-
-        if (gamepad1.x){speed = !speed;}
-
-        telemetry.addData("left joystick y-value: ", leftY1);
-        telemetry.addData("left joystick x-value: ", leftX1);
-        telemetry.addData("right joystick x-value: ", rightX1);
-        telemetry.addData("front left motor: ", wheelPower[0]);
-        telemetry.addData("front right motor: ", wheelPower[1]);
-        telemetry.addData("back left motor: ", wheelPower[2]);
-        telemetry.addData("back right motor: ", wheelPower[3]);
+        telemetry.addData("Front Left", robot.fLeft.getCurrentPosition());
+        telemetry.addData("Front Right", robot.fRight.getCurrentPosition());
+        telemetry.addData("Back Left", robot.bLeft.getCurrentPosition());
+        telemetry.addData("Back Right", robot.bRight.getCurrentPosition());
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-        if (gamepad1.a) {
-            robot.jewelKnockDevice.setPosition(1);
-        } else if (gamepad1.b) {
-            robot.jewelKnockDevice.setPosition(.25);
-        }
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-        if (gamepad2.a)
-            robot.pincer.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-//**************************************************************************************************
-
-        int pincePos = robot.pincer.getCurrentPosition();
-
-        if (triggerL2 > 0.1 && robot.pincer.getCurrentPosition() > 0)
-            robot.pincer.setPower(.75*triggerL2);
-        else if (triggerR2 > 0.1 && (robot.pincer.getCurrentPosition() < PINCER_ENCODER || gamepad2.b))
-            robot.pincer.setPower(.75*-triggerR2);
-        else
-            robot.pincer.setPower(0.0);
-        telemetry.addData("pince Position:", pincePos);
-//**************************************************************************************************
-        telemetry.update();
+     telemetry.update();
     }
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -127,8 +96,6 @@ public class DXM_TeleOp extends OpMode {
         double pBL = (speed * (Math.cos((angle) + ((Math.PI) / 4)))) + r;
         double pBR = (speed * (Math.sin((angle) + ((Math.PI) / 4)))) - r;
         double[] wP = {pFL, pFR, pBL, pBR};
-        telemetry.addData("speed: ", speed);
-        telemetry.addData("angle: ", angle);
 
         return wP;
     }
