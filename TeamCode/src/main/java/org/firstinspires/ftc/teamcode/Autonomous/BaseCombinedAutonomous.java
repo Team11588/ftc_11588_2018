@@ -80,7 +80,7 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
     private int sampleBox_x2;
     private int sampleBox_y2;
 
-
+    //Full Init process that leads up to the taking of the picture, put at the start of every autonomous
     public void myinit() {
 
         robot.init(hardwareMap);
@@ -129,6 +129,7 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
 
     }
 
+    //Inits the vuMarks because the camera and the vuForia cannot operate at the same time, has a loop that breaks only when vuMark is seen
     public int readVuImage() {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parametersv = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
@@ -182,6 +183,7 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
         return mark;
     }
 
+    //Converts RGB to HSV counts to get a count of the colors of the pixels
     public static double[] RGBtoHSV(double r, double g, double b) {
 
         double h, s, v;
@@ -278,6 +280,9 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
         while (robot.bLeft.isBusy()) ;
     }
 
+    /*Used to knock the jewels either on the left or right, it is used for movement toward the Cryptobox
+   It includes movement of the JewelKnocker so as not to get caught on anything
+    */
     public void knockJewelRight() {
         robot.bLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.bRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -301,7 +306,6 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
 
         robot.jewelKnockDevice.setPosition(.85);
     }
-
     public void knockJewelLeft() {
         robot.bLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.bRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -326,6 +330,7 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
         robot.jewelKnockDevice.setPosition(.85);
     }
 
+
     public static void saveBitmap(String filename, Bitmap bitmap) {
 
         String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Pictures";
@@ -345,6 +350,7 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
 
     }
 
+    //This allows the robot to set power to all motors without the use of so many lines of code
     public void drive(double fL, double fR, double bL, double bR) {
         robot.fLeft.setPower(fL);
         robot.fRight.setPower(fR);
@@ -366,6 +372,7 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
         saveBitmap("previewImage.png", mutableBitmap);
     }
 
+    //This is the boolean value that allows us to know if Our Jewel is on left, we have been using this is the sampling ox we use
     public boolean isOurJewelOnLeft(Bitmap bitmap) {
         int leftRed = 0;
         int leftBlue = 0;
@@ -413,6 +420,9 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
             return false;
     }
 
+    /*In our Robot setUp we right to a file on the phone the coordinates for the sampling box. This function reads that file so we
+    can allow the robot to take the correct picture during the autonomous
+    */
     public void readConfigFile() {
         File sd = Environment.getExternalStorageDirectory();
         File sampleBox = new File(sd + "/team", "sampleBox.txt");
@@ -447,18 +457,24 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
         }
     }
 
+    /*A problem we ran into using the IMU sensor was the fact that the angles were not as though they were on the unit circle
+    This function normalizes the angle so the robot starts at zero when the IMU is initialized and right is 360 and left is 0.
+    This allows only one problem spot to remain
+    */
     public int normalizeAngle(int angle) {
 
         return (angle + 360) % 360;
 
     }
 
+    //    This returns a normalized current angle
     public int getCurrentAngle() {
         Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
         return normalizeAngle((int) angles.firstAngle);
     }
 
+    //This function allows you to input a goal angle between 1-360 and a direction that allows you to turn in that direction and angle
     public void turn(int goal, String direction) {
         robot.bLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.bRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -589,6 +605,7 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
         }
     }
 
+    //In order to allow the robot to move across the line that divides 360 & 
     public int getRelativePosition(int goal, String direction, int start) {
         int current = getCurrentAngle();
         if (direction == "right" && goal > start && current > goal) {
