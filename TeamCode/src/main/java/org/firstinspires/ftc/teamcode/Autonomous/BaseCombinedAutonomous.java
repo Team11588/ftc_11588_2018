@@ -223,7 +223,6 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
         return new double[]{h,/*s,*/v};
     }
 
-
     /*Used to knock the jewels either on the left or right, it is used for movement toward the Cryptobox
    It includes movement of the JewelKnocker so as not to get caught on anything
     */
