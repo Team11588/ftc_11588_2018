@@ -155,8 +155,6 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
         Center - 2
         Left - 3
 */
-
-
 // This can be used to identify the pictograph and this loop will run until it is found and it'll store the mark
 
         do {
@@ -225,60 +223,6 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
         return new double[]{h,/*s,*/v};
     }
 
-    public void knockJewel(boolean jewelSpot) {
-        toJewel();
-        if (jewelSpot) {
-
-            telemetry.addData("knock jewel left", "");
-            telemetry.update();
-
-            knockJewelRight();
-            /*if (teamColor == "blue") {
-                robot.strafeLeft(.5, .3);
-            } else if (teamColor == "red") {
-                robot.strafeLeft(.5, .3);
-            */
-
-            if (teamColor == "red") {
-                robot.driveForword(3, .3);
-            }
-        } else {
-
-            telemetry.addData("knock jewel right", "");
-            telemetry.update();
-
-
-            knockJewelLeft();
-          /*  if (teamColor == "blue") {
-                robot.strafeLeft(.5, .3);
-            } else if (teamColor == "red") {
-                robot.strafeLeft(.5, .3);
-            }
-            */
-            if (teamColor == "blue") {
-                robot.driveBackword(2, .3);
-            }
-        }
-    }
-
-    public void toJewel() {
-
-        robot.jewelKnockDevice.setPosition(.5);
-
-        robot.bLeft.setTargetPosition(-ENCODER_RUN);
-        robot.fLeft.setTargetPosition(ENCODER_RUN);
-        robot.bRight.setTargetPosition(ENCODER_RUN);
-        robot.fRight.setTargetPosition(-ENCODER_RUN);
-
-        robot.bLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.fLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.bRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.fRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        drive(.3, .3, .3, .3);
-
-        while (robot.bLeft.isBusy()) ;
-    }
 
     /*Used to knock the jewels either on the left or right, it is used for movement toward the Cryptobox
    It includes movement of the JewelKnocker so as not to get caught on anything
@@ -306,6 +250,7 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
 
         robot.jewelKnockDevice.setPosition(.85);
     }
+
     public void knockJewelLeft() {
         robot.bLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.bRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -358,6 +303,10 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
         robot.bRight.setPower(bR);
     }
 
+    /*
+    This program draws a box on top of the picture that we analyze then saves the picture to a file
+    so that we can confirm where the box is located
+    */
     public void drawSamplingBox(Bitmap bitmap) {
         double xPercent = (bitmap.getWidth()) / 100.0;
         double yPercent = (bitmap.getHeight()) / 100.0;
@@ -420,7 +369,8 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
             return false;
     }
 
-    /*In our Robot setUp we right to a file on the phone the coordinates for the sampling box. This function reads that file so we
+    /*
+    In our Robot setUp we right to a file on the phone the coordinates for the sampling box. This function reads that file so we
     can allow the robot to take the correct picture during the autonomous
     */
     public void readConfigFile() {
@@ -457,7 +407,8 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
         }
     }
 
-    /*A problem we ran into using the IMU sensor was the fact that the angles were not as though they were on the unit circle
+    /*
+    A problem we ran into using the IMU sensor was the fact that the angles were not as though they were on the unit circle
     This function normalizes the angle so the robot starts at zero when the IMU is initialized and right is 360 and left is 0.
     This allows only one problem spot to remain
     */
@@ -605,7 +556,7 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
         }
     }
 
-    //In order to allow the robot to move across the line that divides 360 & 
+    //In order to allow the robot to move across the line that divides 360 &
     public int getRelativePosition(int goal, String direction, int start) {
         int current = getCurrentAngle();
         if (direction == "right" && goal > start && current > goal) {
@@ -655,6 +606,8 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
 
     }
 
+    //This is the movement from the spot twos because the robot has different measurements from different spots. THis is used after we
+    // knock of the jewel
     public void columnTwoMove(int mark) {
         if (teamColor == "red") {
             if (mark == 1) {
@@ -664,7 +617,7 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
             } else {
                 robot.driveForword(1.71, .3);
             }
-        }else if (teamColor == "blue") {
+        } else if (teamColor == "blue") {
             if (mark == 3) {
                 robot.driveForword(.5, .3);
             } else if (mark == 2) {
@@ -675,7 +628,8 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
         }
     }
 
-    public void columnOneMove(int mark){
+    //This is the movement for the spot ones
+    public void columnOneMove(int mark) {
         if (teamColor == "red") {
             if (mark == 1) {
                 robot.driveForword(1.4, .3);
@@ -685,18 +639,18 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
                 robot.driveForword(2.6, .3);
             }
 
-        }
-        else if(teamColor == "blue"){
-            if (mark == 3){
+        } else if (teamColor == "blue") {
+            if (mark == 3) {
                 robot.driveBackword(1.9, .3);
-            }else if (mark == 2){
+            } else if (mark == 2) {
                 robot.driveBackword(2.56, .3);
-            }else if (mark == 1){
+            } else if (mark == 1) {
                 robot.driveBackword(3.1, .3);
             }
         }
     }
 
+    //This is the pinch that allows the robot to pinch to hold the block in autonomous
     public void pinch() {
         int loop = 0;
         do {
@@ -708,6 +662,7 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
         robot.pincer.setPower(0);
     }
 
+    //This is the release function used at the end of the autonomous 
     public void release() {
         int loop = 0;
         do {
