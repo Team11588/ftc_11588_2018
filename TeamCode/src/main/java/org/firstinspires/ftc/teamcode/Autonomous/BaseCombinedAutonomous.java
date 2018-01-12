@@ -181,7 +181,7 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
         return mark;
     }
 
-    //Converts RGB to HSV counts to get a count of the colors of the pixels
+    //Converts RGB channels from the bitmap to HSV counts to get a the of the hue of the pixels
     public static double[] RGBtoHSV(double r, double g, double b) {
 
         double h, s, v;
