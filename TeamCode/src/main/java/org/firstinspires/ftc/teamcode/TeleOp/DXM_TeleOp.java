@@ -33,6 +33,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
@@ -44,7 +45,7 @@ public class DXM_TeleOp extends OpMode {
 
     HardwareDxm robot = new HardwareDxm();
 
-    final static int PINCER_ENCODER = -(int) (1140 * 1.25);
+    final static int PINCER_ENCODER = (int) (1140 * 1.25);
     final static double SERVO_SHIFT = 0.01;
     public boolean speed = false;
 
@@ -98,13 +99,18 @@ public class DXM_TeleOp extends OpMode {
             robot.jewelKnockDevice.setPosition(.25);
         }
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+        if (gamepad2.a)
+            robot.pincer.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
 //**************************************************************************************************
 
         int pincePos = robot.pincer.getCurrentPosition();
 
-        if (triggerL2 > 0.1)// && pincePos < 0)
+        if (triggerL2 > 0.1 && robot.pincer.getCurrentPosition() > 0)
             robot.pincer.setPower(.75*triggerL2);
-        else if (triggerR2 > 0.1)// && pincePos > PINCER_ENCODER)
+        else if (triggerR2 > 0.1 && (robot.pincer.getCurrentPosition() < PINCER_ENCODER || gamepad2.b))
             robot.pincer.setPower(.75*-triggerR2);
         else
             robot.pincer.setPower(0.0);
