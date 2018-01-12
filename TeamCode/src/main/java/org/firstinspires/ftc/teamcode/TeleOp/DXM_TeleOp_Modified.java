@@ -36,7 +36,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.teamcode.Hardware.HardwareDxm;
 
 
-@TeleOp(name="DXM TeleOp" , group = "TeleOp")
+@TeleOp(name="DXM TeleOp_Modified" , group = "TeleOp")
 public class DXM_TeleOp_Modified extends OpMode {
 
     HardwareDxm robot = new HardwareDxm();

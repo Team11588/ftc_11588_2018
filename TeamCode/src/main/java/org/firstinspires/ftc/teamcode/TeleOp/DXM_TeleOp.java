@@ -106,9 +106,9 @@ public class DXM_TeleOp extends OpMode {
 
         int pincePos = robot.pincer.getCurrentPosition();
 
-        if (triggerL2 > 0.1 && robot.pincer.getCurrentPosition() > 0)
+        if (triggerL2 > 0.1 && (robot.pincer.getCurrentPosition() < PINCER_ENCODER || gamepad2.b))
             robot.pincer.setPower(.75*triggerL2);
-        else if (triggerR2 > 0.1 && (robot.pincer.getCurrentPosition() < PINCER_ENCODER || gamepad2.b))
+        else if (triggerR2 > 0.1 && (robot.pincer.getCurrentPosition() > 0 || gamepad2.b))
             robot.pincer.setPower(.75*-triggerR2);
         else
             robot.pincer.setPower(0.0);
