@@ -45,7 +45,7 @@ public class DXM_TeleOp extends OpMode {
 
     HardwareDxm robot = new HardwareDxm();
 
-    final static int PINCER_ENCODER = (int) (1140 * 1.25);
+    final static int PINCER_ENCODER = (int) (1140 * .33);
     final static double SERVO_SHIFT = 0.01;
     public boolean speed = false;
 
