@@ -53,7 +53,6 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
 
 
     public String teamColor;
-    public static final int ENCODER_RUN = 1140;
     public static final int PINCH_LOOP = 12500;
 
     HardwareDxm robot = new HardwareDxm();
