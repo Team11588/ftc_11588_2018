@@ -66,11 +66,8 @@ public class DXM_TeleOp_Modified extends OpMode {
 
     @Override
     public void loop() {
-        if (speed == false) {
-            leftY1 = Math.abs(gamepad1.left_stick_y) > 0.3 ? -gamepad1.left_stick_y : 0;
-        } else {
-            leftY1 = Math.abs(gamepad1.left_stick_y) > 0.3 ? -gamepad1.left_stick_y / 2 : 0;
-        }
+        leftY1 = Math.abs(gamepad1.left_stick_y) > 0.3 ? gamepad1.left_stick_y < 0 ? -.3: .3 : 0;
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         double[] wheelPower = wheelPower(leftX1, leftY1, rightX1);
         robot.fLeft.setPower(wheelPower[0]);

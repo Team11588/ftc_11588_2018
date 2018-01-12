@@ -27,8 +27,34 @@ public class Test2 extends BaseCombinedAutonomous {
 
         myinit();
 
+       // pinch();
+
+        robot.jewelKnockDevice.setPosition(.4);
+
         waitForStart();
-toJewel();
+
+        /*
+        robot.driveForword(.2, .3);
+
+        robot.jewelKnockDevice.setPosition(.85);
+        robot.driveBackword(.2, .3);
+*/
+
+       // knockJewelRight();
+        knockJewelLeft();
+
+        robot.driveForword(1.5, .3);
+
+        turn(95, "left");
+
+        robot.driveForword(1.71, .3);
+
+        turn(90, "right");
+
+        //robot.driveForword(.5, .3);
+
+        //release();
+        stopCamera();
 
         while (opModeIsActive()) ;
     }

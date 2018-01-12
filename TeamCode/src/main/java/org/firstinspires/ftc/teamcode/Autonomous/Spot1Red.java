@@ -21,25 +21,33 @@ public class Spot1Red extends BaseCombinedAutonomous {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        teamColor = "red";
-
         myinit();
+
+        pinch();
 
         waitForStart();
 
-        boolean jewelSpot = isOurJewelOnLeft();
+        robot.jewelKnockDevice.setPosition(.42);
+
+        teamColor = "red";
+        boolean jewelLeftAsk = isOurJewelOnLeft();
+
+        if (jewelLeftAsk) {
+            robot.driveBackword(.25, .3);
+            robot.jewelKnockDevice.setPosition(.85);
+            robot.driveForword(.25, .3);
+        }
+
+        knockJewelLeft();
 
         int mark = readVuImage();
 
-        knockJewel(jewelSpot);
+        columnOneMove(mark);
 
-        robot.driveForword(1.25 , .5);
+        turn(80, "right");
 
-        turn(90, "right");
-        teamColor = "red";
-        columnMove(mark);
+        robot.driveForword(.7, .3);
 
         release();
-
     }
 }

@@ -25,24 +25,40 @@ public class Spot2Blue extends BaseCombinedAutonomous {
 
         myinit();
 
+        pinch();
+
         waitForStart();
 
-        boolean jewelSpot = isOurJewelOnLeft();
+        teamColor = "blue";
+        boolean jewelAskLeft = isOurJewelOnLeft();
+
+        if (!jewelAskLeft) {
+            robot.jewelKnockDevice.setPosition(.42);
+        }
+        robot.driveForword(.2, .3);
 
         int mark = readVuImage();
 
-        knockJewel(jewelSpot);
+        robot.jewelKnockDevice.setPosition(.85);
 
-        robot.driveBackword(1.25 , .5);
+        robot.driveBackword(.2, .3);
 
-        telemetry.addData(teamColor , "");
-        telemetry.update();
-        turn(180, "right");
+        if (jewelAskLeft) {
+            robot.jewelKnockDevice.setPosition(.42);
+        }
 
-        robot.strafeRight(1.4 , .5);
-        teamColor = "blue";
-        columnMove(mark);
-        robot.driveForword(.5 , .5);
+        knockJewelRight();
+
+        robot.driveBackword(1.7, .3);
+
+        turn(90, "left");
+
+        columnTwoMove(mark);
+
+        turn(90 , "left");
+
+        robot.driveForword(.7,.3);
+
         release();
 
     }
