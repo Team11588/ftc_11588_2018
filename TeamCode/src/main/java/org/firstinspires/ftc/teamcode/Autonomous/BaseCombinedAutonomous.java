@@ -250,6 +250,7 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
         robot.jewelKnockDevice.setPosition(.85);
     }
 
+    //Read comment on the knockJewelRight() function
     public void knockJewelLeft() {
         robot.bLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.bRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -274,7 +275,10 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
         robot.jewelKnockDevice.setPosition(.85);
     }
 
-
+    /*
+    This function takes the modified bitmap that we created and saves it to a file on the phone
+    so we can confirm the code works correctly
+    */
     public static void saveBitmap(String filename, Bitmap bitmap) {
 
         String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Pictures";
@@ -569,6 +573,7 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
         }
     }
 
+    //This function saves the image that we took from the camera as a bitmap
     public boolean isOurJewelOnLeft() {
 
 
