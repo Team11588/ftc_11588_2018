@@ -51,5 +51,7 @@ public class Spot1Blue extends BaseCombinedAutonomous {
         robot.driveForword(.4 , .3);
 
         release();
+
+        robot.driveBackword(.2 , .3);
     }
 }

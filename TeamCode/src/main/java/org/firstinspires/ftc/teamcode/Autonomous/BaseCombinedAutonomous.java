@@ -646,25 +646,18 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
 
     //This is the pinch that allows the robot to pinch to hold the block in autonomous
     public void pinch() {
-        int loop = 0;
-        do {
+
+            robot.pincer.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.pincer.setTargetPosition((int)(1140*.3));
             robot.pincer.setPower(.3);
-            loop++;
-            telemetry.addData("loop", loop);
-            telemetry.update();
-        } while (loop < PINCH_LOOP);
-        robot.pincer.setPower(0);
+           while (robot.pincer.isBusy());
     }
 
     //This is the release function used at the end of the autonomous 
     public void release() {
-        int loop = 0;
-        do {
-            robot.pincer.setPower(-.3);
-            loop++;
-            telemetry.addData("loop", loop);
-            telemetry.update();
-        } while (loop < PINCH_LOOP);
-        robot.pincer.setPower(0);
+        robot.pincer.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.pincer.setTargetPosition(0);
+        robot.pincer.setPower(-.3);
+        while (robot.pincer.isBusy());
     }
 }
