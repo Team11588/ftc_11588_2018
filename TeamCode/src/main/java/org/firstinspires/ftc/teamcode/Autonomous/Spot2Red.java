@@ -50,7 +50,7 @@ public class Spot2Red extends BaseCombinedAutonomous {
 
         turn(90 , "right");
 
-        robot.driveForword(.4,.3);
+        robot.driveForword(.6,.3);
 
         release();
 
