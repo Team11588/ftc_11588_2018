@@ -29,13 +29,9 @@
 
 package org.firstinspires.ftc.teamcode.TeleOp;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.Hardware.HardwareDxm;
 
@@ -70,7 +66,7 @@ public class DXM_TeleOp extends OpMode {
         double triggerL2 = gamepad2.left_trigger;
         double leftY2 = Math.abs(gamepad2.left_stick_y) > 0.3 ? -gamepad2.left_stick_y : 0;
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
         double[] wheelPower = wheelPower(leftX1, leftY1, rightX1);
         robot.fLeft.setPower(wheelPower[0]);
         robot.fRight.setPower(wheelPower[1]);
@@ -89,7 +85,7 @@ public class DXM_TeleOp extends OpMode {
         telemetry.addData("front right motor: ", wheelPower[1]);
         telemetry.addData("back left motor: ", wheelPower[2]);
         telemetry.addData("back right motor: ", wheelPower[3]);
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 
         if (gamepad1.a) {
             robot.jewelKnockDevice.setPosition(1);
@@ -97,12 +93,12 @@ public class DXM_TeleOp extends OpMode {
             robot.jewelKnockDevice.setPosition(.25);
         }
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 
         if (gamepad2.a)
             robot.pincer.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-//**************************************************************************************************
+
 
         int pincePos = robot.pincer.getCurrentPosition();
 
@@ -117,7 +113,7 @@ public class DXM_TeleOp extends OpMode {
         telemetry.update();
     }
 
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
     public double[] wheelPower(double x, double y, double r) {
 
         double speed = speed(x, y);
@@ -143,5 +139,4 @@ public class DXM_TeleOp extends OpMode {
         else
             return Math.atan2(x, y);
     }
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 }

@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
+
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -8,7 +9,6 @@ import android.os.Environment;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcontroller.internal.LinearOpModeCamera;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
@@ -30,8 +30,8 @@ import java.io.OutputStream;
  */
 
 
-@Autonomous (name = "RobotSetUP")
-public class RobotSetUp extends LinearOpModeCamera {
+@Autonomous(name = "RobotSetUP")
+public class RobotSetUp extends BaseCombinedAutonomous {
 
     VuforiaLocalizer vuforia;
 
@@ -65,7 +65,7 @@ public class RobotSetUp extends LinearOpModeCamera {
 
         //**********************************************************************************************
 
-        int[] boxCords = readConfigFile();
+        int[] boxCords = readConfigurationFile();
         while (jewel == null)
             sleep(1);
         this.jewel.moveBox(boxCords[0], boxCords[1]);
@@ -87,7 +87,7 @@ public class RobotSetUp extends LinearOpModeCamera {
         takePicture();
         saveConfigFile();
         createBoxBitmap();
-        readConfigFile();
+        readConfigurationFile();
 
         stopCamera();
 
@@ -138,8 +138,6 @@ public class RobotSetUp extends LinearOpModeCamera {
                 telemetry.update();
             }
         }
-        //while (opModeIsActive());
-        // stopCamera();
     }
 
 
@@ -212,7 +210,7 @@ public class RobotSetUp extends LinearOpModeCamera {
         }
     }
 
-    public int[] readConfigFile() {
+    public int[] readConfigurationFile() {
 
         int sampleBox_x1 = 0;
         int sampleBox_y1 = 0;

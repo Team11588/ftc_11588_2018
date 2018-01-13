@@ -36,14 +36,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 
-/**
- * Created by piscullin18641 on 01/05/2018.
- *
- * This is my full autonomous
- * it is my baby
- * please talk with me when editing
- *
- */
+
 
 
 
@@ -53,7 +46,7 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
 
 
     public String teamColor;
-    public static final int PINCH_LOOP = 12500;
+    public static final int PINCH_LOOP = 14000;
 
     HardwareDxm robot = new HardwareDxm();
     HardwareMap hwMap = null;
