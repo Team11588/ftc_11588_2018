@@ -21,7 +21,7 @@ public class Spot1Blue extends BaseCombinedAutonomous {
 
         myinit();
 
-        pinch();
+       //    pinch();
 
         waitForStart();
 

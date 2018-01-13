@@ -42,7 +42,7 @@ with machanum wheels all 4 wheels need to be motorized
         pincer = hwMap.dcMotor.get("pincer");
 
         jewelKnockDevice = hwMap.servo.get("jewelKnockDevice");
-        jewelKnockDevice.setPosition(.8);
+        jewelKnockDevice.setPosition(1);
 
         fLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         fRight.setDirection(DcMotorSimple.Direction.FORWARD);
