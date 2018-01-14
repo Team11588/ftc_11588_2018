@@ -41,6 +41,7 @@ public class Spot1Red extends BaseCombinedAutonomous {
         knockJewelLeft();
 
         int mark = readVuImage();
+        robot.jewelKnockDevice.setPosition(1);
 
         columnOneMove(mark);
 

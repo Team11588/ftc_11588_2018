@@ -40,9 +40,12 @@ public class Spot2Red extends BaseCombinedAutonomous {
 
         knockJewelLeft();
 
+        robot.jewelKnockDevice.setPosition(1);
+
         int mark = readVuImage();
 
         robot.driveForword(1.5, .3);
+
 
         turn(95, "left");
 
@@ -54,7 +57,7 @@ public class Spot2Red extends BaseCombinedAutonomous {
 
         release();
 
-        robot.driveBackword(.2 , .3);
+        robot.driveBackword(.4 , .3);
 
     }
 }

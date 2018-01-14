@@ -21,7 +21,7 @@ public class Spot1Blue extends BaseCombinedAutonomous {
 
         myinit();
 
-       //    pinch();
+          pinch();
 
         waitForStart();
 
@@ -43,6 +43,8 @@ public class Spot1Blue extends BaseCombinedAutonomous {
         }
 
         knockJewelRight();
+
+        robot.jewelKnockDevice.setPosition(1);
 
         columnOneMove(mark);
 

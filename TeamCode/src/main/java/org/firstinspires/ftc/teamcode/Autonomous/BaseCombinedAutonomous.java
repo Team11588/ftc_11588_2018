@@ -628,11 +628,11 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
     public void columnOneMove(int mark) {
         if (teamColor == "red") {
             if (mark == 1) {
-                robot.driveForword(1.4, .3);
+                robot.driveForword(1.6, .3);
             } else if (mark == 2) {
-                robot.driveForword(2.06, .3);
+                robot.driveForword(2.26, .3);
             } else if (mark == 3) {
-                robot.driveForword(2.6, .3);
+                robot.driveForword(2.8 , .3);
             }
 
         } else if (teamColor == "blue") {

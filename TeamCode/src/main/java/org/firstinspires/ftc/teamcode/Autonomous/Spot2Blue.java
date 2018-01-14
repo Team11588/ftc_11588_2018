@@ -39,7 +39,7 @@ public class Spot2Blue extends BaseCombinedAutonomous {
 
         int mark = readVuImage();
 
-        robot.jewelKnockDevice.setPosition(.85);
+        robot.jewelKnockDevice.setPosition(1);
 
         robot.driveBackword(.2, .3);
 
@@ -48,6 +48,7 @@ public class Spot2Blue extends BaseCombinedAutonomous {
         }
 
         knockJewelRight();
+        robot.jewelKnockDevice.setPosition(1);
 
         robot.driveBackword(1.7, .3);
 
