@@ -21,7 +21,7 @@ public class Spot1Blue extends BaseCombinedAutonomous {
 
         myinit();
 
-          pinch();
+        pinch();
 
         waitForStart();
 
@@ -50,10 +50,10 @@ public class Spot1Blue extends BaseCombinedAutonomous {
 
         turn(90, "right");
 
-        robot.driveForword(.6 , .3);
+        robot.driveForword(.6, .3);
 
         release();
 
-        robot.driveBackword(.4 , .3);
+        robot.driveBackword(.4, .3);
     }
 }

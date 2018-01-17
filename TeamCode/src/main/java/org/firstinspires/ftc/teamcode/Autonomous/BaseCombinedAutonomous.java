@@ -12,6 +12,7 @@ import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.TimestampedData;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcontroller.internal.LinearOpModeCamera;
@@ -35,10 +36,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-
-
-
-
+import java.util.Calendar;
+import java.util.Date;
 
 
 @Autonomous(name = "Base")
@@ -47,6 +46,7 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
 
     public String teamColor;
     public static final int PINCH_LOOP = 12500;
+    public static long TIME_PAST = 5000;
 
     HardwareDxm robot = new HardwareDxm();
     HardwareMap hwMap = null;
@@ -149,6 +149,9 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
 */
 // This can be used to identify the pictograph and this loop will run until it is found and it'll store the mark
 
+        Calendar c = Calendar.getInstance();
+        Date d = c.getTime();
+        Long startTime = d.getTime();
         do {
 
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
@@ -168,7 +171,7 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
                 telemetry.update();
             }
         }
-        while (mark == 0);
+        while (mark == 0 || Calendar.getInstance().getTime().getTime() - startTime > 5000);
         relicTrackables.deactivate();
         return mark;
     }
@@ -431,11 +434,19 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
         getRelativePosition(goal, direction, start);
 
         int current = getRelativePosition(goal, direction, start);
-
+        Calendar c = Calendar.getInstance();
+        Date d = c.getTime();
+        Long startTime = d.getTime();
         if (direction == "left") {
 
             while (getRelativePosition(goal, direction, start) < goal - 4) {
-
+               /* c = Calendar.getInstance();
+                d = c.getTime();
+                Long now = d.getTime();
+                if (now - startTime > TIME_PAST) {
+                    break;
+                }
+                */
                 if (current < (.27 * goal)) {
 
                     robot.fLeft.setPower(.5);
@@ -493,6 +504,12 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
             telemetry.update();
         } else if (direction == "right") {
             while (current < goal - 4) {
+                c = Calendar.getInstance();
+                d = c.getTime();
+                Long now = d.getTime();
+                if (now - startTime > TIME_PAST) {
+                    break;
+                }
 
                 if (current < (.27 * goal)) {
                     robot.fLeft.setPower(-.5);
@@ -607,11 +624,11 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
     public void columnTwoMove(int mark) {
         if (teamColor == "red") {
             if (mark == 1) {
-                robot.driveForword(.35, .3);
+                robot.driveForword(.2, .3);
             } else if (mark == 2) {
-                robot.driveForword(1.15, .3);
+                robot.driveForword(1, .3);
             } else {
-                robot.driveForword(1.71, .3);
+                robot.driveForword(1.56, .3);
             }
         } else if (teamColor == "blue") {
             if (mark == 3) {
@@ -632,7 +649,7 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
             } else if (mark == 2) {
                 robot.driveForword(2.26, .3);
             } else if (mark == 3) {
-                robot.driveForword(2.8 , .3);
+                robot.driveForword(2.8, .3);
             }
 
         } else if (teamColor == "blue") {
