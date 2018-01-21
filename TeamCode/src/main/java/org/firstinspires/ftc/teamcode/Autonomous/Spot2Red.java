@@ -46,7 +46,6 @@ public class Spot2Red extends BaseCombinedAutonomous {
 
         robot.driveForword(1.5, .3);
 
-
         turn(95, "left");
 
         columnTwoMove(mark);
@@ -58,6 +57,8 @@ public class Spot2Red extends BaseCombinedAutonomous {
         release();
 
         robot.driveBackword(.4 , .3);
+
+        push();
 
     }
 }

@@ -434,19 +434,13 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
         getRelativePosition(goal, direction, start);
 
         int current = getRelativePosition(goal, direction, start);
-        Calendar c = Calendar.getInstance();
+/*        Calendar c = Calendar.getInstance();
         Date d = c.getTime();
         Long startTime = d.getTime();
-        if (direction == "left") {
+    */    if (direction == "left") {
 
             while (getRelativePosition(goal, direction, start) < goal - 4) {
-               /* c = Calendar.getInstance();
-                d = c.getTime();
-                Long now = d.getTime();
-                if (now - startTime > TIME_PAST) {
-                    break;
-                }
-                */
+
                 if (current < (.27 * goal)) {
 
                     robot.fLeft.setPower(.5);
@@ -504,13 +498,13 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
             telemetry.update();
         } else if (direction == "right") {
             while (current < goal - 4) {
-                c = Calendar.getInstance();
+               /*c = Calendar.getInstance();
                 d = c.getTime();
                 Long now = d.getTime();
                 if (now - startTime > TIME_PAST) {
                     break;
                 }
-
+*/
                 if (current < (.27 * goal)) {
                     robot.fLeft.setPower(-.5);
                     robot.bLeft.setPower(-.5);
@@ -628,7 +622,7 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
             } else if (mark == 2) {
                 robot.driveForword(1, .3);
             } else {
-                robot.driveForword(1.56, .3);
+                robot.driveForword(1.55, .3);
             }
         } else if (teamColor == "blue") {
             if (mark == 3) {
@@ -645,11 +639,11 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
     public void columnOneMove(int mark) {
         if (teamColor == "red") {
             if (mark == 1) {
-                robot.driveForword(1.6, .3);
+                robot.driveForword(1.4, .3);
             } else if (mark == 2) {
-                robot.driveForword(2.26, .3);
+                robot.driveForword(2.06, .3);
             } else if (mark == 3) {
-                robot.driveForword(2.8, .3);
+                robot.driveForword(2.6, .3);
             }
 
         } else if (teamColor == "blue") {
@@ -685,5 +679,13 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
             telemetry.update();
         } while (loop < PINCH_LOOP);
         robot.pincer.setPower(0);
+    }
+
+    public void push() {
+        robot.driveBackword(1,.5);
+
+        pinch();
+
+        robot.driveForword(1.4 ,.5);
     }
 }
