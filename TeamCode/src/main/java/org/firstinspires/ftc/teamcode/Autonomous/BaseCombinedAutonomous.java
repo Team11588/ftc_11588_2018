@@ -682,10 +682,14 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
     }
 
     public void push() {
-        robot.driveBackword(1,.5);
+        robot.driveBackword(.5,.5);
 
         pinch();
 
-        robot.driveForword(1.4 ,.5);
+        robot.driveForword(.9 ,.5);
+
+        robot.driveBackword(.3 , .3);
+
+        release();
     }
 }
