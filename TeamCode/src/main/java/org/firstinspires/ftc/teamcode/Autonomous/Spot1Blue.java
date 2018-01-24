@@ -30,7 +30,7 @@ public class Spot1Blue extends BaseCombinedAutonomous {
         if (!jewelAskLeft) {
             robot.jewelKnockDevice.setPosition(.42);
         }
-        robot.driveForword(.2, .3);
+        robot.driveForword(.3, .3);
 
         int mark = readVuImage();
 
@@ -55,5 +55,7 @@ public class Spot1Blue extends BaseCombinedAutonomous {
         release();
 
         robot.driveBackword(.4, .3);
+
+        push();
     }
 }

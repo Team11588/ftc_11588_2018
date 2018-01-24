@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Environment;
+import android.util.Log;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
@@ -439,8 +440,9 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
         Long startTime = d.getTime();
     */    if (direction == "left") {
 
+            // start goal relative
             while (getRelativePosition(goal, direction, start) < goal - 4) {
-
+                Log.v("FTC_LEFt_TURN" , String.format("start=%d goal=%d Relative=%d", start , goal , getRelativePosition(goal , direction , start)));
                 if (current < (.27 * goal)) {
 
                     robot.fLeft.setPower(.5);
@@ -661,7 +663,7 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
     public void pinch() {
         int loop = 0;
         do {
-            robot.pincer.setPower(.3);
+            robot.pincer.setPower(.5);
             loop++;
             telemetry.addData("loop", loop);
             telemetry.update();
@@ -673,7 +675,7 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
     public void release() {
         int loop = 0;
         do {
-            robot.pincer.setPower(-.3);
+            robot.pincer.setPower(-.5);
             loop++;
             telemetry.addData("loop", loop);
             telemetry.update();
