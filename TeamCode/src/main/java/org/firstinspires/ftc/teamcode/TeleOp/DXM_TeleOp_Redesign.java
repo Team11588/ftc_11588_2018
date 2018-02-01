@@ -36,15 +36,14 @@ package org.firstinspires.ftc.teamcode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.Hardware.HardwareDxm;
+import org.firstinspires.ftc.teamcode.Hardware.HardwareDxm_Redesign;
 
 
 @TeleOp(name="DXM TeleOp_Redesign" , group = "TeleOp")
 public class DXM_TeleOp_Redesign extends OpMode {
 
-    HardwareDxm robot = new HardwareDxm();
+    HardwareDxm_Redesign robot = new HardwareDxm_Redesign();
 
-    final static int PINCER_ENCODER = (int) (1140 * .33);
     final static double SERVO_SHIFT = 0.01;
     public boolean speed = false;
 
@@ -67,8 +66,13 @@ public class DXM_TeleOp_Redesign extends OpMode {
         }
         double triggerR2 = gamepad2.right_trigger;
         double triggerL2 = gamepad2.left_trigger;
+
         double leftY2 = Math.abs(gamepad2.left_stick_y) > 0.3 ? -gamepad2.left_stick_y : 0;
 
+        boolean up = gamepad2.dpad_up;
+        boolean down = gamepad2.dpad_down;
+        boolean bumperR2 = gamepad2.right_bumper;
+        boolean bumperL2 = gamepad2.left_bumper;
 
         double[] wheelPower = wheelPower(leftX1, leftY1, rightX1);
         robot.fLeft.setPower(wheelPower[0]);
@@ -76,8 +80,7 @@ public class DXM_TeleOp_Redesign extends OpMode {
         robot.bLeft.setPower(wheelPower[2]);
         robot.bRight.setPower(wheelPower[3]);
 
-        robot.lLift.setPower(leftY2);
-        robot.rLift.setPower(leftY2);
+        robot.lift.setPower(leftY2);
 
         if (gamepad1.x){speed = !speed;}
 
@@ -96,14 +99,43 @@ public class DXM_TeleOp_Redesign extends OpMode {
             robot.jewelKnockDevice.setPosition(.25);
         }
 
+        if (up)
+            robot.lift.setPower();
+
+        if(down)
+            robot.lift.setPower(-);
+
+        if (triggerL2 > 0.2) {
+            robot.bLeftPincer.setPosition(robot.bLeftPincer.getPosition() + SERVO_SHIFT);
+            robot.bRightPincer.setPosition(robot.bRightPincer.getPosition() + SERVO_SHIFT);
+        }
+
+        if (triggerR2 > 0.2) {
+            robot.bLeftPincer.setPosition(robot.bLeftPincer.getPosition() - SERVO_SHIFT);
+            robot.bRightPincer.setPosition(robot.bRightPincer.getPosition() - SERVO_SHIFT);
+        }
+
+        if (bumperL2){
+            robot.tLeftPincer.setPosition(robot.bLeftPincer.getPosition() + SERVO_SHIFT);
+            robot.tRightPincer.setPosition(robot.bRightPincer.getPosition() + SERVO_SHIFT);
+        }
+
+        if(bumperR2){
+            robot.tLeftPincer.setPosition(robot.bLeftPincer.getPosition() - SERVO_SHIFT);
+            robot.tRightPincer.setPosition(robot.bRightPincer.getPosition() - SERVO_SHIFT);
+        }
+
+        if (gamepad2.a)
+            setPincer();
+
+        if (gamepad2.b)
+            setPincer();
+
+        if (gamepad2.x)
+            setPincer();
 
 
-        if (triggerL2 > 0.1)
-            robot.pincer.setPower(.75*triggerL2);
-        else if (triggerR2 > 0.1)
-            robot.pincer.setPower(.75*-triggerR2);
-        else
-            robot.pincer.setPower(0.0);
+
 //**************************************************************************************************
         telemetry.update();
     }
@@ -133,5 +165,12 @@ public class DXM_TeleOp_Redesign extends OpMode {
             return 0;
         else
             return Math.atan2(x, y);
+    }
+
+    public void setPincer(double x){
+        robot.bLeftPincer.setPosition(x);
+        robot.bRightPincer.setPosition(x);
+        robot.tLeftPincer.setPosition(x);
+        robot.tRightPincer.setPosition(x);
     }
 }
