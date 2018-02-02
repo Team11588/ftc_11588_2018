@@ -465,10 +465,10 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
                     robot.bRight.setPower(-.2);
                     telemetry.addData("state 3", "");
                 } else if (current < goal - 10) {
-                    robot.fLeft.setPower(.15);
-                    robot.bLeft.setPower(.15);
-                    robot.fRight.setPower(-.15);
-                    robot.bRight.setPower(-.15);
+                    robot.fLeft.setPower(.2);
+                    robot.bLeft.setPower(.2);
+                    robot.fRight.setPower(-.2);
+                    robot.bRight.setPower(-.2);
                     telemetry.addData("state 4", "");
                 } else {
                     telemetry.addData("state 5", "");
@@ -526,10 +526,10 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
                     robot.bRight.setPower(.2);
                     telemetry.addData("state 3", "");
                 } else if (current < goal - 10) {
-                    robot.fLeft.setPower(-.15);
-                    robot.bLeft.setPower(-.15);
-                    robot.fRight.setPower(.15);
-                    robot.bRight.setPower(.15);
+                    robot.fLeft.setPower(-.2);
+                    robot.bLeft.setPower(-.2);
+                    robot.fRight.setPower(.2);
+                    robot.bRight.setPower(.2);
                     telemetry.addData("state 4", "");
                 } else {
                     telemetry.addData("state 5", "");
@@ -663,7 +663,7 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
     public void pinch() {
         int loop = 0;
         do {
-            robot.pincer.setPower(.5);
+            robot.pincer.setPower(.6);
             loop++;
             telemetry.addData("loop", loop);
             telemetry.update();
@@ -675,7 +675,7 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
     public void release() {
         int loop = 0;
         do {
-            robot.pincer.setPower(-.5);
+            robot.pincer.setPower(-.6);
             loop++;
             telemetry.addData("loop", loop);
             telemetry.update();
