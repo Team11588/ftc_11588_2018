@@ -35,6 +35,7 @@ package org.firstinspires.ftc.teamcode.TeleOp;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.Hardware.HardwareDxm_Redesign;
 
@@ -45,8 +46,11 @@ public class DXM_TeleOp_Redesign extends OpMode {
     HardwareDxm_Redesign robot = new HardwareDxm_Redesign();
 
     final static double SERVO_SHIFT = 0.01;
+    final static double PINCER_MAX = 1;
+    final static double PINCER_MIN = .25;
     public boolean speed = false;
 
+    double liftSpeed = 1;
     double leftY1;
     double leftX1;
     double rightX1;
@@ -100,29 +104,29 @@ public class DXM_TeleOp_Redesign extends OpMode {
         }
 
         if (up)
-            robot.lift.setPower();
+            robot.lift.setPower(liftSpeed);
 
         if(down)
-            robot.lift.setPower(-);
+            robot.lift.setPower(-liftSpeed);
 
         if (triggerL2 > 0.2) {
-            robot.bLeftPincer.setPosition(robot.bLeftPincer.getPosition() + SERVO_SHIFT);
-            robot.bRightPincer.setPosition(robot.bRightPincer.getPosition() + SERVO_SHIFT);
+            robot.bLeftPincer.setPosition(Range.clip((robot.bLeftPincer.getPosition() + SERVO_SHIFT), PINCER_MIN, PINCER_MAX));
+            robot.bRightPincer.setPosition(Range.clip((robot.bRightPincer.getPosition() + SERVO_SHIFT), PINCER_MIN, PINCER_MAX));
         }
 
         if (triggerR2 > 0.2) {
-            robot.bLeftPincer.setPosition(robot.bLeftPincer.getPosition() - SERVO_SHIFT);
-            robot.bRightPincer.setPosition(robot.bRightPincer.getPosition() - SERVO_SHIFT);
+            robot.bLeftPincer.setPosition(Range.clip((robot.bLeftPincer.getPosition() - SERVO_SHIFT), PINCER_MIN, PINCER_MAX));
+            robot.bRightPincer.setPosition(Range.clip((robot.bRightPincer.getPosition() - SERVO_SHIFT), PINCER_MIN, PINCER_MAX));
         }
 
         if (bumperL2){
-            robot.tLeftPincer.setPosition(robot.bLeftPincer.getPosition() + SERVO_SHIFT);
-            robot.tRightPincer.setPosition(robot.bRightPincer.getPosition() + SERVO_SHIFT);
+            robot.tLeftPincer.setPosition(Range.clip((robot.bLeftPincer.getPosition() + SERVO_SHIFT), PINCER_MIN, PINCER_MAX));
+            robot.tRightPincer.setPosition(Range.clip((robot.bRightPincer.getPosition() + SERVO_SHIFT), PINCER_MIN, PINCER_MAX));
         }
 
         if(bumperR2){
-            robot.tLeftPincer.setPosition(robot.bLeftPincer.getPosition() - SERVO_SHIFT);
-            robot.tRightPincer.setPosition(robot.bRightPincer.getPosition() - SERVO_SHIFT);
+            robot.tLeftPincer.setPosition(Range.clip((robot.bLeftPincer.getPosition() - SERVO_SHIFT), PINCER_MIN, PINCER_MAX));
+            robot.tRightPincer.setPosition(Range.clip((robot.bRightPincer.getPosition() - SERVO_SHIFT), PINCER_MIN, PINCER_MAX));
         }
 
         if (gamepad2.a)
