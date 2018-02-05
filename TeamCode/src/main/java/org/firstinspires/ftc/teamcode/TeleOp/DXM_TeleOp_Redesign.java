@@ -50,6 +50,7 @@ public class DXM_TeleOp_Redesign extends OpMode {
     final static double PINCER_MAX = 1;
     final static double PINCER_MIN = .25;
     public boolean speed = false;
+    public boolean open = false;
 
     double liftUpSpeed = 1;
     double liftDownSpeed = .85;
@@ -68,10 +69,13 @@ public class DXM_TeleOp_Redesign extends OpMode {
         robot.init(hardwareMap);
         robot.bLeftPincer.setDirection(Servo.Direction.FORWARD);
         robot.bRightPincer.setDirection(Servo.Direction.REVERSE);
+        robot.tLeftPincer.setDirection(Servo.Direction.FORWARD);
+        robot.tRightPincer.setDirection(Servo.Direction.REVERSE);
     }
 
     @Override
     public void loop() {
+       //Mechanum Drive
         if (!speed) {
             leftY1 = Math.abs(gamepad1.left_stick_y) > 0.3 ? -gamepad1.left_stick_y : 0;
             leftX1 = Math.abs(gamepad1.left_stick_x) > 0.3 ? gamepad1.left_stick_x : 0;
@@ -97,10 +101,13 @@ public class DXM_TeleOp_Redesign extends OpMode {
         robot.bLeft.setPower(wheelPower[2]);
         robot.bRight.setPower(wheelPower[3]);
 
-
-
+//Speed modifier
         if (gamepad1.x) {
             speed = !speed;
+        }
+//Change the servo moving direction
+        if (gamepad2.a) {
+            open = !open;
         }
 
         telemetry.addData("left joystick y-value: ", leftY1);
@@ -111,56 +118,74 @@ public class DXM_TeleOp_Redesign extends OpMode {
         telemetry.addData("back left motor: ", wheelPower[2]);
         telemetry.addData("back right motor: ", wheelPower[3]);
 
-
+//Jewel knock device control in case the arm is thought to be helpful in the TeleOp Match
         if (gamepad1.a) {
             robot.jewelKnockDevice.setPosition(1);
         } else if (gamepad1.b) {
             robot.jewelKnockDevice.setPosition(.25);
         }
-
+//Arm Control
         if (up) {
             robot.lift.setPower(-liftUpSpeed);
         } else if (down) {
             robot.lift.setPower(liftDownSpeed);
-        }else{
+        } else {
             robot.lift.setPower(0);
         }
-        if (triggerL2 > 0.2) {
-            robot.bLeftPincer.setPosition(Range.clip((robot.bLeftPincer.getPosition() + SERVO_SHIFT), PINCER_MIN, PINCER_MAX));
-            robot.bRightPincer.setPosition(Range.clip((robot.bRightPincer.getPosition() + SERVO_SHIFT), PINCER_MIN, PINCER_MAX));
-        } else if (triggerR2 > 0.2) {
-            robot.bLeftPincer.setPosition(Range.clip((robot.bLeftPincer.getPosition() - SERVO_SHIFT), PINCER_MIN, PINCER_MAX));
-            robot.bRightPincer.setPosition(Range.clip((robot.bRightPincer.getPosition() - SERVO_SHIFT), PINCER_MIN, PINCER_MAX));
+//Opening and Closing of the servo pincers
+        if (open == true) {
+            if (triggerL2 > 0.2) {
+                robot.bLeftPincer.setPosition(Range.clip((robot.bLeftPincer.getPosition() + SERVO_SHIFT), PINCER_MIN, PINCER_MAX));
+            }
+            if (triggerR2 > .2) {
+                robot.bRightPincer.setPosition(Range.clip((robot.bRightPincer.getPosition() + SERVO_SHIFT), PINCER_MIN, PINCER_MAX));
+            }
+            if (bumperL2) {
+                robot.tLeftPincer.setPosition(Range.clip((robot.bLeftPincer.getPosition() + SERVO_SHIFT), PINCER_MIN, PINCER_MAX));
+            }
+            if (bumperR2) {
+                robot.tRightPincer.setPosition(Range.clip(((robot.tRightPincer.getPosition()+SERVO_SHIFT)), PINCER_MIN , PINCER_MAX));
+            }
+        }else{
+            if (triggerL2 > 0.2) {
+                robot.bLeftPincer.setPosition(Range.clip((robot.bLeftPincer.getPosition() - SERVO_SHIFT), PINCER_MIN, PINCER_MAX));
+            }
+            if (triggerR2 > .2) {
+                robot.bRightPincer.setPosition(Range.clip((robot.bRightPincer.getPosition() - SERVO_SHIFT), PINCER_MIN, PINCER_MAX));
+            }
+            if (bumperL2) {
+                robot.tLeftPincer.setPosition(Range.clip((robot.bLeftPincer.getPosition() - SERVO_SHIFT), PINCER_MIN, PINCER_MAX));
+            }
+            if (bumperR2) {
+                robot.tRightPincer.setPosition(Range.clip(((robot.tRightPincer.getPosition()- SERVO_SHIFT)) , PINCER_MIN , PINCER_MAX));
+            }
         }
 
-        if (bumperL2) {
-            robot.tLeftPincer.setPosition(Range.clip((robot.bLeftPincer.getPosition() + SERVO_SHIFT), PINCER_MIN, PINCER_MAX));
-            robot.tRightPincer.setPosition(Range.clip((robot.bRightPincer.getPosition() + SERVO_SHIFT), PINCER_MIN, PINCER_MAX));
-        } else if (bumperR2) {
-            robot.tLeftPincer.setPosition(Range.clip((robot.bLeftPincer.getPosition() - SERVO_SHIFT), PINCER_MIN, PINCER_MAX));
-            robot.tRightPincer.setPosition(Range.clip((robot.bRightPincer.getPosition() - SERVO_SHIFT), PINCER_MIN, PINCER_MAX));
-        }
-
+//Allow to switch direction of the servos for telemetry purposes
         if (gamepad2.dpad_up) {
             bLeft = robot.bLeftPincer.getDirection();
             bRight = robot.bRightPincer.getDirection();
             tLeft = robot.tLeftPincer.getDirection();
             tRight = robot.tRightPincer.getDirection();
 
-            if (gamepad1.a) {
+            if (gamepad2.a) {
                 bLeft = (bLeft == Servo.Direction.FORWARD) ? Servo.Direction.REVERSE : Servo.Direction.FORWARD;
                 robot.bLeftPincer.setDirection(bLeft);
-            } else if (gamepad1.b) {
+            } else if (gamepad2.b) {
                 bRight = (bRight == Servo.Direction.FORWARD) ? Servo.Direction.REVERSE : Servo.Direction.FORWARD;
                 robot.bRightPincer.setDirection(bRight);
-            } else if (gamepad1.x) {
+            } else if (gamepad2.x) {
                 tLeft = (tLeft == Servo.Direction.FORWARD) ? Servo.Direction.REVERSE : Servo.Direction.FORWARD;
                 robot.tLeftPincer.setDirection(tLeft);
-            } else if (gamepad1.y) {
+            } else if (gamepad2.y) {
                 tRight = (tRight == Servo.Direction.FORWARD) ? Servo.Direction.REVERSE : Servo.Direction.FORWARD;
                 robot.tRightPincer.setDirection(tRight);
             }
         }
+        bLeft = robot.bLeftPincer.getDirection();
+        bRight = robot.bRightPincer.getDirection();
+        tLeft = robot.tLeftPincer.getDirection();
+        tRight = robot.tRightPincer.getDirection();
 
         telemetry.addData("bLeft Direction", bLeft);
         telemetry.addData("bRight Direction", bRight);

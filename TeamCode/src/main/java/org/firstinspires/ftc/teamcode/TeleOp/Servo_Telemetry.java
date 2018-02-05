@@ -77,23 +77,23 @@ public class Servo_Telemetry extends OpMode {
          */
         if (gamepad1.left_trigger > .3) {
             if (gamepad1.a) {
-                robot.bLeftPincer.setPosition(robot.bLeftPincer.getPosition() + .05);
+                robot.bLeftPincer.setPosition(robot.bLeftPincer.getPosition() + .01);
             } else if (gamepad1.b) {
-                robot.bRightPincer.setPosition(robot.bRightPincer.getPosition() + .05);
+                robot.bRightPincer.setPosition(robot.bRightPincer.getPosition() + .01);
             } else if (gamepad1.x) {
-                robot.tLeftPincer.setPosition(robot.tLeftPincer.getPosition() + .05);
+                robot.tLeftPincer.setPosition(robot.tLeftPincer.getPosition() + .01);
             } else if (gamepad1.y) {
-                robot.tRightPincer.setPosition(robot.tRightPincer.getPosition() + .05);
+                robot.tRightPincer.setPosition(robot.tRightPincer.getPosition() + .01);
             }
         } else if (gamepad1.right_trigger > .3) {
             if (gamepad1.a) {
-                robot.bLeftPincer.setPosition(robot.bLeftPincer.getPosition() - .05);
+                robot.bLeftPincer.setPosition(robot.bLeftPincer.getPosition() - .01);
             } else if (gamepad1.b) {
-                robot.bRightPincer.setPosition(robot.bRightPincer.getPosition() - .05);
+                robot.bRightPincer.setPosition(robot.bRightPincer.getPosition() - .01);
             } else if (gamepad1.x) {
-                robot.tLeftPincer.setPosition(robot.tLeftPincer.getPosition() - .05);
+                robot.tLeftPincer.setPosition(robot.tLeftPincer.getPosition() - .01);
             } else if (gamepad1.y) {
-                robot.tRightPincer.setPosition(robot.tRightPincer.getPosition() - .05);
+                robot.tRightPincer.setPosition(robot.tRightPincer.getPosition() - .01);
             }
         } else if (gamepad1.left_bumper) {
             bLeft = robot.bLeftPincer.getDirection();
