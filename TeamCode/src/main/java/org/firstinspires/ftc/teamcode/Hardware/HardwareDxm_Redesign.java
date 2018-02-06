@@ -47,7 +47,7 @@ with machanum wheels all 4 wheels need to be motorized
         bLeftPincer = hwMap.servo.get("bLeftPincer");
         bRightPincer = hwMap.servo.get("bRightPincer");
         tLeftPincer = hwMap.servo.get("tLeftPincer");
-        tRightPincer= hwMap.servo.get("tRightPincer");
+        tRightPincer = hwMap.servo.get("tRightPincer");
 
         fLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         fRight.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -55,16 +55,11 @@ with machanum wheels all 4 wheels need to be motorized
         bRight.setDirection(DcMotorSimple.Direction.FORWARD);
         lift.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        // may need servo direction later
 
-        //tLeftPincer.setDirection(Servo.Direction.REVERSE);
-        //bLeftPincer.setDirection(Servo.Direction.REVERSE);
-        //tRightPincer.setDirection(Servo.Direction.FORWARD);
-        //bRightPincer.setDirection(Servo.Direction.FORWARD);
-
-
-        //closing contraption is positive power
-
+        bLeftPincer.setDirection(Servo.Direction.FORWARD);
+        bRightPincer.setDirection(Servo.Direction.REVERSE);
+        tLeftPincer.setDirection(Servo.Direction.REVERSE);
+        tRightPincer.setDirection(Servo.Direction.REVERSE);
 
         fLeft.setPower(0);
         fRight.setPower(0);
@@ -80,7 +75,7 @@ with machanum wheels all 4 wheels need to be motorized
         lift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
-    public void driveForword(double mult , double speed) {
+    public void driveForword(double mult, double speed) {
         bLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         bRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         fLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -96,13 +91,13 @@ with machanum wheels all 4 wheels need to be motorized
         bRight.setTargetPosition((int) (1140 * mult));
         fRight.setTargetPosition((int) (1140 * mult));
 
-        move(speed,0);
+        move(speed, 0);
 
         while (bLeft.isBusy()) ;
 
     }
 
-    public void driveBackword(double mult , double speed) {
+    public void driveBackword(double mult, double speed) {
         bLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         bRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         fLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -113,10 +108,10 @@ with machanum wheels all 4 wheels need to be motorized
         bRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         fRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        bLeft.setTargetPosition((int)(-1140 * mult));
-        fLeft.setTargetPosition((int)(-1140 * mult));
-        bRight.setTargetPosition((int)(-1140 * mult));
-        fRight.setTargetPosition((int)(-1140 * mult));
+        bLeft.setTargetPosition((int) (-1140 * mult));
+        fLeft.setTargetPosition((int) (-1140 * mult));
+        bRight.setTargetPosition((int) (-1140 * mult));
+        fRight.setTargetPosition((int) (-1140 * mult));
 
         move(speed, Math.PI);
 
@@ -124,7 +119,7 @@ with machanum wheels all 4 wheels need to be motorized
 
     }
 
-    public void strafeLeft(double mult , double speed) {
+    public void strafeLeft(double mult, double speed) {
         bLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         bRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         fLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -156,7 +151,7 @@ with machanum wheels all 4 wheels need to be motorized
         while (bLeft.isBusy()) ;
     }
 
-    public void strafeRight(double mult , double speed) {
+    public void strafeRight(double mult, double speed) {
         bLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         bRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         fLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -198,5 +193,30 @@ with machanum wheels all 4 wheels need to be motorized
         fRight.setPower(pFR);
         bLeft.setPower(pBL);
         bRight.setPower(pBR);
+    }
+
+    public void openTop() {
+        tLeftPincer.setPosition(.9);
+        tRightPincer.setPosition(.9);
+    }
+
+    public void openBottom() {
+        bLeftPincer.setPosition(.25);
+        bRightPincer.setPosition(0);
+    }
+    public void open(){
+        openTop();
+        openBottom();
+    }
+    public void releaseBottom(){
+        bLeftPincer.setPosition(bLeftPincer.getPosition()-.05);
+        bRightPincer.setPosition(bRightPincer.getPosition()-.05);
+    }
+    public void releaseTop(){
+        tLeftPincer.setPosition(tLeftPincer.getPosition()-.05);
+        tRightPincer.setPosition(tRightPincer.getPosition()-.05);
+    }public void release(){
+        releaseTop();
+        releaseBottom();
     }
 }

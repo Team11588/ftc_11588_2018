@@ -50,7 +50,6 @@ public class DXM_TeleOp_Redesign extends OpMode {
     final static double PINCER_MAX = 1;
     final static double PINCER_MIN = .25;
     public boolean speed = false;
-    public boolean open = false;
 
     double liftUpSpeed = 1;
     double liftDownSpeed = .85;
@@ -67,12 +66,7 @@ public class DXM_TeleOp_Redesign extends OpMode {
 
     public void init() {
         robot.init(hardwareMap);
-        robot.bLeftPincer.setDirection(Servo.Direction.FORWARD);
-        robot.bRightPincer.setDirection(Servo.Direction.REVERSE);
-        robot.tLeftPincer.setDirection(Servo.Direction.FORWARD);
-        robot.tRightPincer.setDirection(Servo.Direction.REVERSE);
     }
-
     @Override
     public void loop() {
        //Mechanum Drive
@@ -107,8 +101,17 @@ public class DXM_TeleOp_Redesign extends OpMode {
         }
 //Change the servo moving direction
         if (gamepad2.a) {
-            open = !open;
+           robot.openBottom();
+        }else if (gamepad2.b){
+            robot.releaseBottom();
         }
+        if (gamepad2.dpad_down){
+            robot.openTop();
+
+        }else if (gamepad2.dpad_left){
+            robot.releaseTop();
+        }
+
 
         telemetry.addData("left joystick y-value: ", leftY1);
         telemetry.addData("left joystick x-value: ", leftX1);
@@ -133,55 +136,23 @@ public class DXM_TeleOp_Redesign extends OpMode {
             robot.lift.setPower(0);
         }
 //Opening and Closing of the servo pincers
-        if (open == true) {
+
             if (triggerL2 > 0.2) {
-                robot.bLeftPincer.setPosition(Range.clip((robot.bLeftPincer.getPosition() + SERVO_SHIFT), PINCER_MIN, PINCER_MAX));
+                robot.bLeftPincer.setPosition(robot.bLeftPincer.getPosition() + SERVO_SHIFT);
             }
             if (triggerR2 > .2) {
-                robot.bRightPincer.setPosition(Range.clip((robot.bRightPincer.getPosition() + SERVO_SHIFT), PINCER_MIN, PINCER_MAX));
+                robot.bRightPincer.setPosition(robot.bRightPincer.getPosition() + SERVO_SHIFT);
             }
-            if (bumperL2) {
-                robot.tLeftPincer.setPosition(Range.clip((robot.bLeftPincer.getPosition() + SERVO_SHIFT), PINCER_MIN, PINCER_MAX));
+            if (gamepad2.left_bumper) {
+                robot.tLeftPincer.setPosition(robot.bLeftPincer.getPosition() + SERVO_SHIFT);
             }
-            if (bumperR2) {
-                robot.tRightPincer.setPosition(Range.clip(((robot.tRightPincer.getPosition()+SERVO_SHIFT)), PINCER_MIN , PINCER_MAX));
+            if (gamepad2.right_bumper) {
+                robot.tRightPincer.setPosition(robot.tRightPincer.getPosition()+ SERVO_SHIFT);
             }
-        }else{
-            if (triggerL2 > 0.2) {
-                robot.bLeftPincer.setPosition(Range.clip((robot.bLeftPincer.getPosition() - SERVO_SHIFT), PINCER_MIN, PINCER_MAX));
-            }
-            if (triggerR2 > .2) {
-                robot.bRightPincer.setPosition(Range.clip((robot.bRightPincer.getPosition() - SERVO_SHIFT), PINCER_MIN, PINCER_MAX));
-            }
-            if (bumperL2) {
-                robot.tLeftPincer.setPosition(Range.clip((robot.bLeftPincer.getPosition() - SERVO_SHIFT), PINCER_MIN, PINCER_MAX));
-            }
-            if (bumperR2) {
-                robot.tRightPincer.setPosition(Range.clip(((robot.tRightPincer.getPosition()- SERVO_SHIFT)) , PINCER_MIN , PINCER_MAX));
-            }
-        }
+
 
 //Allow to switch direction of the servos for telemetry purposes
-        if (gamepad2.dpad_up) {
-            bLeft = robot.bLeftPincer.getDirection();
-            bRight = robot.bRightPincer.getDirection();
-            tLeft = robot.tLeftPincer.getDirection();
-            tRight = robot.tRightPincer.getDirection();
 
-            if (gamepad2.a) {
-                bLeft = (bLeft == Servo.Direction.FORWARD) ? Servo.Direction.REVERSE : Servo.Direction.FORWARD;
-                robot.bLeftPincer.setDirection(bLeft);
-            } else if (gamepad2.b) {
-                bRight = (bRight == Servo.Direction.FORWARD) ? Servo.Direction.REVERSE : Servo.Direction.FORWARD;
-                robot.bRightPincer.setDirection(bRight);
-            } else if (gamepad2.x) {
-                tLeft = (tLeft == Servo.Direction.FORWARD) ? Servo.Direction.REVERSE : Servo.Direction.FORWARD;
-                robot.tLeftPincer.setDirection(tLeft);
-            } else if (gamepad2.y) {
-                tRight = (tRight == Servo.Direction.FORWARD) ? Servo.Direction.REVERSE : Servo.Direction.FORWARD;
-                robot.tRightPincer.setDirection(tRight);
-            }
-        }
         bLeft = robot.bLeftPincer.getDirection();
         bRight = robot.bRightPincer.getDirection();
         tLeft = robot.tLeftPincer.getDirection();

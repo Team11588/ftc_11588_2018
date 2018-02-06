@@ -64,6 +64,8 @@ public class Servo_Telemetry extends OpMode {
 
     public void init() {
         robot.init(hardwareMap);
+
+        robot.open();
     }
 
     @Override
