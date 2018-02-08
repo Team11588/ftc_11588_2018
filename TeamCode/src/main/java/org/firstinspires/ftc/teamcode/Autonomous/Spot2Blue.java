@@ -25,9 +25,11 @@ public class Spot2Blue extends BaseCombinedAutonomous {
 
         myinit();
 
-        pinch();
+
 
         waitForStart();
+
+        pinch();
 
         teamColor = "blue";
         boolean jewelAskLeft = isOurJewelOnLeft();
