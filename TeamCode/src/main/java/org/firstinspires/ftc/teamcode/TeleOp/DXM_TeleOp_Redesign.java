@@ -66,9 +66,10 @@ public class DXM_TeleOp_Redesign extends OpMode {
     public void init() {
         robot.init(hardwareMap);
     }
+
     @Override
     public void loop() {
-       //Mechanum Drive
+        //Mechanum Drive
         if (!speed) {
             leftY1 = Math.abs(gamepad1.left_stick_y) > 0.3 ? -gamepad1.left_stick_y : 0;
             leftX1 = Math.abs(gamepad1.left_stick_x) > 0.3 ? gamepad1.left_stick_x : 0;
@@ -100,14 +101,14 @@ public class DXM_TeleOp_Redesign extends OpMode {
         }
 //Change the servo moving direction
         if (gamepad2.a) {
-           robot.openBottom();
-        }else if (gamepad2.b){
+            robot.openBottom();
+        } else if (gamepad2.b) {
             robot.releaseBottom();
         }
-        if (gamepad2.dpad_down){
+        if (gamepad2.dpad_down) {
             robot.openTop();
 
-        }else if (gamepad2.dpad_left){
+        } else if (gamepad2.dpad_left) {
             robot.releaseTop();
         }
 
@@ -136,19 +137,20 @@ public class DXM_TeleOp_Redesign extends OpMode {
         }
 //Opening and Closing of the servo pincers
 
-            if (triggerL2 > 0.2) {
-                robot.bLeftPincer.setPosition(robot.bLeftPincer.getPosition() + SERVO_SHIFT);
-            }
-            if (triggerR2 > .2) {
-                robot.bRightPincer.setPosition(robot.bRightPincer.getPosition() + SERVO_SHIFT);
-            }
-            if (gamepad2.left_bumper) {
-                robot.tLeftPincer.setPosition(robot.bLeftPincer.getPosition() + SERVO_SHIFT);
-            }
-            if (gamepad2.right_bumper) {
-                robot.tRightPincer.setPosition(robot.tRightPincer.getPosition()+ SERVO_SHIFT);
-            }
+        if (triggerL2 > 0.2) {
+            robot.bLeftPincer.setPosition(robot.bLeftPincer.getPosition() + SERVO_SHIFT);
+        }
+        if (triggerR2 > .2) {
+            robot.bRightPincer.setPosition(robot.bRightPincer.getPosition() + SERVO_SHIFT);
+        }
+        if (gamepad2.left_bumper) {
+            robot.tLeftPincer.setPosition(robot.bLeftPincer.getPosition() + SERVO_SHIFT);
+        }
+        if (gamepad2.right_bumper) {
+            robot.tRightPincer.setPosition(robot.tRightPincer.getPosition() + SERVO_SHIFT);
+        }
 
+//
 
 //Allow to switch direction of the servos for telemetry purposes
 

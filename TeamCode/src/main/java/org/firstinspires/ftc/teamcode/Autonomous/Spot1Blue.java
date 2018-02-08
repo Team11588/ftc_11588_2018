@@ -28,7 +28,7 @@ public class Spot1Blue extends BaseCombinedAutonomous {
         teamColor = "blue";
         boolean jewelAskLeft = isOurJewelOnLeft();
         if (!jewelAskLeft) {
-            robot.jewelKnockDevice.setPosition(.42);
+            robot.jewelKnockDevice.setPosition(.35);
         }
         robot.driveForword(.3, .3);
 

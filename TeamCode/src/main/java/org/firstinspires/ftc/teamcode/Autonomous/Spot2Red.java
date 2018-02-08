@@ -30,7 +30,7 @@ public class Spot2Red extends BaseCombinedAutonomous {
 
         pinch();
 
-        robot.jewelKnockDevice.setPosition(.42);
+        robot.jewelKnockDevice.setPosition(.35);
 
         teamColor = "red";
         boolean jewelLeftAsk = isOurJewelOnLeft();
