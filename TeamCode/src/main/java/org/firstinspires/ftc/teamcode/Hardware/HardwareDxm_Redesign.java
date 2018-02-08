@@ -58,7 +58,7 @@ with machanum wheels all 4 wheels need to be motorized
 
         bLeftPincer.setDirection(Servo.Direction.FORWARD);
         bRightPincer.setDirection(Servo.Direction.REVERSE);
-        tLeftPincer.setDirection(Servo.Direction.REVERSE);
+        tLeftPincer.setDirection(Servo.Direction.FORWARD);
         tRightPincer.setDirection(Servo.Direction.REVERSE);
 
         fLeft.setPower(0);
@@ -196,12 +196,12 @@ with machanum wheels all 4 wheels need to be motorized
     }
 
     public void openTop() {
-        tLeftPincer.setPosition(.9);
+        tLeftPincer.setPosition(.1);
         tRightPincer.setPosition(0);
     }
 
     public void openBottom() {
-        bLeftPincer.setPosition(.25);
+        bLeftPincer.setPosition(0);
         bRightPincer.setPosition(0);
     }
     public void open(){
