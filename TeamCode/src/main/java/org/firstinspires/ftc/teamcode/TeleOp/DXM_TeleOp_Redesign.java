@@ -73,11 +73,11 @@ public class DXM_TeleOp_Redesign extends OpMode {
         if (!speed) {
             leftY1 = Math.abs(gamepad1.left_stick_y) > 0.3 ? -gamepad1.left_stick_y : 0;
             leftX1 = Math.abs(gamepad1.left_stick_x) > 0.3 ? gamepad1.left_stick_x : 0;
-            rightX1 = Math.abs(gamepad1.right_stick_x) > 0.3 ? -gamepad1.right_stick_x : 0;
-        } else {
+            rightX1 = Math.abs(gamepad1.right_stick_x) > 0.3 ? gamepad1.right_stick_x : 0;
+        } else{
             leftY1 = Math.abs(gamepad1.left_stick_y) > 0.3 ? -gamepad1.left_stick_y / 2 : 0;
             leftX1 = Math.abs(gamepad1.left_stick_x) > 0.3 ? gamepad1.left_stick_x / 2 : 0;
-            rightX1 = Math.abs(gamepad1.right_stick_x) > 0.3 ? -gamepad1.right_stick_x / 2 : 0;
+            rightX1 = Math.abs(gamepad1.right_stick_x) > 0.3 ? gamepad1.right_stick_x / 2 : 0;
         }
         double triggerR2 = gamepad2.right_trigger;
         double triggerL2 = gamepad2.left_trigger;
