@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 /**
  * Created by kearneyg20428 on 10/23/2017.
@@ -23,9 +24,11 @@ public class Spot2Red extends BaseCombinedAutonomous {
 
         myinit();
 
-        pinch();
+
 
         waitForStart();
+
+        pinch();
 
         robot.jewelKnockDevice.setPosition(.42);
 
@@ -33,9 +36,9 @@ public class Spot2Red extends BaseCombinedAutonomous {
         boolean jewelLeftAsk = isOurJewelOnLeft();
 
         if (jewelLeftAsk){
-            robot.driveBackword(.25, .3);
+            robot.driveBackword(.35, .3);
             robot.jewelKnockDevice.setPosition(.85);
-            robot.driveForword(.25, .3);
+            robot.driveForword(.35, .3);
         }
 
         knockJewelLeft();
@@ -44,7 +47,7 @@ public class Spot2Red extends BaseCombinedAutonomous {
 
         int mark = readVuImage();
 
-        robot.driveForword(1.5, .3);
+        robot.driveForword(1.25, .3);
 
         turn(95, "left");
 
@@ -52,13 +55,15 @@ public class Spot2Red extends BaseCombinedAutonomous {
 
         turn(90 , "right");
 
-        robot.driveForword(.6,.3);
+        robot.driveForword(.85,.3);
 
-        release();
+        robot.open();
 
         robot.driveBackword(.4 , .3);
 
         push();
+
+
 
     }
 }

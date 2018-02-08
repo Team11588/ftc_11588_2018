@@ -60,7 +60,7 @@ public class Spot2Blue extends BaseCombinedAutonomous {
 
         robot.driveForword(.7,.3);
 
-        release();
+        robot.open();
 
         robot.driveBackword(.4 , .3);
 

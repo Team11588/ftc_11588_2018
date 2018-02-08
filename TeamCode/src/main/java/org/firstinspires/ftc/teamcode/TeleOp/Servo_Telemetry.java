@@ -35,17 +35,15 @@ package org.firstinspires.ftc.teamcode.TeleOp;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.teamcode.Hardware.HardwareDxm_Redesign;
+import org.firstinspires.ftc.teamcode.Hardware.HardwareDxm;
 
 
 @TeleOp(name="Servo Test" , group = "TeleOp")
 public class Servo_Telemetry extends OpMode {
 
-    HardwareDxm_Redesign robot = new HardwareDxm_Redesign();
+    HardwareDxm robot = new HardwareDxm();
 
     final static double SERVO_SHIFT = 0.01;
     final static double PINCER_MAX = 1;

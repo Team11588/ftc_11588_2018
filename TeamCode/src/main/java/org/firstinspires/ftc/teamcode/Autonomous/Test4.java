@@ -17,8 +17,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
  */
 
 
-@Autonomous(name = "Test3")
-public class Test3 extends BaseCombinedAutonomous {
+@Autonomous(name = "Test4")
+public class Test4 extends BaseCombinedAutonomous {
 
 
     @Override
@@ -38,31 +38,10 @@ public class Test3 extends BaseCombinedAutonomous {
 
         while(robot.lift.isBusy());
 
-        robot.jewelKnockDevice.setPosition(.42);
 
         knockJewelLeft();
 
-        robot.jewelKnockDevice.setPosition(1);
-
-
-
         robot.driveForword(1.5, .3);
-
-        turn(95, "left");
-
-        int mark = 1;
-
-        robot.driveForword(.2, .3);
-
-        turn(90 , "right");
-
-        robot.driveForword(.6,.3);
-
-        robot.open();
-
-        robot.driveBackword(.4 , .3);
-
-        push();
 
         robot.lift.setTargetPosition(0);
         robot.lift.setPower(.85);

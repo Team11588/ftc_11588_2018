@@ -13,7 +13,6 @@ import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.TimestampedData;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcontroller.internal.LinearOpModeCamera;
@@ -438,37 +437,38 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
 /*        Calendar c = Calendar.getInstance();
         Date d = c.getTime();
         Long startTime = d.getTime();
-    */    if (direction == "left") {
+    */
+        if (direction == "left") {
 
             // start goal relative
             while (getRelativePosition(goal, direction, start) < goal - 4) {
-                Log.v("FTC_LEFt_TURN" , String.format("start=%d goal=%d Relative=%d", start , goal , getRelativePosition(goal , direction , start)));
+                Log.v("FTC_LEFt_TURN", String.format("start=%d goal=%d Relative=%d", start, goal, getRelativePosition(goal, direction, start)));
                 if (current < (.27 * goal)) {
 
-                    robot.fLeft.setPower(.5);
-                    robot.bLeft.setPower(.5);
-                    robot.fRight.setPower(-.5);
-                    robot.bRight.setPower(-.5);
+                    robot.fLeft.setPower(-.5);
+                    robot.bLeft.setPower(-.5);
+                    robot.fRight.setPower(.5);
+                    robot.bRight.setPower(.5);
                     telemetry.addData("state 1", "");
 
                 } else if (current < (goal * .56)) {
-                    robot.fLeft.setPower(.35);
-                    robot.bLeft.setPower(.35);
-                    robot.fRight.setPower(-.35);
-                    robot.bRight.setPower(-.35);
+                    robot.fLeft.setPower(-.35);
+                    robot.bLeft.setPower(-.35);
+                    robot.fRight.setPower(.35);
+                    robot.bRight.setPower(.35);
                     telemetry.addData("state 2", "");
 
                 } else if (current < goal * .78) {
-                    robot.fLeft.setPower(.2);
-                    robot.bLeft.setPower(.2);
-                    robot.fRight.setPower(-.2);
-                    robot.bRight.setPower(-.2);
+                    robot.fLeft.setPower(-.2);
+                    robot.bLeft.setPower(-.2);
+                    robot.fRight.setPower(.2);
+                    robot.bRight.setPower(.2);
                     telemetry.addData("state 3", "");
                 } else if (current < goal - 10) {
-                    robot.fLeft.setPower(.2);
-                    robot.bLeft.setPower(.2);
-                    robot.fRight.setPower(-.2);
-                    robot.bRight.setPower(-.2);
+                    robot.fLeft.setPower(-.2);
+                    robot.bLeft.setPower(-.2);
+                    robot.fRight.setPower(.2);
+                    robot.bRight.setPower(.2);
                     telemetry.addData("state 4", "");
                 } else {
                     telemetry.addData("state 5", "");
@@ -508,28 +508,28 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
                 }
 */
                 if (current < (.27 * goal)) {
-                    robot.fLeft.setPower(-.5);
-                    robot.bLeft.setPower(-.5);
-                    robot.fRight.setPower(.5);
-                    robot.bRight.setPower(.5);
+                    robot.fLeft.setPower(.5);
+                    robot.bLeft.setPower(.5);
+                    robot.fRight.setPower(-.5);
+                    robot.bRight.setPower(-.5);
                     telemetry.addData("state 1", "");
                 } else if (current < (goal * .56)) {
-                    robot.fLeft.setPower(-.35);
-                    robot.bLeft.setPower(-.35);
-                    robot.fRight.setPower(.35);
-                    robot.bRight.setPower(.35);
+                    robot.fLeft.setPower(.35);
+                    robot.bLeft.setPower(.35);
+                    robot.fRight.setPower(-.35);
+                    robot.bRight.setPower(-.35);
                     telemetry.addData("state 2", "");
                 } else if (current < goal * .78) {
-                    robot.fLeft.setPower(-.2);
-                    robot.bLeft.setPower(-.2);
-                    robot.fRight.setPower(.2);
-                    robot.bRight.setPower(.2);
+                    robot.fLeft.setPower(.2);
+                    robot.bLeft.setPower(.2);
+                    robot.fRight.setPower(-.2);
+                    robot.bRight.setPower(-.2);
                     telemetry.addData("state 3", "");
                 } else if (current < goal - 10) {
-                    robot.fLeft.setPower(-.2);
-                    robot.bLeft.setPower(-.2);
-                    robot.fRight.setPower(.2);
-                    robot.bRight.setPower(.2);
+                    robot.fLeft.setPower(.2);
+                    robot.bLeft.setPower(.2);
+                    robot.fRight.setPower(-.2);
+                    robot.bRight.setPower(-.2);
                     telemetry.addData("state 4", "");
                 } else {
                     telemetry.addData("state 5", "");
@@ -620,7 +620,7 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
     public void columnTwoMove(int mark) {
         if (teamColor == "red") {
             if (mark == 1) {
-                robot.driveForword(.2, .3);
+                robot.driveForword(.3, .3);
             } else if (mark == 2) {
                 robot.driveForword(1, .3);
             } else {
@@ -661,37 +661,31 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
 
     //This is the pinch that allows the robot to pinch to hold the block in autonomous
     public void pinch() {
-        int loop = 0;
-        do {
-            robot.pincer.setPower(.6);
-            loop++;
-            telemetry.addData("loop", loop);
-            telemetry.update();
-        } while (loop < PINCH_LOOP);
-        robot.pincer.setPower(0);
+        robot.lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.lift.setTargetPosition(-1140);
+        robot.lift.setPower(1);
+        robot.bLeftPincer.setPosition(.85);
+        robot.bRightPincer.setPosition(.85);
     }
 
-    //This is the release function used at the end of the autonomous 
-    public void release() {
-        int loop = 0;
-        do {
-            robot.pincer.setPower(-.6);
-            loop++;
-            telemetry.addData("loop", loop);
-            telemetry.update();
-        } while (loop < PINCH_LOOP);
-        robot.pincer.setPower(0);
-    }
+    //This is the release function used at the end of the autonomous
 
     public void push() {
-        robot.driveBackword(.5,.5);
+        robot.driveBackword(.5, .5);
 
-        pinch();
+        robot.open();
 
-        robot.driveForword(.9 ,.5);
+        robot.driveForword(.9, .5);
 
-        robot.driveBackword(.3 , .3);
+        robot.driveBackword(.3, .3);
 
-        release();
+        robot.open();
+
+
+        robot.lift.setTargetPosition(0);
+        robot.lift.setPower(.85);
     }
+
 }
