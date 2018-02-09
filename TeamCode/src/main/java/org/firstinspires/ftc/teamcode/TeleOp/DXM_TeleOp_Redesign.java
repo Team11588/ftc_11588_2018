@@ -46,8 +46,8 @@ public class DXM_TeleOp_Redesign extends OpMode {
     HardwareDxm robot = new HardwareDxm();
 
     final static double SERVO_SHIFT = 0.01;
-    final static double PINCER_MAX = 1;
-    final static double PINCER_MIN = .25;
+    //final static double PINCER_MAX = 1;
+    //final static double PINCER_MIN = .25;
     public boolean speed = false;
 
     double liftUpSpeed = 1;
@@ -82,7 +82,7 @@ public class DXM_TeleOp_Redesign extends OpMode {
         double triggerR2 = gamepad2.right_trigger;
         double triggerL2 = gamepad2.left_trigger;
 
-        double leftY2 = Math.abs(gamepad2.left_stick_y) > 0.3 ? -gamepad2.left_stick_y : 0;
+        //double leftY2 = Math.abs(gamepad2.left_stick_y) > 0.3 ? -gamepad2.left_stick_y : 0;
 
         boolean up = -gamepad2.left_stick_y > .4;
         boolean down = -gamepad2.left_stick_y < -.4;
