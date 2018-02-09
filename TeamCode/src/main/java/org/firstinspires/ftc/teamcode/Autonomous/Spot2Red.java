@@ -38,7 +38,7 @@ public class Spot2Red extends BaseCombinedAutonomous {
         if (jewelLeftAsk){
             robot.driveBackword(.35, .3);
             robot.jewelKnockDevice.setPosition(.85);
-            robot.driveForword(.35, .3);
+            robot.driveForword(.45, .3);
         }
 
         knockJewelLeft();
@@ -47,15 +47,15 @@ public class Spot2Red extends BaseCombinedAutonomous {
 
         int mark = readVuImage();
 
-        robot.driveForword(1.25, .3);
+        robot.driveForword(1.35, .3);
 
-        turn(95, "left");
+        turn(90, "left");
 
         columnTwoMove(mark);
 
         turn(90 , "right");
 
-        robot.driveForword(.85,.3);
+        robot.driveForword(.55,.3);
 
         robot.open();
 

@@ -30,13 +30,17 @@ public class Spot1Blue extends BaseCombinedAutonomous {
         if (!jewelAskLeft) {
             robot.jewelKnockDevice.setPosition(.35);
         }
-        robot.driveForword(.3, .3);
+
+        robot.lift.setTargetPosition(-3000);
+        robot.lift.setPower(1);
+        while(robot.lift.isBusy());
+        robot.driveForword(.5, .3);
 
         int mark = readVuImage();
 
         robot.jewelKnockDevice.setPosition(.85);
 
-        robot.driveBackword(.2, .3);
+        robot.driveBackword(.3, .3);
 
         if (jewelAskLeft) {
             robot.jewelKnockDevice.setPosition(.42);
@@ -48,7 +52,16 @@ public class Spot1Blue extends BaseCombinedAutonomous {
 
         columnOneMove(mark);
 
-        turn(90, "right");
+        robot.strafeLeft(.75,.5);
+
+        robot.lift.setTargetPosition(0);
+        robot.lift.setPower(.85);
+        while(robot.lift.isBusy());
+        robot.lift.setTargetPosition(-1140);
+        robot.lift.setPower(1);
+        while(robot.lift.isBusy());
+
+        turn(80, "right");
 
         robot.driveForword(.6, .3);
 

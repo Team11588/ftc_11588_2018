@@ -173,6 +173,7 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
         }
         while (mark == 0 || Calendar.getInstance().getTime().getTime() - startTime > 5000);
         relicTrackables.deactivate();
+
         return mark;
     }
 
@@ -620,11 +621,11 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
     public void columnTwoMove(int mark) {
         if (teamColor == "red") {
             if (mark == 1) {
-                robot.driveForword(.3, .3);
+                robot.driveForword(.2, .3);
             } else if (mark == 2) {
                 robot.driveForword(1, .3);
             } else {
-                robot.driveForword(1.55, .3);
+                robot.driveForword(1.65, .3);
             }
         } else if (teamColor == "blue") {
             if (mark == 3) {
@@ -650,7 +651,7 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
 
         } else if (teamColor == "blue") {
             if (mark == 3) {
-                robot.driveBackword(1.9, .3);
+                robot.driveBackword(1.85, .3);
             } else if (mark == 2) {
                 robot.driveBackword(2.56, .3);
             } else if (mark == 1) {
@@ -661,13 +662,14 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
 
     //This is the pinch that allows the robot to pinch to hold the block in autonomous
     public void pinch() {
+        robot.bLeftPincer.setPosition(.85);
+        robot.bRightPincer.setPosition(.85);
         robot.lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.lift.setTargetPosition(-1140);
+        robot.lift.setTargetPosition(-1710);
         robot.lift.setPower(1);
-        robot.bLeftPincer.setPosition(.85);
-        robot.bRightPincer.setPosition(.85);
+
     }
 
     //This is the release function used at the end of the autonomous
@@ -676,7 +678,6 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
         robot.driveBackword(.5, .5);
 
         robot.open();
-
         robot.driveForword(.9, .5);
 
         robot.driveBackword(.3, .3);
