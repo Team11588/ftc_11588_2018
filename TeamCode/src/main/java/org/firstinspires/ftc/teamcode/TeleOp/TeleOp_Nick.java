@@ -184,7 +184,7 @@ public class TeleOp_Nick extends OpMode {
             } else if (gamepad2.left_bumper) {
                 robot.tLeftPincer.setPosition(robot.bLeftPincer.getPosition() + SERVO_SHIFT);
             }
-            
+
             if ((gamepad2.right_bumper) && (gamepad2.y)) {
                 robot.tRightPincer.setPosition(robot.tRightPincer.getPosition() - SERVO_SHIFT);
             } else if (gamepad2.right_bumper) {

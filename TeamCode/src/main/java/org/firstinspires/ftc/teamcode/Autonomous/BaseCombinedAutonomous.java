@@ -258,10 +258,10 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
         robot.bRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.fRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        robot.bLeft.setTargetPosition(1140 / 2);
-        robot.fLeft.setTargetPosition(1140 / 2);
-        robot.bRight.setTargetPosition(1140 / 2);
-        robot.fRight.setTargetPosition(1140 / 2);
+        robot.bLeft.setTargetPosition(855);
+        robot.fLeft.setTargetPosition(855);
+        robot.bRight.setTargetPosition(855);
+        robot.fRight.setTargetPosition(855);
 
         drive(.3, .3, .3, .3);
 
@@ -642,11 +642,11 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
     public void columnOneMove(int mark) {
         if (teamColor == "red") {
             if (mark == 1) {
-                robot.driveForword(1.4, .3);
+                robot.driveForword(1.35, .5);
             } else if (mark == 2) {
-                robot.driveForword(2.06, .3);
+                robot.driveForword(2.01, .5);
             } else if (mark == 3) {
-                robot.driveForword(2.6, .3);
+                robot.driveForword(2.55, .5);
             }
 
         } else if (teamColor == "blue") {

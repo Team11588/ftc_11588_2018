@@ -24,29 +24,48 @@ public class Test4 extends BaseCombinedAutonomous {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        teamColor = "blue";
-
         myinit();
+
+
         waitForStart();
 
         pinch();
-        robot.lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.lift.setTargetPosition(-1140);
-        robot.lift.setPower(1);
 
-        while(robot.lift.isBusy());
+        robot.jewelKnockDevice.setPosition(.32);
 
+        teamColor = "red";
+        int mark = 3;
+        int wait = 0;
+        robot.driveBackword(.25, .3);
+        while (wait < 500){
+            wait++;
+        }
+        robot.jewelKnockDevice.setPosition(.85);
+        robot.driveForword(.25, .3);
 
         knockJewelLeft();
 
-        robot.driveForword(1.5, .3);
+
+        robot.jewelKnockDevice.setPosition(1);
+
+        columnOneMove(mark);
 
         robot.lift.setTargetPosition(0);
         robot.lift.setPower(.85);
+        robot.lift.setTargetPosition(-1140/2);
+        robot.lift.setPower(1);
+        while(robot.lift.isBusy());
 
-        while (opModeIsActive()) ;
+
+        turn(75, "right");
+
+        robot.driveForword(.75, .3);
+
+        robot.open();
+
+        robot.driveBackword(.4, .3);
+
+        push();
     }
-
 }
+
