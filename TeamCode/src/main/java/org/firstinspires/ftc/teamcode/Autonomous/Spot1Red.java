@@ -25,7 +25,7 @@ public class Spot1Red extends BaseCombinedAutonomous {
 
         waitForStart();
 
-        pinch();
+        pinch(false);
 
 
         robot.jewelKnockDevice.setPosition(.32);

@@ -631,11 +631,11 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
             }
         } else if (teamColor == "blue") {
             if (mark == 3) {
-                robot.driveForword(.5, .3);
+                robot.driveForword(.3, .3);
             } else if (mark == 2) {
-                robot.driveForword(1.2, .3);
+                robot.driveForword(1, .3);
             } else {
-                robot.driveForword(1.76, .3);
+                robot.driveForword(1.56, .3);
             }
         }
     }
@@ -663,15 +663,19 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
     }
 
     //This is the pinch that allows the robot to pinch to hold the block in autonomous
-    public void pinch() {
+    public void pinch(boolean ifBlue1) {
         robot.bLeftPincer.setPosition(.85);
         robot.bRightPincer.setPosition(.85);
         robot.lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.lift.setTargetPosition(-1710);
-        robot.lift.setPower(1);
+       if (!ifBlue1 ) {
+           robot.lift.setTargetPosition(-1710);
 
+       }else{
+           robot.lift.setTargetPosition(-855);
+       }
+           robot.lift.setPower(1);
     }
 
     //This is the release function used at the end of the autonomous

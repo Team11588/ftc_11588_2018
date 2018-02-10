@@ -29,52 +29,47 @@ public class Test4 extends BaseCombinedAutonomous {
 
         waitForStart();
 
-
-
-        pinch();
+        pinch(true);
 
         teamColor = "blue";
+        boolean jewelAskLeft = isOurJewelOnLeft();
+
+
         robot.jewelKnockDevice.setPosition(.35);
-        int wait1 = 0;
+
         robot.driveForword(.5, .3);
-        while (wait1 < 500) {
-            wait1++;
+
+        int wait = 0;
+
+        while (wait < 500) {
+            wait++;
         }
-        readVuImage();
-        robot.jewelKnockDevice.setPosition(.85);
+
         robot.driveBackword(.5, .3);
 
-        // robot.jewelKnockDevice.setPosition(.35);
-
         knockJewelRight();
+
         robot.jewelKnockDevice.setPosition(1);
 
-        robot.driveBackword(1.5, .3);
+        int mark = 1;
 
-
-        turn(90, "left");
-
-        int mark = 3;
-
-        columnTwoMove(mark);
+        columnOneMove(mark);
 
         robot.lift.setTargetPosition(0);
         robot.lift.setPower(.85);
-        robot.lift.setTargetPosition(-1140 / 2);
+
+        robot.lift.setTargetPosition(-885);
         robot.lift.setPower(1);
         while (robot.lift.isBusy()) ;
 
+        turn(80, "right");
 
-        turn(90 , "left");
-
-        robot.driveForword(.7,.3);
+        robot.driveForword(.6, .3);
 
         robot.open();
 
-        robot.driveBackword(.4 , .3);
+        robot.driveBackword(.4, .3);
 
         push();
-
-    }
+   }
 }
-

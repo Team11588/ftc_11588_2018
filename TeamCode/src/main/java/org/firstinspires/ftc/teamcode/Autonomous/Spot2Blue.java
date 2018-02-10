@@ -28,7 +28,7 @@ public class Spot2Blue extends BaseCombinedAutonomous {
 
         waitForStart();
 
-        pinch();
+        pinch(false);
 
         teamColor = "blue";
 
