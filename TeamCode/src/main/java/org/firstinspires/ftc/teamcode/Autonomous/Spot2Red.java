@@ -33,37 +33,49 @@ public class Spot2Red extends BaseCombinedAutonomous {
         robot.jewelKnockDevice.setPosition(.35);
 
         teamColor = "red";
-        boolean jewelLeftAsk = isOurJewelOnLeft();
+        boolean jewelAskLeft = isOurJewelOnLeft();
 
-        if (jewelLeftAsk){
-            robot.driveBackword(.35, .3);
+
+        if (jewelAskLeft) {
+            int wait1 = 0;
+            robot.driveBackword(.25, .3);
+            while (wait1 < 500) {
+                wait1++;
+            }
             robot.jewelKnockDevice.setPosition(.85);
-            robot.driveForword(.45, .3);
+            robot.driveForword(.25, .3);
         }
-
         knockJewelLeft();
 
         robot.jewelKnockDevice.setPosition(1);
 
         int mark = readVuImage();
 
-        robot.driveForword(1.35, .3);
+        robot.driveForword(1, .3);
+
+        robot.lift.setTargetPosition(0);
+        robot.lift.setPower(.85);
+        int wait2 = 1;
+
+        while(wait2<500){
+            wait2++;
+        }
+        robot.lift.setTargetPosition(-855);
+        robot.lift.setPower(1);
+        while (robot.lift.isBusy()) ;
 
         turn(90, "left");
 
         columnTwoMove(mark);
 
-        turn(90 , "right");
+        turn(85 , "right");
 
-        robot.driveForword(.55,.3);
+        robot.driveForword(1,.3);
 
         robot.open();
 
         robot.driveBackword(.4 , .3);
 
         push();
-
-
-
     }
 }

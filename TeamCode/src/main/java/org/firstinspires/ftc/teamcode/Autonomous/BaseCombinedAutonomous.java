@@ -621,7 +621,7 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
     public void columnTwoMove(int mark) {
         if (teamColor == "red") {
             if (mark == 1) {
-                robot.driveForword(.2, .3);
+                robot.driveForword(.35, .3);
             } else if (mark == 2) {
                 robot.driveForword(1, .3);
             } else {
