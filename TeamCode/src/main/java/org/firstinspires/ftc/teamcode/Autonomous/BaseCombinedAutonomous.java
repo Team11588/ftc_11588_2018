@@ -119,6 +119,8 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
         telemetry.addData(String.valueOf(width), height);
         telemetry.update();
 
+        robot.open();
+
     }
 
     //Inits the vuMarks because the camera and the vuForia cannot operate at the same time, has a loop that breaks only when vuMark is seen
