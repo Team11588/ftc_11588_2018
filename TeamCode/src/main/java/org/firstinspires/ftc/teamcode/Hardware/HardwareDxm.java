@@ -216,8 +216,8 @@ with machanum wheels all 4 wheels need to be motorized
     }
 
     public void releaseTop(){
-        tLeftPincer.setPosition(tLeftPincer.getPosition()-.05);
-        tRightPincer.setPosition(tRightPincer.getPosition()-.05);
+        tLeftPincer.setPosition(tLeftPincer.getPosition()-.005);
+        tRightPincer.setPosition(tRightPincer.getPosition()-.005);
     }
 
      public void release(){

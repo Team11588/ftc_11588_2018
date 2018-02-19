@@ -49,7 +49,7 @@ public class TeleOp_Nick extends OpMode {
     final static double SERVO_SHIFT = 0.01;
     //final static double PINCER_MAX = 1;
     //final static double PINCER_MIN = .25;
-    public boolean speed = false;
+    public boolean speed = true;
     public boolean ctrlMode = false;
 
     double liftUpSpeed = 1;
@@ -105,13 +105,13 @@ public class TeleOp_Nick extends OpMode {
         if ((gamepad2.a) && (gamepad2.y)) {
             robot.openTop();
         } else if ((gamepad2.b) && (gamepad2.y)) {
-            //robot.releaseTop();
+            robot.releaseTop();
         } else if ((gamepad2.x) && (gamepad2.y)) {
             //????????/
         } else if (gamepad2.a) {
             robot.openBottom();
         } else if (gamepad2.b) {
-            //robot.releaseBottom();
+            robot.releaseBottom();
         } else if (gamepad2.x) {
             //??????????
         }
@@ -184,7 +184,6 @@ public class TeleOp_Nick extends OpMode {
             } else if (gamepad2.left_bumper) {
                 robot.tLeftPincer.setPosition(robot.bLeftPincer.getPosition() + SERVO_SHIFT);
             }
-
             if ((gamepad2.right_bumper) && (gamepad2.y)) {
                 robot.tRightPincer.setPosition(robot.tRightPincer.getPosition() - SERVO_SHIFT);
             } else if (gamepad2.right_bumper) {

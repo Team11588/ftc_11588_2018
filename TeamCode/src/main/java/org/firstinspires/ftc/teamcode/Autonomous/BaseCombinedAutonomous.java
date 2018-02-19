@@ -623,11 +623,11 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
     public void columnTwoMove(int mark) {
         if (teamColor == "red") {
             if (mark == 1) {
-                robot.driveForword(.35, .3);
+                robot.driveForword(.25, .3);
             } else if (mark == 2) {
-                robot.driveForword(1, .3);
+                robot.driveForword(.9, .3);
             } else {
-                robot.driveForword(1.65, .3);
+                robot.driveForword(1.55, .3);
             }
         } else if (teamColor == "blue") {
             if (mark == 3) {
@@ -644,20 +644,20 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
     public void columnOneMove(int mark) {
         if (teamColor == "red") {
             if (mark == 1) {
-                robot.driveForword(1.35, .5);
+                robot.driveForword(1.15, .3);
             } else if (mark == 2) {
-                robot.driveForword(2.01, .5);
+                robot.driveForword(1.81, .3);
             } else if (mark == 3) {
-                robot.driveForword(2.55, .5);
+                robot.driveForword(2.35, .3);
             }
 
         } else if (teamColor == "blue") {
             if (mark == 3) {
-                robot.driveBackword(1.85, .3);
+                robot.driveBackword(1.7, .3);
             } else if (mark == 2) {
-                robot.driveBackword(2.56, .3);
+                robot.driveBackword(2.41, .3);
             } else if (mark == 1) {
-                robot.driveBackword(3.1, .3);
+                robot.driveBackword(2.95, .3);
             }
         }
     }
@@ -666,16 +666,17 @@ public class BaseCombinedAutonomous extends LinearOpModeCamera {
     public void pinch(boolean ifBlue1) {
         robot.bLeftPincer.setPosition(.85);
         robot.bRightPincer.setPosition(.85);
+         sleep(2000);
         robot.lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-       if (!ifBlue1 ) {
-           robot.lift.setTargetPosition(-1710);
+        if (!ifBlue1 ) {
+            robot.lift.setTargetPosition(-1710);
 
-       }else{
-           robot.lift.setTargetPosition(-855);
-       }
-           robot.lift.setPower(1);
+        }else{
+            robot.lift.setTargetPosition(-855);
+        }
+        robot.lift.setPower(1);
     }
 
     //This is the release function used at the end of the autonomous
